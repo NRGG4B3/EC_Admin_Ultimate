@@ -234,6 +234,6 @@ AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
     
     -- Wait a bit for everything to load
-    Citizen.Wait(1000)
+    Wait(1000)
     CheckAndFixManifest()
 end)

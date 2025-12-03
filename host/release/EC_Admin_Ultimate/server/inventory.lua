@@ -642,9 +642,9 @@ function Inventory.Initialize()
     end
     
     -- Update cache periodically
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(config.updateInterval)
+            Wait(config.updateInterval)
             
             inventoryCache.players = Inventory.GetPlayerInventories()
             inventoryCache.stashes = Inventory.GetStashes()

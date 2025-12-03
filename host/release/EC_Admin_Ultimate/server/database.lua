@@ -108,8 +108,8 @@ function Database.Initialize()
     end
     
     -- Test database connection in a safe way
-    Citizen.CreateThread(function()
-        Citizen.Wait(3000) -- Wait for oxmysql to be fully ready
+    CreateThread(function()
+        Wait(3000) -- Wait for oxmysql to be fully ready
         
         Database.TestConnection(function(success)
             if success then
@@ -177,7 +177,7 @@ function Database.CreateTables()
     
     Logger.Info('📋 Creating database tables...')
     
-    Citizen.CreateThread(function()
+    CreateThread(function()
         local queries = {
             -- Admin permissions table
             {
@@ -333,7 +333,7 @@ function Database.CreateTables()
             end)
             
             -- Small delay between queries to prevent overwhelming the database
-            Citizen.Wait(500)
+            Wait(500)
         end
         
         -- Add missing columns to existing tables (for upgrades)
@@ -365,7 +365,7 @@ function Database.CreateTables()
             end
         end)
         
-        Citizen.Wait(500)
+        Wait(500)
         
         Logger.Info('✅ Database table creation completed')
     end)

@@ -178,13 +178,13 @@ AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
     
     -- Wait for config to load
-    Citizen.Wait(2000)
+    Wait(2000)
     
     -- Check if auto-registration is enabled
     if Config and Config.APIs and Config.APIs.GlobalBans and Config.APIs.GlobalBans.enabled then
-        Citizen.CreateThread(function()
+        CreateThread(function()
             -- Wait for API Connection Manager to initialize
-            Citizen.Wait(10000) -- Wait 10 seconds after startup for Host API
+            Wait(10000) -- Wait 10 seconds after startup for Host API
             Logger.Info('')
             Logger.Info('')
             
@@ -197,7 +197,7 @@ AddEventHandler('onResourceStart', function(resourceName)
                     end
                 end, 'GET', '', {})
                 
-                Citizen.Wait(2000)
+                Wait(2000)
                 
                 if hostApiReady then
                     break

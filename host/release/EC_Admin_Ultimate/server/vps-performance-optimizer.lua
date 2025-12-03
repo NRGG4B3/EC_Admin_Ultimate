@@ -261,7 +261,7 @@ local function CheckRateLimit(ipAddress)
     bucket.burst = bucket.burst + 1
     
     -- Decay burst counter
-    Citizen.SetTimeout(1000, function()
+    SetTimeout(1000, function()
         if bucket.burst > 0 then
             bucket.burst = bucket.burst - 1
         end
@@ -341,7 +341,7 @@ function ProcessRequestQueue()
     end
     
     -- Process next request
-    Citizen.SetTimeout(0, ProcessRequestQueue)
+    SetTimeout(0, ProcessRequestQueue)
 end
 
 --[[ ==================== MEMORY MANAGEMENT ==================== ]]--
@@ -757,7 +757,7 @@ function SendBatchedClientEvent(source, eventName, ...)
     })
     
     -- Flush every 100ms
-    Citizen.SetTimeout(100, function()
+    SetTimeout(100, function()
         FlushClientEvents(source)
     end)
 end

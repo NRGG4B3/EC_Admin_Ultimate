@@ -534,9 +534,9 @@ end
 
 -- Resource usage monitoring (example detection)
 function AIAnalytics.MonitorResources()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(60000) -- Check every minute
+            Wait(60000) -- Check every minute
             
             local playerCount = #GetPlayers()
             local memoryUsage = collectgarbage('count')

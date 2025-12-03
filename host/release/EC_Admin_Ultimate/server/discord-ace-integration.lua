@@ -263,7 +263,7 @@ AddEventHandler('playerJoining', function()
     local source = source
     
     -- Wait 5 seconds for player to fully connect
-    Citizen.SetTimeout(5000, function()
+    SetTimeout(5000, function()
         DiscordACE.ProcessPlayer(source)
     end)
 end)

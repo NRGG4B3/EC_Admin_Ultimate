@@ -222,7 +222,7 @@ function Economy.LogTransaction(source, type, amount, details)
     
     -- Log to database if available
     if _G.ECDatabase and _G.ECDatabase.Insert then
-        Citizen.CreateThread(function()
+        CreateThread(function()
             _G.ECDatabase.Insert('ec_economy_transactions', {
                 identifier = transaction.identifier,
                 player_name = transaction.playerName,
@@ -348,11 +348,11 @@ function Economy.Initialize()
     end
     
     -- Start monitoring loop
-    Citizen.CreateThread(function()
-        Citizen.Wait(5000) -- Wait for server to settle
+    CreateThread(function()
+        Wait(5000) -- Wait for server to settle
         
         while true do
-            Citizen.Wait(economyData.config.updateInterval)
+            Wait(economyData.config.updateInterval)
             
             -- Update all player balances
             for i = 0, GetNumPlayerIndices() - 1 do

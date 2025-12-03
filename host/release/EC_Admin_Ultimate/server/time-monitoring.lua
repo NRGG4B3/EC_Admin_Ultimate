@@ -370,15 +370,15 @@ function TimeMonitoring.Initialize()
     end
     
     -- Performance snapshot thread
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(config.performanceSnapshotInterval)
+            Wait(config.performanceSnapshotInterval)
             TimeMonitoring.CreatePerformanceSnapshot()
         end
     end)
     
     -- Session update thread (with error protection)
-    Citizen.CreateThread(function()
+    CreateThread(function()
         -- Wait for server to be fully ready
         Wait(5000)
         
@@ -408,7 +408,7 @@ function TimeMonitoring.Initialize()
                 Logger.Info('⚠️ Time monitoring error (non-fatal): ' .. tostring(error))
             end
             
-            Citizen.Wait(config.sessionUpdateInterval)
+            Wait(config.sessionUpdateInterval)
         end
     end)
     

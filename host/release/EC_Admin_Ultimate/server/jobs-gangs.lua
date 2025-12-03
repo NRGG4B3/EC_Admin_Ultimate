@@ -533,9 +533,9 @@ function JobsGangs.Initialize()
     end
     
     -- Update cache periodically
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(config.updateInterval)
+            Wait(config.updateInterval)
             
             jobsData.jobs = JobsGangs.GetAllJobs()
             jobsData.gangs = JobsGangs.GetAllGangs()

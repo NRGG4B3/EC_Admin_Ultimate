@@ -55,7 +55,7 @@ local function CheckAPI(apiName, url)
     -- Wait for response (with timeout)
     local timeout = 0
     while success == false and timeout < 50 do
-        Citizen.Wait(100)
+        Wait(100)
         timeout = timeout + 1
     end
     

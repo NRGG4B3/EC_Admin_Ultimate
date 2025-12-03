@@ -330,8 +330,8 @@ function Backups.VerifyBackup(source, data)
             backup.status = 'verifying'
             
             -- Simulate verification
-            Citizen.CreateThread(function()
-                Citizen.Wait(2000)
+            CreateThread(function()
+                Wait(2000)
                 
                 backup.verified = true
                 backup.status = 'completed'

@@ -249,7 +249,7 @@ CreateThread(function()
     
     -- Periodic revalidation
     while true do
-        Citizen.Wait(300000) -- Every 5 minutes
+        Wait(300000) -- Every 5 minutes
         
         licenseKey = GetConvar('ec_license_key', '')
         if licenseKey ~= '' and IsHostLicense(licenseKey) then

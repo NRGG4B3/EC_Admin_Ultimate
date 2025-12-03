@@ -520,9 +520,9 @@ function Housing.Initialize()
     end
     
     -- Update cache periodically
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(config.updateInterval)
+            Wait(config.updateInterval)
             
             housingCache.properties = Housing.GetProperties()
             housingCache.rentals = Housing.GetRentals()
