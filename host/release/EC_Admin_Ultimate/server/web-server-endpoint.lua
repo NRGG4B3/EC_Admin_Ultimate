@@ -19,16 +19,16 @@
     - They see THEIR city only
 ]]
 
-print('^2[EC Admin Web] Initializing web access command...^0')
+Logger.Info('[EC Admin Web] Initializing web access command...')
 
 -- Check if this is a host installation
 local isHost = false
 local hostFile = LoadResourceFile(GetCurrentResourceName(), 'host/setup.bat')
 if hostFile then
     isHost = true
-    print('^3[EC Admin Web] HOST MODE DETECTED^0')
+    Logger.Warn('[EC Admin Web] HOST MODE DETECTED')
 else
-    print('^2[EC Admin Web] Customer mode - web access enabled^0')
+    Logger.Success('[EC Admin Web] Customer mode - web access enabled')
 end
 
 -- Get server info
@@ -67,7 +67,7 @@ RegisterCommand('webadmin', function(source, args, rawCommand)
         if ok then
             hasPermission = result and true or false
         else
-            print(('^1[EC Admin Web] Permission check failed: %s^0'):format(result))
+            Logger.Error(('[EC Admin Web] Permission check failed: %s'):format(result))
         end
         
         if not hasPermission then
@@ -119,19 +119,19 @@ RegisterCommand('webadmin', function(source, args, rawCommand)
             })
         end
         
-        print(string.format('^2[EC Admin Web] %s requested web access^0', GetPlayerName(player)))
+        Logger.Info(('✅ %s requested web access'):format(GetPlayerName(player)))
     else
         -- Server console
-        print('^2════════════════════════════════════════════════════════^0')
-        print('^2  EC ADMIN ULTIMATE - WEB ACCESS URLS^0')
-        print('^2════════════════════════════════════════════════════════^0')
-        print(string.format('^3  Local:   %s^0', localUrl))
-        print(string.format('^3  Network: %s^0', webUrl))
-        print('^2════════════════════════════════════════════════════════^0')
+        Logger.Info('════════════════════════════════════════════════════════')
+        Logger.Info('  EC ADMIN ULTIMATE - WEB ACCESS URLS')
+        Logger.Info('════════════════════════════════════════════════════════')
+        Logger.Info(('  Local:   %s'):format(localUrl))
+        Logger.Info(('  Network: %s'):format(webUrl))
+        Logger.Info('════════════════════════════════════════════════════════')
         
         if isHost then
-            print('^3  HOST MODE: Use http://127.0.0.1:3019 instead^0')
-            print('^2════════════════════════════════════════════════════════^0')
+            Logger.Warn('  HOST MODE: Use http://127.0.0.1:3019 instead')
+            Logger.Info('════════════════════════════════════════════════════════')
         end
     end
 end, false)
@@ -146,7 +146,7 @@ end, false)
 
 TriggerEvent('chat:addSuggestion', '/ecweb', 'Get link to open admin panel in browser (alias)')
 
-print('^2[EC Admin Web] Commands registered: /webadmin, /ecweb^0')
+Logger.Success('[EC Admin Web] Commands registered: /webadmin, /ecweb')
 
 -- ==========================================
 -- STARTUP INFO
@@ -157,46 +157,46 @@ CreateThread(function()
     Wait(3000)
     
     if not isHost then
-        Logger.Info('', '🌐')
-        Logger.Info('╔═════════════════════════════════════════════════════════════╗', '🌐')
-        Logger.Info('║                                                             ║', '🌐')
-        Logger.Info('║  🌐 EC ADMIN ULTIMATE - WEB ACCESS READY!                  ║', '🌐')
-        Logger.Info('║                                                             ║', '🌐')
-        Logger.Info('╠═════════════════════════════════════════════════════════════╣', '🌐')
-        Logger.Info('║                                                             ║', '🌐')
-        Logger.Info('║  📱 Access Methods:                                         ║', '🌐')
-        Logger.Info('║     • Type /webadmin in chat or console                    ║', '🌐')
-        Logger.Info('║     • Press F2 for in-game menu                            ║', '🌐')
-        Logger.Info('║                                                             ║', '🌐')
-        Logger.Info('║  🔗 Direct Links:                                           ║', '🌐')
-        Logger.Info(string.format('║     Local:   %-46s║', localUrl:sub(1, 46)), '🌐')
+        Logger.Info('')
+        Logger.Info('╔═════════════════════════════════════════════════════════════╗')
+        Logger.Info('║                                                             ║')
+        Logger.Info('║  🌐 EC ADMIN ULTIMATE - WEB ACCESS READY!                  ║')
+        Logger.Info('║                                                             ║')
+        Logger.Info('╠═════════════════════════════════════════════════════════════╣')
+        Logger.Info('║                                                             ║')
+        Logger.Info('║  📱 Access Methods:                                         ║')
+        Logger.Info('║     • Type /webadmin in chat or console                    ║')
+        Logger.Info('║     • Press F2 for in-game menu                            ║')
+        Logger.Info('║                                                             ║')
+        Logger.Info('║  🔗 Direct Links:                                           ║')
+        Logger.Info(('║     Local:   %-46s║'):format(localUrl:sub(1, 46)))
         if #localUrl > 46 then
-            Logger.Info(string.format('║              %-46s║', localUrl:sub(47)), '🌐')
+            Logger.Info(('║              %-46s║'):format(localUrl:sub(47)))
         end
-        Logger.Info('║                                                             ║', '🌐')
-        Logger.Info(string.format('║     Network: %-46s║', webUrl:sub(1, 46)), '🌐')
+        Logger.Info('║                                                             ║')
+        Logger.Info(('║     Network: %-46s║'):format(webUrl:sub(1, 46)))
         if #webUrl > 46 then
-            Logger.Info(string.format('║              %-46s║', webUrl:sub(47)), '🌐')
+            Logger.Info(('║              %-46s║'):format(webUrl:sub(47)))
         end
-        Logger.Info('║                                                             ║', '🌐')
-        Logger.Info('║  ⚡ Features:                                                ║', '🌐')
-        Logger.Info('║     • No Node.js required!                                  ║', '🌐')
-        Logger.Info('║     • No setup or installation!                             ║', '🌐')
-        Logger.Info('║     • Real-time sync with in-game admins                    ║', '🌐')
-        Logger.Info('║     • Access from any browser                               ║', '🌐')
-        Logger.Info('║     • Mobile friendly                                       ║', '🌐')
-        Logger.Info('║                                                             ║', '🌐')
-        Logger.Info('╚═════════════════════════════════════════════════════════════╝', '🌐')
-        Logger.Info('', '🌐')
+        Logger.Info('║                                                             ║')
+        Logger.Info('║  ⚡ Features:                                                ║')
+        Logger.Info('║     • No Node.js required!                                  ║')
+        Logger.Info('║     • No setup or installation!                             ║')
+        Logger.Info('║     • Real-time sync with in-game admins                    ║')
+        Logger.Info('║     • Access from any browser                               ║')
+        Logger.Info('║     • Mobile friendly                                       ║')
+        Logger.Info('║                                                             ║')
+        Logger.Info('╚═════════════════════════════════════════════════════════════╝')
+        Logger.Info('')
     else
-        Logger.Info('', '🌐')
-        Logger.Info('╔═════════════════════════════════════════════════════════════╗', '🌐')
-        Logger.Info('║  HOST MODE - NRG Internal Dashboard                        ║', '🌐')
-        Logger.Info('╠═════════════════════════════════════════════════════════════╣', '🌐')
-        Logger.Info('║  Your Dashboard: http://127.0.0.1:3019                       ║', '🌐')
-        Logger.Info('║  Customer Command: /webadmin                                ║', '🌐')
-        Logger.Info('╚═════════════════════════════════════════════════════════════╝', '🌐')
-        Logger.Info('', '🌐')
+        Logger.Info('')
+        Logger.Warn('╔═════════════════════════════════════════════════════════════╗')
+        Logger.Warn('║  HOST MODE - NRG Internal Dashboard                        ║')
+        Logger.Warn('╠═════════════════════════════════════════════════════════════╣')
+        Logger.Warn('║  Your Dashboard: http://127.0.0.1:3019                       ║')
+        Logger.Warn('║  Customer Command: /webadmin                                ║')
+        Logger.Warn('╚═════════════════════════════════════════════════════════════╝')
+        Logger.Info('')
     end
 end)
 
@@ -218,4 +218,4 @@ lib.callback.register('ec_admin:getWebConfig', function(source)
     }
 end)
 
-Logger.Success('Web access initialized successfully!', '🌐')
+Logger.Success('[EC Admin Web] Web access initialized successfully!')

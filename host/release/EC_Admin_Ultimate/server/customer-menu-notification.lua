@@ -103,7 +103,7 @@ CreateThread(function()
     Wait(5000)
     
     if IsCustomerMode() then
-        print('^2[Customer Menu] Notification system loaded^0')
+        Logger.Success('✅ Customer Menu Notification system loaded')
         
         -- Enable notification in config
         Config.Discord = Config.Discord or {}

@@ -142,7 +142,7 @@ function PlayerEvents.CleanupPlayer(source, reason)
     if not source or source == 0 then return end
     
     local playerName = GetPlayerName(source) or 'Unknown'
-    Logger.Info(string.format('', playerName, source, reason or 'Unknown'))
+    Logger.Info(string.format('👋 Cleanup player: %s [%d] - Reason: %s', playerName, source, reason or 'Unknown'))
     
     -- Use async thread to prevent blocking
     CreateThread(function()

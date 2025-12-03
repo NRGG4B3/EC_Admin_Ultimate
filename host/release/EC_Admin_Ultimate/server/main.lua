@@ -9,7 +9,23 @@ end
 
 local FrameworkBridge = ECFramework or {}
 local FrameworkName = nil
+local Framework = 'qbx'  -- Default framework (will be detected)
 local SendWebhook = _G.SendHostWebhook
+
+-- Initialize framework synchronously (framework detection happens early in startup)
+local function InitializeFramework()
+    if FrameworkBridge.GetFramework then
+        Framework = FrameworkBridge.GetFramework() or 'qbx'
+        FrameworkName = Framework
+        Logger.Info('Framework initialized: ' .. Framework)
+    else
+        Logger.Warn('Framework bridge not available, using default: qbx')
+        Framework = 'qbx'
+    end
+end
+
+-- Call immediately (after FrameworkBridge is available)
+InitializeFramework()
 
 local function EnsureWebhookHelper()
     if SendWebhook then return SendWebhook end
@@ -22,11 +38,6 @@ local function EnsureWebhookHelper()
 
     return nil
 end
-
-CreateThread(function()
-    FrameworkName = FrameworkBridge.GetFramework()
-    Logger.Info('Framework: ' .. (FrameworkName or 'Unknown'))
-end)
 
 -- Check Permission Event (re-enabled for proper permission checking)
 RegisterNetEvent('ec_admin:checkPermission', function()
@@ -476,15 +487,15 @@ RegisterNetEvent('ec_admin:requestReports', function()
 end)
 
 -- ==========================================
--- STARTUP BANNER (delayed to let framework detect)
+-- STARTUP BANNER
 -- ==========================================
 CreateThread(function()
-    Wait(2000) -- Wait for framework detection
+    Wait(3000) -- Wait for all initialization
     Logger.System('')
     Logger.System('===============================================')
     Logger.System('  EC ADMIN ULTIMATE v1.0.0')
     Logger.System('===============================================')
-    Logger.Info('  Framework: ' .. (FrameworkName or 'Detecting...'))
+    Logger.Info('  Framework: ' .. (Framework or 'Unknown'))
     Logger.Info('  Mode: ' .. (IsHostMode() and 'HOST' or 'CUSTOMER'))
     Logger.Info('  Permissions: Unified (Owners / ACE / EC Perms / Discord)')
     Logger.System('===============================================')
@@ -501,19 +512,18 @@ end)
 -- Check if we're in host mode
 function IsHostMode()
     -- Explicit config override (used internally)
-    if Config and Config.Host and Config.Host.enabled then
+    if Config and type(Config) == 'table' and Config.HostMode then
         return true
     end
 
     local resourceName = GetCurrentResourceName()
 
-    -- Host builds ship with a marker file, but treat the folder itself as enough
-    -- for local deployments so they can initialize in host mode without secrets.
+    -- Host builds ship with a marker file
     if LoadResourceFile(resourceName, 'host/.hostmarker') then
         return true
     end
 
-    -- Safe fallback for customer builds: only enable host mode when host assets exist
+    -- Safe fallback: check for host assets
     if LoadResourceFile(resourceName, 'host/config.lua') or LoadResourceFile(resourceName, 'host/api/host_server.lua') then
         return true
     end

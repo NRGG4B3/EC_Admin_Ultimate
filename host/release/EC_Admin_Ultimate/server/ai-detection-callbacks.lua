@@ -28,62 +28,11 @@ CreateThread(function()
     Logger.Info('AI Detection System Initialized: ' .. Framework)
 end)
 
--- Create AI detection tables
+-- AI Detection tables are automatically created by auto-migrate-sql.lua
+-- This ensures consistent schema for both customers and host mode
 CreateThread(function()
     Wait(2000)
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_ai_detections (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            player_id VARCHAR(50) NOT NULL,
-            player_name VARCHAR(100) NOT NULL,
-            detection_type VARCHAR(50) NOT NULL,
-            confidence FLOAT DEFAULT 0.0,
-            pattern_data TEXT NULL,
-            behavioral_score FLOAT DEFAULT 0.0,
-            actions_per_minute FLOAT DEFAULT 0.0,
-            auto_flagged BOOLEAN DEFAULT 0,
-            admin_reviewed BOOLEAN DEFAULT 0,
-            is_bot BOOLEAN DEFAULT 0,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_player (player_id),
-            INDEX idx_confidence (confidence),
-            INDEX idx_flagged (auto_flagged)
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_ai_player_patterns (
-            player_id VARCHAR(50) PRIMARY KEY,
-            player_name VARCHAR(100) NOT NULL,
-            total_actions INT DEFAULT 0,
-            unique_actions INT DEFAULT 0,
-            repetition_rate FLOAT DEFAULT 0.0,
-            avg_reaction_time FLOAT DEFAULT 0.0,
-            movement_entropy FLOAT DEFAULT 0.0,
-            chat_entropy FLOAT DEFAULT 0.0,
-            farming_score FLOAT DEFAULT 0.0,
-            bot_probability FLOAT DEFAULT 0.0,
-            last_analysis TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            INDEX idx_bot_prob (bot_probability),
-            INDEX idx_farming (farming_score)
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_ai_behavior_logs (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            player_id VARCHAR(50) NOT NULL,
-            action_type VARCHAR(50) NOT NULL,
-            action_data TEXT NULL,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_player (player_id),
-            INDEX idx_timestamp (timestamp)
-        )
-    ]], {})
-    
-    Logger.Info('AI Detection tables initialized')
+    Logger.Debug('AI Detection system ready - tables created by auto-migration system')
 end)
 
 -- Active monitoring
@@ -327,7 +276,7 @@ local function LogAIDetection(src, detectionType, confidence, patternData, behav
     -- Auto kick if high confidence bot
     if AIConfig.AutoKickBots and isBot then
         DropPlayer(src, '🤖 Automated behavior detected\nReason: Bot-like patterns identified\nConfidence: ' .. math.floor(confidence * 100) .. '%')
-        print(string.format('[EC AI] AUTO-KICKED BOT: %s (ID: %d) - Confidence: %.2f%%', playerName, src, confidence * 100))
+        Logger.Error(string.format('🤖 AUTO-KICKED BOT: %s (ID: %d) - Confidence: %.2f%%', playerName, src, confidence * 100))
     end
 end
 

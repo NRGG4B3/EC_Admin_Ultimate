@@ -133,28 +133,28 @@ function CheckGlobalBan(source, callback)
     
     -- Bypass for owners
     if IsPlayerOwner(source) then
-        print(string.format('[Global Ban] ⚠️  Skipping ban check for server owner (Source: %s)', source))
+        Logger.Warn(string.format('⚠️ Skipping ban check for server owner (Source: %s)', source))
         callback(false, nil)
         return
     end
     
     -- Bypass for NRG staff
     if IsPlayerNRGStaff(source) then
-        print(string.format('[Global Ban] ⚠️  Skipping ban check for NRG staff (Source: %s)', source))
+        Logger.Warn(string.format('⚠️ Skipping ban check for NRG staff (Source: %s)', source))
         callback(false, nil)
         return
     end
     
     local apiKey = GetAPIKey()
     if not apiKey then
-        print('[Global Ban] ⚠️  No API key found, skipping global ban check')
+        Logger.Warn('⚠️ No API key found, skipping global ban check')
         callback(false, nil)
         return
     end
     
     local ids = GetAllIdentifiers(source)
     if not ids.license then
-        print('[Global Ban] ⚠️  No license found for player, skipping check')
+        Logger.Warn('⚠️ No license found for player, skipping check')
         callback(false, nil)
         return
     end
@@ -176,27 +176,27 @@ function CheckGlobalBan(source, callback)
             local success, data = pcall(json.decode, response)
             if success and data then
                 if data.banned then
-                    print(string.format('[Global Ban] 🚫 Player %s is GLOBALLY BANNED', playerName))
+                    Logger.Error(string.format('🚫 Player %s is GLOBALLY BANNED', playerName))
                     callback(true, data)
                 else
-                    print(string.format('[Global Ban] ✅ Player %s is not globally banned', playerName))
+                    Logger.Info(string.format('✅ Player %s is not globally banned', playerName))
                     callback(false, nil)
                 end
             else
-                print('[Global Ban] ⚠️  Invalid response from API')
+                Logger.Warn('⚠️ Invalid response from API')
                 callback(false, nil)
             end
         elseif statusCode == 404 then
             -- API endpoint not found - silently allow connection (API might not be set up yet)
-            -- print('[Global Ban] ℹ️  API endpoint not found (404) - allowing connection')
+            -- Logger.Debug('ℹ️ API endpoint not found (404) - allowing connection')
             callback(false, nil)
         elseif statusCode == 0 then
             -- Connection failed - silently allow connection (offline server, etc)
-            -- print('[Global Ban] ℹ️  Could not connect to Global Ban API - allowing connection')
+            -- Logger.Debug('ℹ️ Could not connect to Global Ban API - allowing connection')
             callback(false, nil)
         else
             -- Only log on non-404/0 errors to reduce spam
-            print(string.format('[Global Ban] ⚠️  API request failed (Status: %s) - allowing connection', statusCode))
+            Logger.Warn(string.format('⚠️ API request failed (Status: %s) - allowing connection', statusCode))
             callback(false, nil)
         end
     end, 'POST', json.encode(payload), {
@@ -244,7 +244,7 @@ To appeal, visit: https://discord.gg/nrg
             
             deferrals.done(kickMessage)
             
-            print(string.format('[Global Ban] 🚫 Blocked connection: %s (License: %s)', playerName, banData.license or 'Unknown'))
+            Logger.Error(string.format('🚫 Blocked connection: %s (License: %s)', playerName, banData.license or 'Unknown'))
         else
             -- Player is not banned, allow connection
             deferrals.done()
@@ -266,7 +266,7 @@ function SyncBanToGlobalAPI(banData, callback)
     local serverId = GetServerId()
     
     if not apiKey or not serverId then
-        print('[Global Ban] ⚠️  Not registered with Global Ban API')
+        Logger.Warn('⚠️ Not registered with Global Ban API')
         if callback then callback(false, 'Not registered') end
         return
     end
@@ -289,10 +289,10 @@ function SyncBanToGlobalAPI(banData, callback)
     
     PerformHttpRequest(url, function(statusCode, response, headers)
         if statusCode == 200 or statusCode == 201 then
-            print(string.format('[Global Ban] ✅ Ban synced to global API: %s', banData.playerName))
+            Logger.Success(string.format('✅ Ban synced to global API: %s', banData.playerName))
             if callback then callback(true, 'Ban synced') end
         else
-            print(string.format('[Global Ban] ❌ Failed to sync ban (Status: %s)', statusCode))
+            Logger.Error(string.format('❌ Failed to sync ban (Status: %s)', statusCode))
             if callback then callback(false, 'API error') end
         end
     end, 'POST', json.encode(payload), {
@@ -325,9 +325,9 @@ function SyncGlobalBanToLocal(globalBanData)
             ['@bannedby'] = globalBanData.bannedBy or 'Global Ban System',
             ['@expire'] = globalBanData.duration == 0 and 0 or (os.time() + globalBanData.duration),
             ['@timestamp'] = os.time()
-        }, function(rowsChanged)
+        end, function(rowsChanged)
             if rowsChanged > 0 then
-                print(string.format('[Global Ban] ✅ Synced global ban to local: %s', globalBanData.playerName))
+                Logger.Success(string.format('✅ Synced global ban to local: %s', globalBanData.playerName))
             end
         end)
     end
@@ -359,10 +359,10 @@ function RemoveGlobalBan(license, callback)
     
     PerformHttpRequest(url, function(statusCode, response, headers)
         if statusCode == 200 then
-            print(string.format('[Global Ban] ✅ Removed global ban: %s', license))
+            Logger.Success(string.format('✅ Removed global ban: %s', license))
             if callback then callback(true, 'Ban removed') end
         else
-            print(string.format('[Global Ban] ❌ Failed to remove ban (Status: %s)', statusCode))
+            Logger.Error(string.format('❌ Failed to remove ban (Status: %s)', statusCode))
             if callback then callback(false, 'API error') end
         end
     end, 'POST', json.encode(payload), {
@@ -477,7 +477,7 @@ RegisterNetEvent('ec_admin:globalBanPlayer', function(data)
                 message = 'Player globally banned'
             })
             
-            print(string.format('[Global Ban] 🚫 %s globally banned %s (Reason: %s)', adminName, playerName, reason))
+            Logger.Success(string.format('🚫 %s globally banned %s (Reason: %s)', adminName, playerName, reason))
         else
             TriggerClientEvent('ec_admin:notify', src, {
                 type = 'error',
@@ -517,7 +517,7 @@ RegisterNetEvent('ec_admin:globalUnbanPlayer', function(data)
                 message = 'Player globally unbanned'
             })
             
-            print(string.format('[Global Ban] ✅ %s removed global ban: %s', GetPlayerName(src), license))
+            Logger.Success(string.format('✅ %s removed global ban: %s', GetPlayerName(src), license))
         else
             TriggerClientEvent('ec_admin:notify', src, {
                 type = 'error',

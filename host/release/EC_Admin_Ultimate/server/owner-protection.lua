@@ -189,7 +189,7 @@ function ValidateAdminAction(adminSource, targetSource, action)
     -- NRG staff cannot be targeted by anyone (except console)
     if targetIsNRGStaff then
         local adminName = GetPlayerName(adminSource) or "Unknown"
-        print(string.format("[Owner Protection] BLOCKED: %s (%d) attempted to %s NRG STAFF (ID: %d)", 
+        Logger.Error(string.format("🚫 BLOCKED: %s (%d) attempted to %s NRG STAFF (ID: %d)", 
             adminName, adminSource, action, targetSource))
         
         -- Log this attempt to database
@@ -210,7 +210,7 @@ function ValidateAdminAction(adminSource, targetSource, action)
     -- Owners cannot be targeted by non-owners (unless admin is NRG staff)
     if targetIsOwner and not (adminIsOwner or adminIsNRGStaff) then
         local adminName = GetPlayerName(adminSource) or "Unknown"
-        print(string.format("[Owner Protection] BLOCKED: %s (%d) attempted to %s owner (ID: %d)", 
+        Logger.Error(string.format("🚫 BLOCKED: %s (%d) attempted to %s owner (ID: %d)", 
             adminName, adminSource, action, targetSource))
         
         -- Log this attempt to database
@@ -264,10 +264,10 @@ function LogAdminAction(adminSource, action, targetSource, details, reason)
     
     -- Console log
     if targetSource then
-        print(string.format("[Admin Action] %s (%s) performed %s on %s (%s) - Reason: %s", 
+        Logger.Info(string.format("📋 %s (%s) performed %s on %s (%s) - Reason: %s", 
             adminName, adminIdentifier, action, targetName, targetIdentifier, reason or "None"))
     else
-        print(string.format("[Admin Action] %s (%s) performed %s - Reason: %s", 
+        Logger.Info(string.format("📋 %s (%s) performed %s - Reason: %s", 
             adminName, adminIdentifier, action, reason or "None"))
     end
     

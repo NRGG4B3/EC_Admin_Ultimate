@@ -320,4 +320,4 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     end)
 end)
 
-Logger.Info('')
+-- Admin actions module initialized

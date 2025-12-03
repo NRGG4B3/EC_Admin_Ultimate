@@ -17,15 +17,15 @@ CreateThread(function()
     Wait(5000) -- Wait for server to be ready
     
     if API_KEY == '' then
-        Logger.Info('⚠️ No Host API key configured (ec_host_api_key)', '🔗')
-        Logger.Info('Host API features disabled', '🔗')
+        Logger.Info('⚠️ No Host API key configured (ec_host_api_key)')
+        Logger.Info('Host API features disabled')
         return
     end
     
     -- Register server with Host API
     PerformHttpRequest(HOST_API_URL .. '/api/v1/server/register', function(statusCode, responseText, headers)
         if statusCode == 200 then
-            Logger.Info('✅ Connected to Host API', '🔗')
+            Logger.Info('✅ Connected to Host API')
             isConnected = true
         elseif statusCode == 0 then
             -- Silently fail on connection errors (Host API might not be running)
@@ -34,8 +34,8 @@ CreateThread(function()
             -- API endpoint doesn't exist yet - silently fail
             isConnected = false
         else
-            Logger.Info('⚠️ Failed to connect to Host API: ' .. statusCode, '⚠️')
-            Logger.Info('Response: ' .. (responseText or 'No response'), '⚠️')
+            Logger.Info('⚠️ Failed to connect to Host API: ' .. statusCode)
+            Logger.Info('Response: ' .. (responseText or 'No response'))
             isConnected = false
         end
     end, 'POST', json.encode({

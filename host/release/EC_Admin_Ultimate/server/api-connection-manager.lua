@@ -498,7 +498,7 @@ CreateThread(function()
         end
         
         if disconnected > 0 then
-            Logger.Warn(string.format('%d APIs disconnected, attempting to reconnect...', disconnected), '⚠️')
+            Logger.Warn(string.format('%d APIs disconnected, attempting to reconnect...', disconnected))
             APIConnectionManager.RetryAllFailed()
         end
     end

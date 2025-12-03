@@ -292,8 +292,8 @@ _G.APIWrapper = APIWrapper
 -- Initialize after dependencies load
 CreateThread(function()
     if WaitForDependencies() then
-        Logger.Info('✅ API Wrapper ready - Auto-fallback enabled', '🔗')
+        Logger.Info('✅ API Wrapper ready - Auto-fallback enabled')
     else
-        Logger.Info('')
+        Logger.Warn('⚠️ API Wrapper initialized with degraded dependencies')
     end
 end)

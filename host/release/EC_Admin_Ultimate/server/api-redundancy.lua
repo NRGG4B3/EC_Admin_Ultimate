@@ -172,11 +172,11 @@ RegisterNetEvent('ec_admin:performInitialAPICheck', function()
     
     -- Only show final result
     if failed == 0 then
-        print(string.format("^2✓ API Status: %d/%d Online - All systems operational^0", connected, #API_ENDPOINTS))
+        Logger.Success(string.format('✓ API Status: %d/%d Online - All systems operational', connected, #API_ENDPOINTS))
     elseif failed > 0 and failed < #API_ENDPOINTS then
-        print(string.format("^3⚠ API Status: %d Online | %d Offline (Lua fallback active)^0", connected, failed))
+        Logger.Warn(string.format('⚠ API Status: %d Online | %d Offline (Lua fallback active)', connected, failed))
     else
-        print(string.format("^1✗ API Status: All %d APIs Offline (Full Lua fallback active)^0", #API_ENDPOINTS))
+        Logger.Error(string.format('✗ API Status: All %d APIs Offline (Full Lua fallback active)', #API_ENDPOINTS))
     end
 end)
 

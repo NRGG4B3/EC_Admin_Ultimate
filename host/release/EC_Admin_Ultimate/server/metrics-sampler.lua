@@ -146,7 +146,7 @@ CreateThread(function()
     -- Take initial snapshot immediately
     local initialSnapshot = GetMetricsSnapshot()
     AddToHistory(initialSnapshot)
-    Logger.Success('[Metrics Sampler] Initial snapshot recorded', '✅')
+    Logger.Success('✅ Initial metrics snapshot recorded', '📊')
     
     while true do
         Wait(MetricsSampler.sampleInterval)

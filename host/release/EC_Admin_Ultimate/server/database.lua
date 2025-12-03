@@ -96,14 +96,12 @@ function Database.Initialize()
     
     -- Check if oxmysql is available
     if GetResourceState('oxmysql') ~= 'started' then
-        Logger.Info('⚠️  oxmysql resource not found or not started')
+        Logger.Warn('❌ oxmysql resource not found or not started')
         Logger.Info('ℹ️  Using memory-only mode (data will not persist)')
-        print('')
         Logger.Info('📝 To fix this:')
-        print('           1. Ensure oxmysql is in your resources folder')
-        print('           2. Add to server.cfg: ensure oxmysql')
-        print('           3. Add to server.cfg: set mysql_connection_string "mysql://user:pass@localhost/database"')
-        print('')
+        Logger.Info('   1. Ensure oxmysql is in your resources folder')
+        Logger.Info('   2. Add to server.cfg: ensure oxmysql')
+        Logger.Info('   3. Add to server.cfg: set mysql_connection_string "mysql://user:pass@localhost/database"')
         return false
     end
     
@@ -113,23 +111,20 @@ function Database.Initialize()
         
         Database.TestConnection(function(success)
             if success then
-                Logger.Info('✅ Database connection established')
+                Logger.Success('✅ Database connection established')
                 Logger.Info('✅ Data will persist across restarts')
                 databaseReady = true
                 Database.CreateTables()
             else
-                Logger.Info('❌ Database connection failed - using memory-only mode')
-                Logger.Info('⚠️  Data will NOT persist across restarts')
-                print('')
+                Logger.Error('❌ Database connection failed - using memory-only mode')
+                Logger.Warn('⚠️  Data will NOT persist across restarts')
                 Logger.Info('📝 Possible causes:')
-                print('           1. MySQL server is not running')
-                print('           2. Wrong credentials in server.cfg')
-                print('           3. Database does not exist')
-                print('           4. mysql_connection_string not set in server.cfg')
-                print('')
+                Logger.Info('   1. MySQL server is not running')
+                Logger.Info('   2. Wrong credentials in server.cfg')
+                Logger.Info('   3. Database does not exist')
+                Logger.Info('   4. mysql_connection_string not set in server.cfg')
                 Logger.Info('💡 To fix: Check your server.cfg for mysql_connection_string')
-                print('           Example: set mysql_connection_string "mysql://root:password@localhost/fivem"')
-                print('')
+                Logger.Info('   Example: set mysql_connection_string "mysql://root:password@localhost/fivem"')
                 databaseReady = false
             end
         end)
@@ -171,7 +166,7 @@ end
 -- Create database tables (safe, non-blocking)
 function Database.CreateTables()
     if not databaseReady then
-        Logger.Info('⚠️ Cannot create tables - database not ready')
+        Logger.Warn('⚠️ Cannot create tables - database not ready')
         return
     end
     
@@ -326,9 +321,9 @@ function Database.CreateTables()
         for _, tableData in ipairs(queries) do
             SafeExecute(tableData.query, {}, function(success, result)
                 if success then
-                    Logger.Info('✅ Table created/verified: ' .. tableData.name)
+                    Logger.Success('✅ Table created/verified: ' .. tableData.name)
                 else
-                    Logger.Info('❌ Failed to create table ' .. tableData.name .. ': ' .. tostring(result))
+                    Logger.Error('❌ Failed to create table ' .. tableData.name .. ': ' .. tostring(result))
                 end
             end)
             
@@ -367,7 +362,7 @@ function Database.CreateTables()
         
         Wait(500)
         
-        Logger.Info('✅ Database table creation completed')
+        Logger.Success('✅ Database table creation completed')
     end)
 end
 

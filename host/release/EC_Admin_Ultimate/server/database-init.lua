@@ -5,30 +5,6 @@
 
 Logger.Info('💾 Database Initialization - Starting...')
 
--- Wait for MySQL to be ready
-local function EnsureCriticalTables()
-    -- Ensure ec_admin_migrations table exists first (for migration tracking)
-    local migrationTableQuery = [[
-        CREATE TABLE IF NOT EXISTS ec_admin_migrations (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            filename VARCHAR(255) NOT NULL UNIQUE,
-            executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            success BOOLEAN DEFAULT TRUE,
-            error_message TEXT NULL,
-            INDEX idx_filename (filename)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-    ]]
-    
-    MySQL.Async.execute(migrationTableQuery, {}, function(result)
-        if result then
-            Logger.Success('✅ Migration table ensured')
-            EnsureConfigTable()
-        else
-            Logger.Error('❌ Failed to create migration table')
-        end
-    end)
-end
-
 -- Ensure ec_admin_config table exists
 local function EnsureConfigTable()
     local configTableQuery = [[
@@ -53,6 +29,30 @@ local function EnsureConfigTable()
             Logger.Success('✅ Config table ensured')
         else
             Logger.Error('❌ Failed to create config table')
+        end
+    end)
+end
+
+-- Wait for MySQL to be ready
+local function EnsureCriticalTables()
+    -- Ensure ec_admin_migrations table exists first (for migration tracking)
+    local migrationTableQuery = [[
+        CREATE TABLE IF NOT EXISTS ec_admin_migrations (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            filename VARCHAR(255) NOT NULL UNIQUE,
+            executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            success BOOLEAN DEFAULT TRUE,
+            error_message TEXT NULL,
+            INDEX idx_filename (filename)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    ]]
+    
+    MySQL.Async.execute(migrationTableQuery, {}, function(result)
+        if result then
+            Logger.Success('✅ Migration table ensured')
+            EnsureConfigTable()
+        else
+            Logger.Error('❌ Failed to create migration table')
         end
     end)
 end

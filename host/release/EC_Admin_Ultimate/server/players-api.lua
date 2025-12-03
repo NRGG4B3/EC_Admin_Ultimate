@@ -439,7 +439,7 @@ AddEventHandler('ec_admin:server:banPlayer', function(playerId, reason, duration
             
             exports['EC_admin_ultimate']:SyncBanToGlobalAPI(banData, function(success, message)
                 if success then
-                    print(string.format('[Global Ban] ✅ Synced ban to global API: %s', playerName))
+                    Logger.Success(string.format('✅ Synced ban to global API: %s', playerName))
                 end
             end)
         end

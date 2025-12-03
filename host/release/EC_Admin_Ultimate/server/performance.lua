@@ -533,7 +533,7 @@ CreateThread(function()
             if performanceData.settings.autoOptimize then
                 if metrics.memory.percentage > Config.optimizationThresholds.memory then
                     collectgarbage('collect')
-                    Logger.Info('⚡ Auto-optimization: Memory cleared', '⚡')
+                    Logger.Info('⚡ Auto-optimization: Memory cleared')
                 end
             end
         end

@@ -128,18 +128,12 @@ function APIHealth.CheckAllAPIs()
         -- Only show warning once every 5 minutes
         if currentTime - APIHealth.lastWarningTime >= 300 then
             local mode = APIHealth.isHostMode and "Host Mode" or "Customer Mode"
-            print('^3========================================^0')
-            Logger.Info('')
-            print('^3========================================^0')
-            Logger.Info('' .. #offlineAPIs .. ' API(s) offline!^0')
+            Logger.Warn('⚠️  API Health Warning (' .. mode .. ')')
+            Logger.Warn(string.format('🚨 %d API(s) offline!', #offlineAPIs))
             
             for _, apiName in ipairs(offlineAPIs) do
-                Logger.Info('' .. apiName .. ' API: OFFLINE^0')
+                Logger.Error(apiName .. ' API: OFFLINE')
             end
-            
-            Logger.Info('')
-            Logger.Info('')
-            print('^3========================================^0')
             
             APIHealth.lastWarningTime = currentTime
         end
@@ -147,13 +141,7 @@ function APIHealth.CheckAllAPIs()
         -- All APIs online
         if APIHealth.usingFallback then
             -- APIs came back online
-            print('^2========================================^0')
-            Logger.Info('')
-            print('^2========================================^0')
-            Logger.Info('')
-            Logger.Info('')
-            print('^2========================================^0')
-            
+            Logger.Success('✅ All APIs now online - Fallback mode disabled')
             APIHealth.usingFallback = false
         end
     end
@@ -180,20 +168,20 @@ function APIHealth.Initialize()
     DetectHostMode()
     
     local mode = APIHealth.isHostMode and "Host Mode" or "Customer Mode"
-    Logger.Info('🏥 Starting API Health Monitor (' .. mode .. ')...', '🏥')
+    Logger.Info('🏥 Starting API Health Monitor (' .. mode .. ')...')
     
     -- Initial check
     CreateThread(function()
         Wait(5000) -- Wait 5 seconds for APIs to initialize
         
-        Logger.Info('🏥 Performing initial API health check...', '🏥')
+        Logger.Info('🔍 Performing initial API health check...')
         APIHealth.CheckAllAPIs()
         
         -- Start 5-minute interval checks
         while true do
             Wait(APIHealth.checkInterval) -- 5 minutes
             
-            Logger.Info('🏥 Performing scheduled API health check...', '🏥')
+            Logger.Debug('🔍 Performing scheduled API health check...')
             APIHealth.CheckAllAPIs()
         end
     end)

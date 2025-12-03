@@ -28,68 +28,11 @@ CreateThread(function()
     Logger.Info('Anticheat System Initialized: ' .. Framework)
 end)
 
--- Create anticheat tables
+-- Anticheat tables are automatically created by auto-migrate-sql.lua
+-- This ensures consistent schema for both customers and host mode
 CreateThread(function()
     Wait(2000)
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_anticheat_detections (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            player_id VARCHAR(50) NOT NULL,
-            player_name VARCHAR(100) NOT NULL,
-            detection_type VARCHAR(50) NOT NULL,
-            severity ENUM('low', 'medium', 'high', 'critical') DEFAULT 'medium',
-            details TEXT NULL,
-            evidence TEXT NULL,
-            auto_action VARCHAR(50) NULL,
-            admin_reviewed BOOLEAN DEFAULT 0,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_player (player_id),
-            INDEX idx_type (detection_type),
-            INDEX idx_severity (severity)
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_anticheat_flags (
-            player_id VARCHAR(50) PRIMARY KEY,
-            player_name VARCHAR(100) NOT NULL,
-            risk_score INT DEFAULT 0,
-            total_detections INT DEFAULT 0,
-            last_detection TIMESTAMP NULL,
-            banned BOOLEAN DEFAULT 0,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            INDEX idx_risk (risk_score),
-            INDEX idx_banned (banned)
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_anticheat_bans (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            player_id VARCHAR(50) NOT NULL,
-            player_name VARCHAR(100) NOT NULL,
-            reason TEXT NOT NULL,
-            evidence TEXT NULL,
-            ban_type ENUM('temporary', 'permanent') DEFAULT 'permanent',
-            expires_at TIMESTAMP NULL,
-            banned_by VARCHAR(100) DEFAULT 'SYSTEM',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_player (player_id)
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_anticheat_whitelist (
-            player_id VARCHAR(50) PRIMARY KEY,
-            player_name VARCHAR(100) NOT NULL,
-            reason TEXT NULL,
-            added_by VARCHAR(100) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ]], {})
-    
-    Logger.Info('Anticheat tables initialized')
+    Logger.Debug('Anticheat system ready - tables created by auto-migration system')
 end)
 
 -- ============================================================================
@@ -282,12 +225,12 @@ local function LogDetection(src, detectionType, severity, details, evidence)
         
         DropPlayer(src, '🚫 BANNED: Anticheat Detection\nType: ' .. detectionType .. '\nIf you believe this is an error, contact server staff.')
         
-        print(string.format('[EC Anticheat] BANNED %s (ID: %d) - %s', playerName, src, detectionType))
+        Logger.Error(string.format('🚫 BANNED %s (ID: %d) - %s', playerName, src, detectionType))
     elseif riskScore >= Config.RiskScoreThresholds.kick or action == 'kick' then
         -- Auto kick
         DropPlayer(src, '⚠️ KICKED: Suspicious Activity Detected\nType: ' .. detectionType .. '\nRisk Score: ' .. riskScore)
         
-        print(string.format('[EC Anticheat] KICKED %s (ID: %d) - %s', playerName, src, detectionType))
+        Logger.Warn(string.format('⚠️ KICKED %s (ID: %d) - %s', playerName, src, detectionType))
     elseif action == 'warn' then
         -- Warn player
         TriggerClientEvent('ec_admin_ultimate:client:anticheatWarning', src, {
@@ -296,10 +239,10 @@ local function LogDetection(src, detectionType, severity, details, evidence)
             riskScore = riskScore
         })
         
-        print(string.format('[EC Anticheat] WARNED %s (ID: %d) - %s', playerName, src, detectionType))
+        Logger.Info(string.format('⚠️ WARNED %s (ID: %d) - %s', playerName, src, detectionType))
     else
         -- Just log
-        print(string.format('[EC Anticheat] LOGGED %s (ID: %d) - %s', playerName, src, detectionType))
+        Logger.Info(string.format('📝 LOGGED %s (ID: %d) - %s', playerName, src, detectionType))
     end
 end
 
@@ -359,7 +302,7 @@ RegisterNetEvent('ec_admin_ultimate:server:banPlayer', function(data)
         message = 'Player banned successfully'
     })
     
-    print(string.format('[EC Anticheat] %s banned %s - Reason: %s', adminName, targetName, reason))
+    Logger.Error(string.format('🚫 %s banned %s - Reason: %s', adminName, targetName, reason))
 end)
 
 -- Unban player

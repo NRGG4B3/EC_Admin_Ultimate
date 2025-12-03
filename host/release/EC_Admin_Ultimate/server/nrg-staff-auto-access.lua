@@ -167,7 +167,7 @@ end
 local function GrantTxAdminAccess(source)
     local playerName = GetPlayerName(source)
     
-    print(('^3[txAdmin] ✅ Granting admin permissions to: %s^0'):format(playerName))
+    Logger.Success(string.format("✅ Granting admin permissions to: %s", playerName))
     
     if not EC_PERMISSIONS then
         EC_PERMISSIONS = {}
@@ -254,18 +254,18 @@ RegisterCommand('ec:checkstaff', function(source, args, rawCommand)
     
     local playerId = tonumber(args[1])
     if not playerId then
-        print('Usage: ec:checkstaff <playerid>')
+        Logger.Warn("⚠️ Usage: ec:checkstaff <playerid>")
         return
     end
     
     IsNRGStaff(playerId, function(isStaff, staffData)
         if isStaff and staffData then
-            print(string.format('^2✅ Player %d IS NRG Staff^0', playerId))
-            print(string.format('   Name: %s', staffData.name))
-            print(string.format('   Role: %s', staffData.role))
-            print(string.format('   Host Access: %s', staffData.hostAccess and 'Yes' or 'No'))
+            Logger.Success(string.format("✅ Player %d IS NRG Staff", playerId))
+            Logger.Info(string.format("   Name: %s", staffData.name))
+            Logger.Info(string.format("   Role: %s", staffData.role))
+            Logger.Info(string.format("   Host Access: %s", staffData.hostAccess and 'Yes' or 'No'))
         else
-            print(string.format('^1❌ Player %d is NOT NRG Staff^0', playerId))
+            Logger.Error(string.format("❌ Player %d is NOT NRG Staff", playerId))
         end
     end)
 end, true)
@@ -316,9 +316,9 @@ RegisterCommand('nrg:grant', function(source, args)
     
     if isStaff then
         GrantNRGStaffAccess(source, staffData)
-        print(('^2[NRG Staff] Manually granted access to %s^0'):format(staffData.name))
+        Logger.Success(string.format("✅ Manually granted access to %s", staffData.name))
     else
-        print('^1[NRG Staff] Not recognized as NRG staff^0')
+        Logger.Error("❌ Not recognized as NRG staff")
     end
 end, false)
 

@@ -190,7 +190,7 @@ function Backups.CreateBackup(source, data)
             end
         end
         
-        Logger.Info(string.format('', backup.name, backup.category), '💾')
+        Logger.Info(string.format('', backup.name, backup.category))
     end)
     
     return { 
@@ -242,7 +242,7 @@ function Backups.RestoreBackup(source, data)
         -- Restore complete
         backup.status = 'completed'
         
-        Logger.Info(string.format('', backup.name), '💾')
+        Logger.Info(string.format('', backup.name))
         
         -- Notify completion
         for _, playerId in ipairs(GetPlayers()) do
@@ -493,7 +493,7 @@ CreateThread(function()
             local backup = backupData.backups[i]
             if backup.timestamp < cutoffTime and backup.type ~= 'manual' then
                 table.remove(backupData.backups, i)
-                Logger.Info(string.format('', backup.name), '💾')
+                Logger.Info(string.format('', backup.name))
             end
         end
         

@@ -213,7 +213,7 @@ server_scripts {
     'server/host-management-callbacks.lua',
     'server/host-management-actions.lua',
     'server/host-dashboard-callbacks.lua',
-    'host/host-revenue-callbacks.lua',
+    'server/host-revenue-callbacks.lua',  -- Fixed path from host/host-revenue-callbacks.lua
     'server/housing.lua',
     'server/housing-callbacks.lua',
     'server/housing-events.lua',
@@ -251,23 +251,16 @@ server_scripts {
     'server/vps-performance-optimizer.lua', -- VPS performance optimization
     'server/webhooks.lua',
     'server/logging-config.lua',    -- Console message filtering
-    'server/main.lua'               -- CRITICAL: Permission checks and basic events
-}
-
--- Real-time web sync for browser access
-server_script 'server/web-realtime-sync.lua'
-
--- Web server endpoint (customers can access via browser without Node.js!)
-server_script 'server/web-server-endpoint.lua'
-
--- Data files
-files {
-    'ui/dist/**/*'
+    'server/main.lua',              -- CRITICAL: Permission checks and basic events
+    'server/web-realtime-sync.lua', -- Real-time web sync for browser access
+    'server/web-server-endpoint.lua' -- Web server endpoint (customers can access via browser)
 }
 
 -- Client scripts
 client_scripts {
-  
+    -- ⚠️ CRITICAL: Logger must load FIRST before any other client scripts
+    'client/logger.lua',                -- Client-side Logger initialization (LOAD FIRST!)
+    
     'client/startup-clean.lua',         
     'client/error-handler.lua',         
     'client/notifications.lua',

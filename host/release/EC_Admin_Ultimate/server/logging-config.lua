@@ -63,4 +63,4 @@ CreateThread(function()
     _G.EC_ADMIN_QUIET_MODE = false
 end)
 
-originalPrint("^3[EC Admin] Silent startup mode enabled^0")
+Logger.Warn("⚠️ [EC Admin] Silent startup mode enabled")

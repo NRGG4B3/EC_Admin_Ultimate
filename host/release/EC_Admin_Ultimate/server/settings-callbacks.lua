@@ -54,27 +54,11 @@ local Settings = {
 -- ============================================================================
 -- DATABASE SETUP
 -- ============================================================================
+-- Note: Tables are automatically created by auto-migrate-sql.lua
+-- This ensures consistent schema for both customers and host mode
 
 CreateThread(function()
     Wait(2000)
-    
-    local success, err = pcall(function()
-        MySQL.query.await([[
-            CREATE TABLE IF NOT EXISTS ec_admin_settings (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                category VARCHAR(50) NOT NULL UNIQUE,
-                settings_data TEXT NOT NULL,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                updated_by VARCHAR(100) NULL
-            )
-        ]], {})
-    end)
-    
-    if not success then
-        Logger.Info('' .. tostring(err) .. '^0')
-    else
-        Logger.Info('Settings database table initialized')
-    end
     
     -- Load settings from database
     local savedSettings = MySQL.query.await('SELECT * FROM ec_admin_settings', {})

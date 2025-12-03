@@ -373,18 +373,18 @@ return Config
     local success = SaveResourceFile(GetCurrentResourceName(), 'config.lua', configContent, -1)
     
     if success then
-        print('^2[Customer Wizard] ✅ Configuration saved^0')
-        print('^2[Customer Wizard] Enabled APIs:^0')
-        print('^2  Mandatory (always on):^0')
+        Logger.Success('✅ Customer Wizard Configuration saved')
+        Logger.Info('📋 Enabled APIs:')
+        Logger.Info('📋 Mandatory (always on):')
         for _, api in ipairs(WIZARD.MANDATORY_APIS) do
-            print('^2    • ' .. api.name .. '^0')
+            Logger.Info('   • ' .. api.name)
         end
         if config.selectedOptionalApis and #config.selectedOptionalApis > 0 then
-            print('^2  Optional (selected):^0')
+            Logger.Info('📋 Optional (selected):')
             for _, apiId in ipairs(config.selectedOptionalApis) do
                 for _, api in ipairs(WIZARD.OPTIONAL_APIS) do
                     if api.id == apiId then
-                        print('^2    • ' .. api.name .. '^0')
+                        Logger.Info('   • ' .. api.name)
                         break
                     end
                 end
@@ -400,7 +400,7 @@ return Config
             if config.ownerInfo.license and config.ownerInfo.license ~= '' then
                 ExecuteCommand(('add_principal identifier.license:%s group.god'):format(config.ownerInfo.license))
                 ExecuteCommand(('add_principal identifier.license:%s group.admin'):format(config.ownerInfo.license))
-                print('^2[Customer Wizard] ✅ Owner license added to god/admin groups^0')
+                Logger.Success('✅ Owner license added to god/admin groups')
             end
             
             if config.ownerInfo.discord and config.ownerInfo.discord ~= '' then
@@ -408,13 +408,13 @@ return Config
                 local discordId = config.ownerInfo.discord:gsub('^discord:', '')
                 ExecuteCommand(('add_principal identifier.discord:%s group.god'):format(discordId))
                 ExecuteCommand(('add_principal identifier.discord:%s group.admin'):format(discordId))
-                print('^2[Customer Wizard] ✅ Owner discord added to god/admin groups^0')
+                Logger.Success('✅ Owner discord added to god/admin groups')
             end
         end
         
         return true
     else
-        print('^1[Customer Wizard] ❌ Failed to save configuration^0')
+        Logger.Error('❌ Failed to save configuration')
         return false
     end
 end
@@ -438,11 +438,11 @@ CreateThread(function()
     
     if WIZARD.ShouldShow() then
         WIZARD.RegisterEndpoints()
-        print('^3╔════════════════════════════════════════════════════════╗^0')
-        print('^3║  🟢 CUSTOMER SETUP WIZARD READY                       ║^0')
-        print('^3╚════════════════════════════════════════════════════════╝^0')
-        print('^3[Customer Wizard] 👉 Browse to: http://YOUR_IP:30120/admin^0')
-        print('^3[Customer Wizard] 👉 Complete setup to activate EC Admin^0')
+        Logger.Info('╔════════════════════════════════════════════════════════╗')
+        Logger.Info('║  🟢 CUSTOMER SETUP WIZARD READY                       ║')
+        Logger.Info('╚════════════════════════════════════════════════════════╝')
+        Logger.Warn('👉 Browse to: http://YOUR_IP:30120/admin')
+        Logger.Warn('👉 Complete setup to activate EC Admin')
     end
 end)
 

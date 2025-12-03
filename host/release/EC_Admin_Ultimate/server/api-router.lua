@@ -65,20 +65,22 @@ local function IsOwner(identifiers)
     return false
 end
 
+-- Get framework bridge
+local Framework = nil
 CreateThread(function()
     Wait(1000)
 
     if GetResourceState('qbx_core') == 'started' then
         Framework = exports.qbx_core
-        Logger.Info("API Router: Detected QBX framework", "🔗")
+        Logger.Info('✅ API Router: Detected QBX framework')
     elseif GetResourceState('qb-core') == 'started' then
         Framework = exports['qb-core']:GetCoreObject()
-        Logger.Info("API Router: Detected QBCore framework", "🔗")
+        Logger.Info('✅ API Router: Detected QBCore framework')
     elseif GetResourceState('es_extended') == 'started' then
         Framework = exports['es_extended']:getSharedObject()
-        Logger.Info("API Router: Detected ESX framework", "🔗")
+        Logger.Info('✅ API Router: Detected ESX framework')
     else
-        Logger.Info("API Router: No framework detected, using standalone mode", "🔗")
+        Logger.Info('ℹ️  API Router: No framework detected, using standalone mode')
     end
 end)
 
@@ -502,17 +504,17 @@ local function ValidateHostPassword(password)
     
     if not validPassword or validPassword == "" then
         -- No host password set - generate one on first access
-        print("^3[API Router] WARNING: No host password set in convars^7")
-        print("^3[API Router] Please set: setr ec_host_password \"your-secure-password\"^7")
+        Logger.Warn("⚠️  WARNING: No host password set in convars")
+        Logger.Warn("⚠️  Please set: setr ec_host_password \"your-secure-password\"")
         return { success = false, error = "Host password not configured on server" }
     end
     
     -- Validate password
     if password == validPassword then
-        print("^2[API Router] Host authentication successful^7")
+        Logger.Success("✅ Host authentication successful")
         return { success = true, message = "Authentication successful" }
     else
-        print("^1[API Router] Host authentication failed - invalid password^7")
+        Logger.Error("❌ Host authentication failed - invalid password")
         return { success = false, error = "Invalid password" }
     end
 end
@@ -637,13 +639,13 @@ end)
 -- Initialize
 _G.ECAdminStartTime = os.time()
 
-Logger.Info("API Router: Initialized", "🔗")
-Logger.Info("HTTP endpoints: /api/*", "🔗")
-Logger.Info("NUI callbacks: " .. #nuiEndpoints .. " endpoints", "🔗")
-Logger.Info("Security: " .. (Config.Security and Config.Security.RequireAuth and "Enabled" or "Disabled"), "🔗")
+Logger.Info('✅ API Router: Initialized')
+Logger.Info('  HTTP endpoints: /api/*')
+Logger.Info('  NUI callbacks: ' .. #nuiEndpoints .. ' endpoints')
+Logger.Info('  Security: ' .. (Config.Security and Config.Security.RequireAuth and "Enabled" or "Disabled"))
 -- CORS check - safely handle if CORS config doesn't exist
 local corsStatus = "Disabled"
 if Config.Security and Config.Security.CORS and Config.Security.CORS.enabled then
     corsStatus = "Enabled"
 end
-Logger.Info("CORS: " .. corsStatus, "🔗")
+Logger.Info('  CORS: ' .. corsStatus)

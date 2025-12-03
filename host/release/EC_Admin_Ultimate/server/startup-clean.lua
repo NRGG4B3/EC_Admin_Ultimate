@@ -12,10 +12,10 @@ local function PrintCleanStartup()
     local isHostMode = Config and Config.Host and Config.Host.enabled or false
     local mode = isHostMode and "HOST" or "CUSTOMER"
     
-    print("^0========================================^0")
-    Logger.Info(" Started^0")
-    print(string.format("^7Mode: %s | APIs: %s^0", mode, isHostMode and "20 Local" or "Remote"))
-    print("^0========================================^0")
+    Logger.Info("══════════════════════════════════════")
+    Logger.Info("🚀 EC Admin Ultimate Started")
+    Logger.Info(string.format("📋 Mode: %s | APIs: %s", mode, isHostMode and "20 Local" or "Remote"))
+    Logger.Info("══════════════════════════════════════")
 end
 
 -- Completely disable startup spam

@@ -463,7 +463,7 @@ function AntiCheat.AddDetection(source, cheatType, category, confidence, method,
     
     -- Check whitelist
     if IsWhitelisted(source) then
-        print(string.format('[EC Admin] 🛡️  Anti-Cheat: Detection skipped for whitelisted player'))
+        Logger.Info('🛡️  Anti-Cheat: Detection skipped for whitelisted player')
         return nil
     end
     

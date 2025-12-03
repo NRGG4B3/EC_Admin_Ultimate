@@ -185,8 +185,8 @@ AddEventHandler('onResourceStart', function(resourceName)
         CreateThread(function()
             -- Wait for API Connection Manager to initialize
             Wait(10000) -- Wait 10 seconds after startup for Host API
-            Logger.Info('')
-            Logger.Info('')
+            Logger.Info('🌐 Initializing Global Bans registration...')
+            Logger.Info('📡 Connecting to Global Bans API...')
             
             -- Check if Host API is ready
             local hostApiReady = false

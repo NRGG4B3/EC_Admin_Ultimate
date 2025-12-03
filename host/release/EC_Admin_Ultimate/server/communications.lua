@@ -282,7 +282,7 @@ CreateThread(function()
             for i = 1, toRemove do
                 table.remove(communicationsData.broadcasts, 1)
             end
-            Logger.Info('📢 Cleaned up old broadcasts', '📢')
+            Logger.Info('📢 Cleaned up old broadcasts')
         end
     end
 end)

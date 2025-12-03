@@ -1,7 +1,7 @@
 -- EC Admin Ultimate - Client Player Action Handlers
 -- Handles client-side player actions triggered by server
 
-print('[EC Admin Client] Loading Player Action Handlers...')
+Logger.Info('📦 Loading Player Action Handlers')
 
 -- ==========================================
 -- TELEPORT TO COORDINATES
@@ -241,9 +241,9 @@ RegisterNetEvent('ec_admin:setSuperJump', function(enabled)
         DrawNotification(false, true)
         
         -- Enable super jump in a thread
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while true do
-                Citizen.Wait(0)
+                Wait(0)
                 SetSuperJumpThisFrame(PlayerId())
                 
                 -- Break if no longer needed (implement your own break condition)
@@ -280,18 +280,18 @@ RegisterNetEvent('ec_admin:setSuperSpeed', function(enabled)
 end)
 
 -- Super speed thread
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Wait(0)
         
         if superSpeedEnabled then
             local ped = PlayerPedId()
             SetRunSprintMultiplierForPlayer(PlayerId(), 1.49)
             SetPedMoveRateOverride(ped, 2.0)
         else
-            Citizen.Wait(500)
+            Wait(500)
         end
     end
 end)
 
-print('[EC Admin Client] ✅ Player Action Handlers Loaded - All client events registered')
+Logger.Success('✅ Player Action Handlers Loaded - All client events registered')

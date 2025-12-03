@@ -27,37 +27,11 @@ CreateThread(function()
     Logger.Info('Settings Management Initialized: ' .. Framework)
 end)
 
--- Create settings table
+-- Settings tables are automatically created by auto-migrate-sql.lua
+-- This ensures consistent schema for both customers and host mode
 CreateThread(function()
     Wait(2000)
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_admin_settings (
-            id INT PRIMARY KEY DEFAULT 1,
-            settings LONGTEXT NULL,
-            webhooks LONGTEXT NULL,
-            permissions LONGTEXT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            updated_by VARCHAR(100) NULL
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_settings_history (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            category VARCHAR(50) NOT NULL,
-            changed_by VARCHAR(100) NOT NULL,
-            old_value LONGTEXT NULL,
-            new_value LONGTEXT NULL,
-            change_description TEXT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_category (category),
-            INDEX idx_created (created_at)
-        )
-    ]], {})
-    
-    Logger.Info('Settings tables initialized')
+    Logger.Debug('Settings tables available (created by auto-migration system)')
 end)
 
 -- Default settings structure

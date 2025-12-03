@@ -65,8 +65,8 @@ _G.print = function(...)
 end
 
 -- Re-enable normal printing after startup
-Citizen.CreateThread(function()
-    Citizen.Wait(5000) -- Wait for client to fully load
+CreateThread(function()
+    Wait(5000) -- Wait for client to fully load
     _G.EC_SUPPRESS_CLIENT_LOGS = false
     _G.print = originalPrint -- Restore original print
 end)

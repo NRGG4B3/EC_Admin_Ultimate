@@ -82,13 +82,8 @@ local function ValidateHostSecret(headers)
             os.time()
         )
         SetConvar('ec_host_secret', hostSecret)
-        if Logger and Logger.Warn then
-            Logger.Warn('[Router] Generated new host secret (persist in server.cfg): ' .. hostSecret)
-            Logger.Warn('Set in server.cfg: setr ec_host_secret "' .. hostSecret .. '"')
-        else
-            print('^3[Router] WARNING: Generated new host secret: ' .. hostSecret .. '^7')
-            print('^3[Router] Set in server.cfg: setr ec_host_secret "' .. hostSecret .. '"^7')
-        end
+        Logger.Warn('[Router] Generated new host secret (persist in server.cfg): ' .. hostSecret)
+        Logger.Warn('Set in server.cfg: setr ec_host_secret "' .. hostSecret .. '"')
     end
     
     -- Check header
@@ -109,17 +104,12 @@ end
 -- Log API request
 local function LogRequest(method, path, status, duration, ip)
     local msg = string.format('[API] %s %s %d %dms [%s]', method, path, status, duration or 0, ip or 'unknown')
-    if Logger and Logger.Info then
-        if status >= 500 then
-            Logger.Error(msg)
-        elseif status >= 400 then
-            Logger.Warn(msg)
-        else
-            Logger.Info(msg)
-        end
+    if status >= 500 then
+        Logger.Error(msg)
+    elseif status >= 400 then
+        Logger.Warn(msg)
     else
-        local statusColor = status < 300 and '^2' or (status < 500 and '^3' or '^1')
-        print(string.format('[API] %s %s %s%d^7 %dms [%s]', method, path, statusColor, status, duration or 0, ip or 'unknown'))
+        Logger.Info(msg)
     end
 end
 
@@ -412,7 +402,7 @@ local function HandleHostToggleWeb(data)
     if Logger and Logger.Info then
         Logger.Info(string.format('[Router] Web admin %s', enabled and 'ENABLED' or 'DISABLED'))
     else
-        print(string.format('[Router] Web admin %s', enabled and 'ENABLED' or 'DISABLED'))
+        Logger.Info(string.format('[Router] Web admin %s', enabled and 'ENABLED' or 'DISABLED'))
     end
     
     return {
@@ -509,8 +499,7 @@ SetHttpHandler(function(req, res)
     if Logger and Logger.Debug then
         Logger.Debug(string.format('[Router DEBUG] %s %s from %s', method, path, ip))
     else
-        print(string.format('^3[Router DEBUG] %s %s from %s^7', method, path, ip))
-    end
+        Logger.Debug(string.format('[Router DEBUG] %s %s from %s', method, path, ip))
     
     -- Check if admin menu is disabled
     if not _G.ECAdminMenuEnabled and path:match('^/api/') and not path:match('^/api/health') then
@@ -833,43 +822,42 @@ CreateThread(function()
             'Test health check: http://YOUR_IP:30120/api/health',
             '========================================'
         }
-        if Logger and Logger.System then
-            for _, l in ipairs(lines) do Logger.System(l) end
-        else
-            print('^2========================================^0')
-            print('^2[EC Admin Ultimate] HTTP Router Active^0')
-            print('^3  Resource: ' .. GetCurrentResourceName() .. '^0')
-            print('^3  Web UI:^0')
-            print('    GET  /           (redirect to admin)')
-            print('    GET  /admin      (setup wizard & admin panel)')
-            print('    GET  /assets/*   (static files)')
-            print('^3  Public Endpoints:^0')
-            print('    GET  /api/health')
-            print('    GET  /api/status')
-            print('    GET  /api/metrics')
-            print('    GET  /api/metrics/history')
-            print('    GET  /api/players')
-            print('    GET  /api/resources')
-            print('^3  Setup Endpoints:^0')
-            print('    GET  /api/setup/status')
-            print('    POST /api/setup/detectFramework')
-            print('    POST /api/setup/complete')
-            print('^3  Host Endpoints:^0')
-            print('    GET  /api/host/status')
-            print('    POST /api/host/toggle-web')
-            print('    POST /api/host/start')
-            print('    POST /api/host/stop')
-            print('    POST /api/host/restart')
-            print('    POST /host/toggle')
-            print('    POST /host/rotate-token')
-            print('^3  Security:^0')
-            print('    Rate Limiting: Enabled')
-            print('    CORS: ' .. (Config.Security and Config.Security.CORS and 'Enabled' or 'Disabled'))
-            print('    Host Secret: ' .. (GetConvar('ec_host_secret', '') ~= '' and 'Configured' or 'Auto-generated'))
-            print('^2========================================^0')
-            print('^3[INFO] Access web UI at: http://YOUR_IP:30120/admin^0')
-            print('^3[INFO] Test health check: http://YOUR_IP:30120/api/health^0')
-            print('^2========================================^0')
-        end
+        local lines = {
+            '^2========================================^0',
+            '^2[EC Admin Ultimate] HTTP Router Active^0',
+            '^3  Resource: ' .. GetCurrentResourceName() .. '^0',
+            '^3  Web UI:^0',
+            '    GET  /           (redirect to admin)',
+            '    GET  /admin      (setup wizard & admin panel)',
+            '    GET  /assets/*   (static files)',
+            '^3  Public Endpoints:^0',
+            '    GET  /api/health',
+            '    GET  /api/status',
+            '    GET  /api/metrics',
+            '    GET  /api/metrics/history',
+            '    GET  /api/players',
+            '    GET  /api/resources',
+            '^3  Setup Endpoints:^0',
+            '    GET  /api/setup/status',
+            '    POST /api/setup/detectFramework',
+            '    POST /api/setup/complete',
+            '^3  Host Endpoints:^0',
+            '    GET  /api/host/status',
+            '    POST /api/host/toggle-web',
+            '    POST /api/host/start',
+            '    POST /api/host/stop',
+            '    POST /api/host/restart',
+            '    POST /host/toggle',
+            '    POST /host/rotate-token',
+            '^3  Security:^0',
+            '    Rate Limiting: Enabled',
+            '    CORS: ' .. (Config.Security and Config.Security.CORS and 'Enabled' or 'Disabled'),
+            '    Host Secret: ' .. (GetConvar('ec_host_secret', '') ~= '' and 'Configured' or 'Auto-generated'),
+            '^2========================================^0',
+            '^3[INFO] Access web UI at: http://YOUR_IP:30120/admin^0',
+            '^3[INFO] Test health check: http://YOUR_IP:30120/api/health^0',
+            '^2========================================^0',
+        }
+        for _, l in ipairs(lines) do Logger.System(l) end
     end
 end)

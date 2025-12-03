@@ -29,15 +29,15 @@ end
 CreateThread(function()
     if GetResourceState('qb-core') == 'started' then
         QBCore = exports['qb-core']:GetCoreObject()
-        Logger.Debug('Topbar: QBCore detected', '📊')
+        Logger.Debug('Topbar: QBCore detected')
     elseif GetResourceState('qbx_core') == 'started' then
         QBCore = exports['qbx_core']:GetCoreObject()
-        Logger.Debug('Topbar: QBX detected', '📊')
+        Logger.Debug('Topbar: QBX detected')
     elseif GetResourceState('es_extended') == 'started' then
         ESX = exports['es_extended']:getSharedObject()
-        Logger.Debug('Topbar: ESX detected', '📊')
+        Logger.Debug('Topbar: ESX detected')
     else
-        Logger.Debug('Topbar: No framework detected - standalone mode', '📊')
+        Logger.Debug('Topbar: No framework detected - standalone mode')
     end
 end)
 

@@ -507,7 +507,7 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     end
     
     -- Don't block handshake - other checks happen after join
-    print('[EC Security] ✅ Fast security check passed for: ' .. name)
+    Logger.Success('✅ Fast security check passed for: ' .. name)
 end)
 
 -- REMOVED: Security checks moved to player-events.lua for centralization
@@ -587,7 +587,7 @@ CreateThread(function()
             local entry = securityData.blacklist[i]
             if not entry.permanent and entry.expiresAt and os.time() * 1000 > entry.expiresAt then
                 table.remove(securityData.blacklist, i)
-                Logger.Info(string.format('', entry.value), '🔒')
+                Logger.Info(string.format('', entry.value))
             end
         end
         

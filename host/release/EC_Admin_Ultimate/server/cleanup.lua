@@ -219,7 +219,7 @@ function CheckAndFixManifest()
         if Config.Logging and Config.Logging.verboseStartup then
             Logger.Info('')
             for _, fix in ipairs(fixes) do
-                print('^3  - ' .. fix .. '^7')
+                Logger.Warn('⚠️ ' .. fix)
             end
             Logger.Info('')
         end

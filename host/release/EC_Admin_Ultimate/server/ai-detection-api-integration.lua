@@ -274,7 +274,7 @@ function SendToAIAPI(source, playerName, behaviorType, dataPoints)
                 end
             end
         else
-            print(string.format('[AI Detection] ⚠️  API error (Status: %s)', statusCode))
+            Logger.Warn(string.format('API error (Status: %s)', statusCode))
         end
     end, 'POST', json.encode(payload), {
         ['Content-Type'] = 'application/json',
@@ -284,7 +284,7 @@ end
 
 -- Handle AI detection result
 function HandleAIDetection(source, playerName, detection)
-    print(string.format('[AI Detection] 🚨 %s: %s (Confidence: %d%%, Action: %s)',
+    Logger.Error(string.format('🚨 %s: %s (Confidence: %d%%, Action: %s)',
         playerName,
         detection.ruleName,
         math.floor(detection.confidence * 100),
@@ -417,9 +417,9 @@ if AI_ENABLED then
         
         PerformHttpRequest(AI_API_URL .. '/status', function(statusCode, response, headers)
             if statusCode == 200 then
-                Logger.Info('✅ AI Detection API connected')
+                Logger.Success('✅ AI Detection API connected')
             else
-                Logger.Info('⚠️  AI Detection API not reachable')
+                Logger.Warn('⚠️  AI Detection API not reachable')
             end
         end, 'GET', '', {
             ['X-Host-Secret'] = HOST_SECRET

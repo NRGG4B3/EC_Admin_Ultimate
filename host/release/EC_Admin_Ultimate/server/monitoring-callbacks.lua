@@ -243,7 +243,7 @@ CreateThread(function()
         local currentHour = tonumber(os.date('%H'))
         if currentHour == 0 then -- Reset at midnight
             GlobalState.peakPlayersToday = #GetPlayers()
-            Logger.Info('📊 Reset daily peak players', '📊')
+            Logger.Info('📊 Reset daily peak players')
         end
     end
 end)
