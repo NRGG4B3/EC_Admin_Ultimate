@@ -14,13 +14,33 @@ echo.
 
 echo [2] Build UI
 if exist "ui\package.json" (
+    echo - Installing UI dependencies...
     cd ui
-    call npm install --silent
-    call npm run build --silent
+    call npm install
+    if !errorlevel! neq 0 (
+        echo ERROR: npm install failed
+        pause
+        goto :end
+    )
+    echo - Building UI with Vite...
+    call npm run build
+    if !errorlevel! neq 0 (
+        echo ERROR: UI build failed
+        pause
+        goto :end
+    )
     cd ..
-    echo OK: UI built
+    if exist "ui\dist\index.html" (
+        echo OK: UI built successfully - dist folder ready
+    ) else (
+        echo ERROR: UI build did not create dist folder
+        pause
+        goto :end
+    )
 ) else (
-    echo SKIP: no UI
+    echo ERROR: no UI - ui\package.json not found
+    pause
+    goto :end
 )
 echo.
 
@@ -49,7 +69,14 @@ xcopy /E /I /Y "shared" "host\release\EC_Admin_Ultimate\shared" /Q
 echo - Copying sql...
 xcopy /E /I /Y "sql" "host\release\EC_Admin_Ultimate\sql" /Q
 echo - Copying ui\dist...
-xcopy /E /I /Y "ui\dist" "host\release\EC_Admin_Ultimate\ui\dist" /Q
+if exist "ui\dist" (
+    xcopy /E /I /Y "ui\dist" "host\release\EC_Admin_Ultimate\ui\dist" /Q
+    echo   (UI dist copied successfully)
+) else (
+    echo   ERROR: ui\dist folder not found - UI build may have failed
+    pause
+    goto :end
+)
 echo - Copying root files...
 copy "config.lua" "host\release\EC_Admin_Ultimate\"
 copy "fxmanifest.lua" "host\release\EC_Admin_Ultimate\"
@@ -67,9 +94,14 @@ echo [5] ZIP Archive
 cd /d "%~dp0.."
 PowerShell -NoProfile -Command "& {$Path='%CD%\host\release\EC_Admin_Ultimate'; $Dest='%CD%\release.zip'; Compress-Archive -LiteralPath $Path -DestinationPath $Dest -Force}"
 if exist "release.zip" (
-    for %%A in ("release.zip") do echo OK: release.zip created - %%~zA bytes
+    for %%A in ("release.zip") do (
+        set SIZE=%%~zA
+        echo OK: release.zip created - !SIZE! bytes
+    )
 ) else (
-    echo FAIL: ZIP failed
+    echo ERROR: ZIP creation failed
+    pause
+    goto :end
 )
 echo.
 
@@ -97,11 +129,28 @@ echo ===============================================
 echo   SETUP COMPLETE
 echo ===============================================
 echo.
-echo Location: %CD%
-echo Package:  %CD%\host\release\EC_Admin_Ultimate
-echo Archive:  %CD%\release.zip
+echo ✓ Location: %CD%
+echo ✓ Package:  %CD%\host\release\EC_Admin_Ultimate
+echo ✓ Archive:  %CD%\release.zip
 echo.
-echo Next: Edit host/node-server/.env and run host/start.bat
+echo [Verification]
+if exist "host\release\EC_Admin_Ultimate\ui\dist\index.html" (
+    echo ✓ UI built and packaged successfully
+) else (
+    echo ✗ WARNING: UI dist files not found in package
+)
+if exist "host\release\EC_Admin_Ultimate\config.lua" (
+    echo ✓ Lua files packaged
+) else (
+    echo ✗ WARNING: Lua files missing
+)
+echo.
+echo [Next Steps]
+echo 1. Edit: host\node-server\.env (configure database)
+echo 2. Run:  host\start.bat (start the host server)
+echo 3. Upload release.zip to your server
+echo.
+echo Setup is ready!
 echo.
 
 :end
