@@ -1,0 +1,166 @@
+{
+  "domain": "api.ecbetasolutions.com",
+  "server_ip": "45.144.225.227",
+  "apis": [
+    {
+      "id": 1,
+      "name": "Main Gateway",
+      "port": 3000,
+      "endpoint": "/",
+      "description": "Main API gateway and router",
+      "auth_required": false
+    },
+    {
+      "id": 2,
+      "name": "Global Ban System",
+      "port": 3001,
+      "endpoint": "/api/global-bans",
+      "description": "Cross-server ban management",
+      "auth_required": true
+    },
+    {
+      "id": 3,
+      "name": "AI Detection",
+      "port": 3002,
+      "endpoint": "/api/ai-detection",
+      "description": "AI-powered cheat detection",
+      "auth_required": true
+    },
+    {
+      "id": 4,
+      "name": "Player Analytics",
+      "port": 3003,
+      "endpoint": "/api/analytics",
+      "description": "Player behavior analytics",
+      "auth_required": true
+    },
+    {
+      "id": 5,
+      "name": "Server Metrics",
+      "port": 3004,
+      "endpoint": "/api/metrics",
+      "description": "Server performance metrics",
+      "auth_required": true
+    },
+    {
+      "id": 6,
+      "name": "Report System",
+      "port": 3005,
+      "endpoint": "/api/reports",
+      "description": "Player report management",
+      "auth_required": true
+    },
+    {
+      "id": 7,
+      "name": "Anticheat Sync",
+      "port": 3006,
+      "endpoint": "/api/anticheat",
+      "description": "Anticheat rule synchronization",
+      "auth_required": true
+    },
+    {
+      "id": 8,
+      "name": "Backup Storage",
+      "port": 3007,
+      "endpoint": "/api/backups",
+      "description": "Automated backup management",
+      "auth_required": true
+    },
+    {
+      "id": 9,
+      "name": "Screenshot Storage",
+      "port": 3008,
+      "endpoint": "/api/screenshots",
+      "description": "Evidence screenshot storage",
+      "auth_required": true
+    },
+    {
+      "id": 10,
+      "name": "Webhook Relay",
+      "port": 3009,
+      "endpoint": "/api/webhooks",
+      "description": "Discord webhook integration",
+      "auth_required": true
+    },
+    {
+      "id": 11,
+      "name": "Global Chat Hub",
+      "port": 3010,
+      "endpoint": "/api/chat",
+      "description": "Cross-server chat system",
+      "auth_required": true
+    },
+    {
+      "id": 12,
+      "name": "Player Tracking",
+      "port": 3011,
+      "endpoint": "/api/players",
+      "description": "Global player tracking",
+      "auth_required": true
+    },
+    {
+      "id": 13,
+      "name": "Server Registry",
+      "port": 3012,
+      "endpoint": "/api/servers",
+      "description": "Customer server registration",
+      "auth_required": true
+    },
+    {
+      "id": 14,
+      "name": "License Validation",
+      "port": 3013,
+      "endpoint": "/api/license",
+      "description": "License key validation",
+      "auth_required": false
+    },
+    {
+      "id": 15,
+      "name": "Update Checker",
+      "port": 3014,
+      "endpoint": "/api/updates",
+      "description": "Version update checker",
+      "auth_required": false
+    },
+    {
+      "id": 16,
+      "name": "Audit Logging",
+      "port": 3015,
+      "endpoint": "/api/audit",
+      "description": "Admin action audit logs",
+      "auth_required": true
+    },
+    {
+      "id": 17,
+      "name": "Performance Monitor",
+      "port": 3016,
+      "endpoint": "/api/performance",
+      "description": "Real-time performance monitoring",
+      "auth_required": true
+    },
+    {
+      "id": 18,
+      "name": "Resource Hub",
+      "port": 3017,
+      "endpoint": "/api/resources",
+      "description": "Shared resource distribution",
+      "auth_required": true
+    },
+    {
+      "id": 19,
+      "name": "Emergency Control",
+      "port": 3018,
+      "endpoint": "/api/emergency",
+      "description": "Emergency server control",
+      "auth_required": true
+    },
+    {
+      "id": 20,
+      "name": "Host Dashboard",
+      "port": 3019,
+      "endpoint": "/api/host",
+      "description": "NRG host control panel",
+      "auth_required": true
+    }
+  ]
+}

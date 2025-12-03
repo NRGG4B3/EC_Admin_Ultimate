@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    // Prevent implicit type libraries from being required in this minimal Node tsconfig
+    "types": []
+  },
+  "include": ["vite.config.ts"]
+}
