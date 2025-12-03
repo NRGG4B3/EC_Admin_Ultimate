@@ -78,8 +78,8 @@ export function Topbar({
 
   // Load admin profile on mount
   useEffect(() => {
-    // Load admin profile with 3 second timeout
-    fetchNui('topbar:getAdminProfile', {}, undefined, 3000)
+    // Load admin profile strictly via NUI (no mock/fallback)
+    fetchNui('topbar:getAdminProfile', {})
       .then((response: any) => {
         if (response.success && response.data) {
           console.log('[Topbar] Admin profile loaded:', response.data);
@@ -90,8 +90,8 @@ export function Topbar({
         console.warn('[Topbar] Failed to load admin profile:', error.message);
       });
     
-    // Load quick stats with 3 second timeout
-    fetchNui('topbar:getQuickStats', {}, undefined, 3000)
+    // Load quick stats strictly via NUI (no mock/fallback)
+    fetchNui('topbar:getQuickStats', {})
       .then((response: any) => {
         if (response.success && response.data) {
           console.log('[Topbar] Quick stats loaded:', response.data);
@@ -102,8 +102,8 @@ export function Topbar({
         console.warn('[Topbar] Failed to load quick stats:', error.message);
       });
     
-    // Load server settings for logo and name
-    fetchNui('settings:getData', {}, undefined, 3000)
+    // Load server settings for logo and name strictly via NUI
+    fetchNui('settings:getData', {})
       .then((response: any) => {
         if (response.success && response.data && response.data.general) {
           console.log('[Topbar] Server settings loaded');
@@ -123,7 +123,7 @@ export function Topbar({
   // Update quick stats every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchNui('topbar:getQuickStats', {}, undefined, 3000)
+      fetchNui('topbar:getQuickStats', {})
         .then((response: any) => {
           if (response.success && response.data) {
             setQuickStats(response.data);
@@ -140,7 +140,7 @@ export function Topbar({
   
   // Handle logout - no longer needed for quick actions, but kept for potential future use
   const handleLogout = () => {
-    fetchNui('topbar:logout', {}, undefined, 2000)
+    fetchNui('topbar:logout', {})
       .then((response: any) => {
         if (response.success) {
           console.log('[Topbar] Logout successful');
