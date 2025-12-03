@@ -5,12 +5,15 @@
 
 Logger.Info('Loading Host Dashboard callbacks...')
 
+-- Host mode flag (set after config loads)
+local isHost = false
+
 -- Check if host mode is enabled
 CreateThread(function()
     Wait(1000) -- Wait for config
-    local isHost = Config and Config.Host and Config.Host.enabled
+    isHost = (Config and Config.Host and Config.Host.enabled) and true or false
     if isHost then
-        Logger.Info('')
+        Logger.Info('[Host Dashboard] Host mode detected; callbacks active')
     else
         -- Customer mode - don't print anything, it's automatic
     end
@@ -221,8 +224,7 @@ RegisterNetEvent('ec_admin_ultimate:server:getHostDashboard', function()
     local payload = buildHostDashboard()
     TriggerClientEvent('ec_admin_ultimate:client:receiveHostDashboard', src, payload)
 end)
-    })
-end)
+
 
 -- Restart API service
 RegisterNetEvent('ec_admin_ultimate:server:restartAPI', function(data)
@@ -246,7 +248,7 @@ RegisterNetEvent('ec_admin_ultimate:server:restartAPI', function(data)
         message = 'API service restart initiated: ' .. apiName
     })
     
-    print(string.format('[EC Admin Host] API restart requested: %s by %s', apiName, GetPlayerName(src)))
+    Logger.Info(string.format('[EC Admin Host] API restart requested: %s by %s', apiName, GetPlayerName(src)))
 end)
 
 -- Connect to customer server
@@ -290,7 +292,7 @@ RegisterNetEvent('ec_admin_ultimate:server:disconnectCustomerServer', function(d
         serverId = serverId
     })
     
-    print(string.format('[EC Admin Host] Disconnected from customer server: %s by %s', serverId, GetPlayerName(src)))
+    Logger.Info(string.format('[EC Admin Host] Disconnected from customer server: %s by %s', serverId, GetPlayerName(src)))
 end)
 
 -- Add global ban
@@ -330,7 +332,7 @@ RegisterNetEvent('ec_admin_ultimate:server:addGlobalBan', function(data)
                 message = 'Global ban added successfully'
             })
             
-            print(string.format('[EC Admin Host] Global ban added: %s (%s) by %s', playerName, identifier, GetPlayerName(src)))
+            Logger.Info(string.format('[EC Admin Host] Global ban added: %s (%s) by %s', playerName, identifier, GetPlayerName(src)))
         end)
     end
 end)
@@ -355,7 +357,7 @@ RegisterNetEvent('ec_admin_ultimate:server:removeGlobalBan', function(data)
                 message = 'Global ban removed successfully'
             })
             
-            print(string.format('[EC Admin Host] Global ban removed: ID %s by %s', banId, GetPlayerName(src)))
+            Logger.Info(string.format('[EC Admin Host] Global ban removed: ID %s by %s', banId, GetPlayerName(src)))
         end)
     end
 end)

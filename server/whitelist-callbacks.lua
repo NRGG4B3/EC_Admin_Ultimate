@@ -31,110 +31,153 @@ end)
 CreateThread(function()
     Wait(2000)
     
-    -- Use modern async MySQL API
-    local success1, err1 = pcall(function()
-        MySQL.query.await([[
+    -- Initialize whitelist-related database tables safely
+    local ok, err = pcall(function()
+        -- Main whitelist table
+        MySQL.query.await([[ 
             CREATE TABLE IF NOT EXISTS ec_whitelist (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 identifier VARCHAR(100) NOT NULL,
                 name VARCHAR(100) NOT NULL,
                 steam_id VARCHAR(100) NULL,
                 license VARCHAR(100) NULL,
-                -- Shared builder: collect Whitelist payload
-                local function buildWhitelistData()
-                    -- Get whitelist entries (async)
-                    local whitelist = MySQL.query.await([[\
-                        SELECT * FROM ec_whitelist \
-                        ORDER BY added_at DESC
-                    ]], {}) or {}
+                discord_id VARCHAR(100) NULL,
+                ip_address VARCHAR(100) NULL,
+                roles TEXT NULL,
+                status VARCHAR(20) NOT NULL DEFAULT 'active',
+                added_by VARCHAR(100) NULL,
+                priority VARCHAR(20) NULL DEFAULT 'normal',
+                notes TEXT NULL,
+                expires_at TIMESTAMP NULL,
+                added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                INDEX idx_identifier (identifier),
+                INDEX idx_status (status)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ]], {})
 
-                    -- Parse roles JSON
-                    for _, entry in ipairs(whitelist) do
-                        if entry.roles then
-                            entry.roles = json.decode(entry.roles) or {}
-                        else
-                            entry.roles = {}
-                        end
-                    end
+        -- Whitelist roles
+        MySQL.query.await([[ 
+            CREATE TABLE IF NOT EXISTS ec_whitelist_roles (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(64) NOT NULL UNIQUE,
+                display_name VARCHAR(100) NOT NULL,
+                priority INT NOT NULL DEFAULT 50,
+                color VARCHAR(16) NOT NULL DEFAULT '#3b82f6',
+                permissions TEXT NULL,
+                is_default TINYINT(1) NOT NULL DEFAULT 0
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ]], {})
 
-                    -- Get applications (async)
-                    local applications = MySQL.query.await([[\
-                        SELECT * FROM ec_whitelist_applications \
-                        ORDER BY submitted_at DESC
-                    ]], {}) or {}
+        -- Whitelist applications
+        MySQL.query.await([[ 
+            CREATE TABLE IF NOT EXISTS ec_whitelist_applications (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                identifier VARCHAR(100) NOT NULL,
+                applicant_name VARCHAR(100) NOT NULL,
+                steam_id VARCHAR(100) NULL,
+                license VARCHAR(100) NULL,
+                discord_id VARCHAR(100) NULL,
+                status VARCHAR(20) NOT NULL DEFAULT 'pending',
+                deny_reason TEXT NULL,
+                submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                reviewed_by VARCHAR(100) NULL,
+                reviewed_at TIMESTAMP NULL,
+                INDEX idx_identifier (identifier),
+                INDEX idx_status (status)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ]], {})
+    end)
 
-                    -- Get roles (async)
-                    local roles = MySQL.query.await([[\
-                        SELECT * FROM ec_whitelist_roles \
-                        ORDER BY priority DESC
-                    ]], {}) or {}
-
-                    -- Parse permissions JSON
-                    for _, role in ipairs(roles) do
-                        if role.permissions then
-                            role.permissions = json.decode(role.permissions) or {}
-                        else
-                            role.permissions = {}
-                        end
-                    end
-
-                    -- Calculate stats
-                    local stats = {
-                        totalWhitelisted = #whitelist,
-                        activeWhitelisted = 0,
-                        inactiveWhitelisted = 0,
-                        totalApplications = #applications,
-                        pendingApplications = 0,
-                        approvedApplications = 0,
-                        deniedApplications = 0,
-                        totalRoles = #roles
-                    }
-
-                    for _, entry in ipairs(whitelist) do
-                        if entry.status == 'active' then
-                            stats.activeWhitelisted = stats.activeWhitelisted + 1
-                        else
-                            stats.inactiveWhitelisted = stats.inactiveWhitelisted + 1
-                        end
-                    end
-
-                    for _, app in ipairs(applications) do
-                        if app.status == 'pending' then
-                            stats.pendingApplications = stats.pendingApplications + 1
-                        elseif app.status == 'approved' then
-                            stats.approvedApplications = stats.approvedApplications + 1
-                        elseif app.status == 'denied' then
-                            stats.deniedApplications = stats.deniedApplications + 1
-                        end
-                    end
-
-                    return {
-                        success = true,
-                        data = {
-                            whitelist = whitelist,
-                            applications = applications,
-                            roles = roles,
-                            stats = stats
-                        }
-                    }
-                end
-
-                -- New: ox_lib callback for NUI request/response flow
-                lib.callback.register('ec_admin:getWhitelistData', function(source, _)
-                    return buildWhitelistData()
-                end)
-
-                -- Legacy support: still allow net event trigger to respond for older clients
-                RegisterNetEvent('ec_admin_ultimate:server:getWhitelistData', function()
-                    local src = source
-                    local payload = buildWhitelistData()
-                    TriggerClientEvent('ec_admin_ultimate:client:receiveWhitelistData', src, payload)
-                end)
-    if not success4 then
-        Logger.Info('' .. tostring(err4) .. '^0')
+    if not ok then
+        Logger.Error('Whitelist DB init failed: ' .. tostring(err))
     else
         Logger.Info('✅ Whitelist database tables initialized')
     end
+end)
+
+-- Shared builder: collect Whitelist payload
+local function buildWhitelistData()
+    -- Get whitelist entries (async)
+    local whitelist = MySQL.query.await([[ 
+        SELECT * FROM ec_whitelist 
+        ORDER BY added_at DESC
+    ]], {}) or {}
+
+    -- Parse roles JSON
+    for _, entry in ipairs(whitelist) do
+        if entry.roles then
+            entry.roles = json.decode(entry.roles) or {}
+        else
+            entry.roles = {}
+        end
+    end
+
+    -- Get applications (async)
+    local applications = MySQL.query.await([[ 
+        SELECT * FROM ec_whitelist_applications 
+        ORDER BY submitted_at DESC
+    ]], {}) or {}
+
+    -- Get roles (async)
+    local roles = MySQL.query.await([[ 
+        SELECT * FROM ec_whitelist_roles 
+        ORDER BY priority DESC
+    ]], {}) or {}
+
+    -- Parse permissions JSON
+    for _, role in ipairs(roles) do
+        if role.permissions then
+            role.permissions = json.decode(role.permissions) or {}
+        else
+            role.permissions = {}
+        end
+    end
+
+    -- Calculate stats
+    local stats = {
+        totalWhitelisted = #whitelist,
+        activeWhitelisted = 0,
+        inactiveWhitelisted = 0,
+        totalApplications = #applications,
+        pendingApplications = 0,
+        approvedApplications = 0,
+        deniedApplications = 0,
+        totalRoles = #roles
+    }
+
+    for _, entry in ipairs(whitelist) do
+        if entry.status == 'active' then
+            stats.activeWhitelisted = stats.activeWhitelisted + 1
+        else
+            stats.inactiveWhitelisted = stats.inactiveWhitelisted + 1
+        end
+    end
+
+    for _, app in ipairs(applications) do
+        if app.status == 'pending' then
+            stats.pendingApplications = stats.pendingApplications + 1
+        elseif app.status == 'approved' then
+            stats.approvedApplications = stats.approvedApplications + 1
+        elseif app.status == 'denied' then
+            stats.deniedApplications = stats.deniedApplications + 1
+        end
+    end
+
+    return {
+        success = true,
+        data = {
+            whitelist = whitelist,
+            applications = applications,
+            roles = roles,
+            stats = stats,
+            framework = Framework
+        }
+    }
+end
+
+-- New: ox_lib callback for NUI request/response flow
+lib.callback.register('ec_admin:getWhitelistData', function(source, _)
+    return buildWhitelistData()
 end)
 
 -- Helper: Get player identifier
@@ -156,84 +199,9 @@ end
 -- Get all whitelist data
 RegisterNetEvent('ec_admin_ultimate:server:getWhitelistData', function()
     local src = source
-    
     CreateThread(function()
-        -- Get whitelist entries (async)
-        local whitelist = MySQL.query.await([[
-            SELECT * FROM ec_whitelist 
-            ORDER BY added_at DESC
-        ]], {}) or {}
-        
-        -- Parse roles JSON
-        for _, entry in ipairs(whitelist) do
-            if entry.roles then
-                entry.roles = json.decode(entry.roles) or {}
-            else
-                entry.roles = {}
-            end
-        end
-        
-        -- Get applications (async)
-        local applications = MySQL.query.await([[
-            SELECT * FROM ec_whitelist_applications 
-            ORDER BY submitted_at DESC
-        ]], {}) or {}
-        
-        -- Get roles (async)
-        local roles = MySQL.query.await([[
-            SELECT * FROM ec_whitelist_roles 
-            ORDER BY priority DESC
-        ]], {}) or {}
-        
-        -- Parse permissions JSON
-        for _, role in ipairs(roles) do
-            if role.permissions then
-                role.permissions = json.decode(role.permissions) or {}
-            else
-                role.permissions = {}
-            end
-        end
-        
-        -- Calculate stats
-        local stats = {
-            totalWhitelisted = #whitelist,
-            activeWhitelisted = 0,
-            inactiveWhitelisted = 0,
-            totalApplications = #applications,
-            pendingApplications = 0,
-            approvedApplications = 0,
-            deniedApplications = 0,
-            totalRoles = #roles
-        }
-        
-        for _, entry in ipairs(whitelist) do
-            if entry.status == 'active' then
-                stats.activeWhitelisted = stats.activeWhitelisted + 1
-            else
-                stats.inactiveWhitelisted = stats.inactiveWhitelisted + 1
-            end
-        end
-        
-        for _, app in ipairs(applications) do
-            if app.status == 'pending' then
-                stats.pendingApplications = stats.pendingApplications + 1
-            elseif app.status == 'approved' then
-                stats.approvedApplications = stats.approvedApplications + 1
-            elseif app.status == 'denied' then
-                stats.deniedApplications = stats.deniedApplications + 1
-            end
-        end
-        
-        TriggerClientEvent('ec_admin_ultimate:client:receiveWhitelistData', src, {
-            success = true,
-            data = {
-                whitelist = whitelist,
-                applications = applications,
-                roles = roles,
-                stats = stats,
-                framework = Framework
-            }
-        })
+        local payload = buildWhitelistData()
+        TriggerClientEvent('ec_admin_ultimate:client:receiveWhitelistData', src, payload)
     end)
 end)
 
@@ -290,7 +258,7 @@ RegisterNetEvent('ec_admin_ultimate:server:addWhitelist', function(data)
     end)
     
     -- Log action
-    Logger.Info(string.format('', adminName, data.name))
+    Logger.Info(string.format('[Whitelist] %s added %s to whitelist', adminName, data.name))
 end)
 
 -- Update whitelist entry
@@ -331,7 +299,7 @@ RegisterNetEvent('ec_admin_ultimate:server:updateWhitelist', function(data)
             message = 'Whitelist entry updated'
         })
         
-        Logger.Info(string.format('', GetPlayerName(src), data.id))
+    Logger.Info(string.format('[Whitelist] %s updated entry ID %s', GetPlayerName(src), tostring(data.id)))
     end)
 end)
 
@@ -359,7 +327,7 @@ RegisterNetEvent('ec_admin_ultimate:server:removeWhitelist', function(data)
         })
         
         if entry and #entry > 0 then
-            Logger.Info(string.format('', GetPlayerName(src), entry[1].name))
+            Logger.Info(string.format('[Whitelist] %s removed %s from whitelist', GetPlayerName(src), entry[1].name))
         end
     end)
 end)
@@ -420,7 +388,7 @@ RegisterNetEvent('ec_admin_ultimate:server:approveApplication', function(data)
             message = 'Application approved and player whitelisted'
         })
 
-        Logger.Info(string.format('', GetPlayerName(src), application.applicant_name))
+    Logger.Info(string.format('[Whitelist] %s approved application for %s', GetPlayerName(src), application.applicant_name))
     end)
 end)
 
@@ -448,7 +416,7 @@ RegisterNetEvent('ec_admin_ultimate:server:denyApplication', function(data)
             message = 'Application denied'
         })
 
-        Logger.Info(string.format('', GetPlayerName(src), data.id))
+    Logger.Info(string.format('[Whitelist] %s denied application ID %s', GetPlayerName(src), tostring(data.id)))
     end)
 end)
 
@@ -482,7 +450,7 @@ RegisterNetEvent('ec_admin_ultimate:server:createRole', function(data)
         message = 'Role created successfully'
     })
     
-    Logger.Info(string.format('', GetPlayerName(src), data.displayName))
+    Logger.Info(string.format('[Whitelist] %s created role %s', GetPlayerName(src), data.displayName))
 end)
 
 -- Update role
@@ -516,7 +484,7 @@ RegisterNetEvent('ec_admin_ultimate:server:updateRole', function(data)
         message = 'Role updated successfully'
     })
     
-    Logger.Info(string.format('', GetPlayerName(src), data.id))
+    Logger.Info(string.format('[Whitelist] %s updated role ID %s', GetPlayerName(src), tostring(data.id)))
 end)
 
 -- Delete role
@@ -551,7 +519,7 @@ RegisterNetEvent('ec_admin_ultimate:server:deleteRole', function(data)
         })
         
         if role and #role > 0 then
-            Logger.Info(string.format('', GetPlayerName(src), role[1].display_name))
+            Logger.Info(string.format('[Whitelist] %s deleted role %s', GetPlayerName(src), role[1].display_name))
         end
     end)
 end)

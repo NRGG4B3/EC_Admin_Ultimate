@@ -470,6 +470,19 @@ RegisterNUICallback('checkHostAccess', function(data, cb)
     end
 end)
 
+-- Sidebar: Get system info (framework/database)
+RegisterNUICallback('sidebar:getSystemInfo', function(data, cb)
+    local info = lib.callback.await('ec_admin:getSystemInfo', false)
+    if info then
+        cb(info)
+    else
+        cb({
+            framework = { detected = false, type = 'standalone' },
+            database = { connected = false, type = 'none' }
+        })
+    end
+end)
+
 -- NUI Callback: Execute action
 RegisterNUICallback('executeAction', function(data, cb)
     print('^3[EC Admin NUI] Received executeAction callback^0')

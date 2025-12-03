@@ -82,8 +82,13 @@ local function ValidateHostSecret(headers)
             os.time()
         )
         SetConvar('ec_host_secret', hostSecret)
-        print('^3[Router] WARNING: Generated new host secret: ' .. hostSecret .. '^7')
-        print('^3[Router] Set in server.cfg: setr ec_host_secret "' .. hostSecret .. '"^7')
+        if Logger and Logger.Warn then
+            Logger.Warn('[Router] Generated new host secret (persist in server.cfg): ' .. hostSecret)
+            Logger.Warn('Set in server.cfg: setr ec_host_secret "' .. hostSecret .. '"')
+        else
+            print('^3[Router] WARNING: Generated new host secret: ' .. hostSecret .. '^7')
+            print('^3[Router] Set in server.cfg: setr ec_host_secret "' .. hostSecret .. '"^7')
+        end
     end
     
     -- Check header
@@ -103,15 +108,19 @@ end
 
 -- Log API request
 local function LogRequest(method, path, status, duration, ip)
-    local statusColor = status < 300 and '^2' or (status < 500 and '^3' or '^1')
-    print(string.format('[API] %s %s %s%d^7 %dms [%s]', 
-        method, 
-        path, 
-        statusColor, 
-        status, 
-        duration or 0,
-        ip or 'unknown'
-    ))
+    local msg = string.format('[API] %s %s %d %dms [%s]', method, path, status, duration or 0, ip or 'unknown')
+    if Logger and Logger.Info then
+        if status >= 500 then
+            Logger.Error(msg)
+        elseif status >= 400 then
+            Logger.Warn(msg)
+        else
+            Logger.Info(msg)
+        end
+    else
+        local statusColor = status < 300 and '^2' or (status < 500 and '^3' or '^1')
+        print(string.format('[API] %s %s %s%d^7 %dms [%s]', method, path, statusColor, status, duration or 0, ip or 'unknown'))
+    end
 end
 
 --[[ ==================== ENDPOINT HANDLERS ==================== ]]--
@@ -260,13 +269,10 @@ local function HandleSetupBuildUI(data)
         return { success = false, error = 'Missing uiData parameter' }
     end
     
-    -- Build UI (placeholder)
-    print('[Router] Building UI with data:', json.encode(uiData))
-    
-    return {
-        success = true,
-        message = 'UI built successfully'
-    }
+    -- Runtime UI build is not supported. Keep build in CI/setup.
+    local message = 'Runtime UI build is not supported. Use setup.bat/build pipeline.'
+    if Logger and Logger.Warn then Logger.Warn('[Router] ' .. message) end
+    return { success = false, error = message }
 end
 
 -- /api/setup/complete - Complete setup
@@ -403,7 +409,11 @@ local function HandleHostToggleWeb(data)
     SetConvar('ec_web_admin_enabled', tostring(enabled))
     
     -- Log action
-    print(string.format('[Router] Web admin %s', enabled and 'ENABLED' or 'DISABLED'))
+    if Logger and Logger.Info then
+        Logger.Info(string.format('[Router] Web admin %s', enabled and 'ENABLED' or 'DISABLED'))
+    else
+        print(string.format('[Router] Web admin %s', enabled and 'ENABLED' or 'DISABLED'))
+    end
     
     return {
         success = true,
@@ -412,46 +422,56 @@ local function HandleHostToggleWeb(data)
     }
 end
 
--- /api/host/start - Start service (HOST ONLY, placeholder)
+-- /api/host/start - Start a FiveM resource (HOST ONLY)
 local function HandleHostStart(data)
     local service = data.service or 'unknown'
-    
-    print('[Router] Host action: START ' .. service)
-    
-    return {
-        success = true,
-        service = service,
-        action = 'start',
-        message = 'Service start initiated (placeholder)'
-    }
+    local state = GetResourceState(service)
+    if not state or state == 'missing' then
+        return { success = false, error = 'Unknown resource: ' .. tostring(service) }
+    end
+    if state == 'started' then
+        return { success = true, service = service, action = 'start', message = 'Resource already started' }
+    end
+    local ok = StartResource(service)
+    if ok then
+        if Logger and Logger.Info then Logger.Info('[Router] Started resource: ' .. service) end
+        return { success = true, service = service, action = 'start', message = 'Resource start initiated' }
+    else
+        if Logger and Logger.Error then Logger.Error('[Router] Failed to start resource: ' .. service) end
+        return { success = false, error = 'Failed to start resource ' .. service }
+    end
 end
 
--- /api/host/stop - Stop service (HOST ONLY, placeholder)
+-- /api/host/stop - Stop a FiveM resource (HOST ONLY)
 local function HandleHostStop(data)
     local service = data.service or 'unknown'
-    
-    print('[Router] Host action: STOP ' .. service)
-    
-    return {
-        success = true,
-        service = service,
-        action = 'stop',
-        message = 'Service stop initiated (placeholder)'
-    }
+    local state = GetResourceState(service)
+    if not state or state == 'missing' then
+        return { success = false, error = 'Unknown resource: ' .. tostring(service) }
+    end
+    if state ~= 'started' then
+        return { success = true, service = service, action = 'stop', message = 'Resource already stopped' }
+    end
+    local ok = StopResource(service)
+    if ok then
+        if Logger and Logger.Info then Logger.Info('[Router] Stopped resource: ' .. service) end
+        return { success = true, service = service, action = 'stop', message = 'Resource stop initiated' }
+    else
+        if Logger and Logger.Error then Logger.Error('[Router] Failed to stop resource: ' .. service) end
+        return { success = false, error = 'Failed to stop resource ' .. service }
+    end
 end
 
--- /api/host/restart - Restart service (HOST ONLY, placeholder)
+-- /api/host/restart - Restart a FiveM resource (HOST ONLY)
 local function HandleHostRestart(data)
     local service = data.service or 'unknown'
-    
-    print('[Router] Host action: RESTART ' .. service)
-    
-    return {
-        success = true,
-        service = service,
-        action = 'restart',
-        message = 'Service restart initiated (placeholder)'
-    }
+    local state = GetResourceState(service)
+    if not state or state == 'missing' then
+        return { success = false, error = 'Unknown resource: ' .. tostring(service) }
+    end
+    local ok = ExecuteCommand('restart ' .. service)
+    if Logger and Logger.Info then Logger.Info('[Router] Restart command issued for resource: ' .. service) end
+    return { success = true, service = service, action = 'restart', message = 'Resource restart issued' }
 end
 
 -- /host/toggle - Host-only admin menu toggle
@@ -485,8 +505,12 @@ SetHttpHandler(function(req, res)
     local method = req.method
     local ip = GetClientIP(req)
     
-    -- DEBUG: Log every request
-    print(string.format('^3[Router DEBUG] %s %s from %s^7', method, path, ip))
+    -- DEBUG: Log every request (respect logger if available)
+    if Logger and Logger.Debug then
+        Logger.Debug(string.format('[Router DEBUG] %s %s from %s', method, path, ip))
+    else
+        print(string.format('^3[Router DEBUG] %s %s from %s^7', method, path, ip))
+    end
     
     -- Check if admin menu is disabled
     if not _G.ECAdminMenuEnabled and path:match('^/api/') and not path:match('^/api/health') then
@@ -543,7 +567,7 @@ SetHttpHandler(function(req, res)
                         hint = 'Contact NRG Network to obtain a host-tier license'
                     }))
                     LogRequest(method, path, 403, GetGameTimer() - startTime, ip)
-                    Logger.Info(string.format('', ip, message))
+                    if Logger and Logger.Warn then Logger.Warn(string.format('[Router] Host access denied for %s: %s', ip, message)) end
                     return
                 end
                 accessGranted = true
@@ -727,46 +751,125 @@ end)
 CreateThread(function()
     Wait(100)
     
-    -- Register host toggle endpoint handler
-    ExecuteCommand('ec:host:registerToggleEndpoint')
+    -- Register host toggle/token-rotate handlers as local events and initialize defaults
+    AddEventHandler('ec:host:registerToggleEndpoint', function()
+        -- Default to enabled unless explicitly disabled by convar
+        if _G.ECAdminMenuEnabled == nil then
+            _G.ECAdminMenuEnabled = GetConvar('ec_web_admin_enabled', 'true') == 'true'
+        end
+
+        _G.ECHostToggleHandler = function(req, res)
+            local success, payload = pcall(function()
+                local body = {}
+                if req.body and req.body ~= '' then
+                    local ok, parsed = pcall(json.decode, req.body)
+                    if ok and type(parsed) == 'table' then body = parsed end
+                end
+                local enabled = body.enabled
+                if enabled == nil then enabled = not _G.ECAdminMenuEnabled end
+                _G.ECAdminMenuEnabled = enabled and true or false
+                SetConvar('ec_web_admin_enabled', tostring(_G.ECAdminMenuEnabled))
+                if Logger and Logger.Info then Logger.Info(string.format('[Host] Admin menu %s by host toggle', _G.ECAdminMenuEnabled and 'ENABLED' or 'DISABLED')) end
+                return { success = true, enabled = _G.ECAdminMenuEnabled }
+            end)
+            if not success then
+                res.writeHead(500, { ['Content-Type'] = 'application/json' })
+                res.send(json.encode({ success = false, error = 'Failed to toggle admin menu' }))
+                return
+            end
+            res.writeHead(200, { ['Content-Type'] = 'application/json' })
+            res.send(json.encode(payload))
+        end
+
+        _G.ECTokenRotateHandler = function(req, res)
+            local newSecret = string.format('%x%x%x', math.random(0, 0xFFFFFFFF), math.random(0, 0xFFFFFFFF), os.time())
+            SetConvar('ec_host_secret', newSecret)
+            if Logger and Logger.Info then Logger.Info('[Host] Rotated host secret token') end
+            res.writeHead(200, { ['Content-Type'] = 'application/json' })
+            res.send(json.encode({ success = true, message = 'Host secret rotated', secretHint = string.sub(newSecret, 1, 6) .. '...' }))
+        end
+    end)
+
+    -- Fire the local registration event immediately
+    TriggerEvent('ec:host:registerToggleEndpoint')
     
     _G.ECAdminStartTime = os.time()
     
     -- Only show HTTP Router info if verbose logging enabled
     if not Config.Logging or Config.Logging.verboseStartup then
-        print('^2========================================^0')
-        print('^2[EC Admin Ultimate] HTTP Router Active^0')
-        print('^3  Resource: ' .. GetCurrentResourceName() .. '^0')
-        print('^3  Web UI:^0')
-        print('    GET  /           (redirect to admin)')
-        print('    GET  /admin      (setup wizard & admin panel)')
-        print('    GET  /assets/*   (static files)')
-        print('^3  Public Endpoints:^0')
-        print('    GET  /api/health')
-        print('    GET  /api/status')
-        print('    GET  /api/metrics')
-        print('    GET  /api/metrics/history')
-        print('    GET  /api/players')
-        print('    GET  /api/resources')
-        print('^3  Setup Endpoints:^0')
-        print('    GET  /api/setup/status')
-        print('    POST /api/setup/detectFramework')
-        print('    POST /api/setup/complete')
-        print('^3  Host Endpoints:^0')
-        print('    GET  /api/host/status')
-        print('    POST /api/host/toggle-web')
-        print('    POST /api/host/start')
-        print('    POST /api/host/stop')
-        print('    POST /api/host/restart')
-        print('    POST /host/toggle')
-        print('    POST /host/rotate-token')
-        print('^3  Security:^0')
-        print('    Rate Limiting: Enabled')
-        print('    CORS: ' .. (Config.Security and Config.Security.CORS and 'Enabled' or 'Disabled'))
-        print('    Host Secret: ' .. (GetConvar('ec_host_secret', '') ~= '' and 'Configured' or 'Auto-generated'))
-        print('^2========================================^0')
-        print('^3[INFO] Access web UI at: http://YOUR_IP:30120/admin^0')
-        print('^3[INFO] Test health check: http://YOUR_IP:30120/api/health^0')
-        print('^2========================================^0')
+        local lines = {
+            '========================================',
+            '[EC Admin Ultimate] HTTP Router Active',
+            '  Resource: ' .. GetCurrentResourceName(),
+            '  Web UI:',
+            '    GET  /           (redirect to admin)',
+            '    GET  /admin      (setup wizard & admin panel)',
+            '    GET  /assets/*   (static files)',
+            '  Public Endpoints:',
+            '    GET  /api/health',
+            '    GET  /api/status',
+            '    GET  /api/metrics',
+            '    GET  /api/metrics/history',
+            '    GET  /api/players',
+            '    GET  /api/resources',
+            '  Setup Endpoints:',
+            '    GET  /api/setup/status',
+            '    POST /api/setup/detectFramework',
+            '    POST /api/setup/complete',
+            '  Host Endpoints:',
+            '    GET  /api/host/status',
+            '    POST /api/host/toggle-web',
+            '    POST /api/host/start',
+            '    POST /api/host/stop',
+            '    POST /api/host/restart',
+            '    POST /host/toggle',
+            '    POST /host/rotate-token',
+            '  Security:',
+            '    Rate Limiting: Enabled',
+            '    CORS: ' .. (Config.Security and Config.Security.CORS and 'Enabled' or 'Disabled'),
+            '    Host Secret: ' .. (GetConvar('ec_host_secret', '') ~= '' and 'Configured' or 'Auto-generated'),
+            '========================================',
+            'Access web UI at: http://YOUR_IP:30120/admin',
+            'Test health check: http://YOUR_IP:30120/api/health',
+            '========================================'
+        }
+        if Logger and Logger.System then
+            for _, l in ipairs(lines) do Logger.System(l) end
+        else
+            print('^2========================================^0')
+            print('^2[EC Admin Ultimate] HTTP Router Active^0')
+            print('^3  Resource: ' .. GetCurrentResourceName() .. '^0')
+            print('^3  Web UI:^0')
+            print('    GET  /           (redirect to admin)')
+            print('    GET  /admin      (setup wizard & admin panel)')
+            print('    GET  /assets/*   (static files)')
+            print('^3  Public Endpoints:^0')
+            print('    GET  /api/health')
+            print('    GET  /api/status')
+            print('    GET  /api/metrics')
+            print('    GET  /api/metrics/history')
+            print('    GET  /api/players')
+            print('    GET  /api/resources')
+            print('^3  Setup Endpoints:^0')
+            print('    GET  /api/setup/status')
+            print('    POST /api/setup/detectFramework')
+            print('    POST /api/setup/complete')
+            print('^3  Host Endpoints:^0')
+            print('    GET  /api/host/status')
+            print('    POST /api/host/toggle-web')
+            print('    POST /api/host/start')
+            print('    POST /api/host/stop')
+            print('    POST /api/host/restart')
+            print('    POST /host/toggle')
+            print('    POST /host/rotate-token')
+            print('^3  Security:^0')
+            print('    Rate Limiting: Enabled')
+            print('    CORS: ' .. (Config.Security and Config.Security.CORS and 'Enabled' or 'Disabled'))
+            print('    Host Secret: ' .. (GetConvar('ec_host_secret', '') ~= '' and 'Configured' or 'Auto-generated'))
+            print('^2========================================^0')
+            print('^3[INFO] Access web UI at: http://YOUR_IP:30120/admin^0')
+            print('^3[INFO] Test health check: http://YOUR_IP:30120/api/health^0')
+            print('^2========================================^0')
+        end
     end
 end)

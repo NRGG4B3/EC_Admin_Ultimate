@@ -203,29 +203,17 @@ const menuItems = [
 export function Sidebar({ currentPage, onPageChange, isCompact }: SidebarProps) {
   const [isHostMode, setIsHostMode] = useState(false);
   const [isNRGStaff, setIsNRGStaff] = useState(false);
+  const [frameworkLabel, setFrameworkLabel] = useState('Unknown');
+  const [dbLabel, setDbLabel] = useState('Unknown');
 
-  // Mock framework/SQL detection (in real FiveM this would come from server)
   const isFiveM = typeof window !== 'undefined' && (window.invokeNative !== undefined || window.location.protocol === 'nui:');
-  const detectedFramework = isFiveM ? 'QB-Core' : 'Standalone'; // Would be detected from server
-  const sqlStatus = isFiveM ? 'MySQL' : 'oxmysql'; // Would be detected from server
 
   // Check if host mode is enabled and if user is NRG staff
   useEffect(() => {
     const checkHostAccess = async () => {
-      // In Figma/Browser mode, ALWAYS enable host mode for preview
-      if (!isFiveM) {
-        console.log('[Sidebar] Browser/Figma mode detected - enabling Host Management');
-        setIsHostMode(true);
-        setIsNRGStaff(true);
-        return;
-      }
-
       try {
         // In FiveM, check if host folder exists and user has access
-        const hostStatus = await fetchNui<{ hostMode: boolean; isNRGStaff: boolean }>('checkHostAccess', {}, {
-          hostMode: false,
-          isNRGStaff: false
-        });
+        const hostStatus = await fetchNui<{ hostMode: boolean; isNRGStaff: boolean }>('checkHostAccess', {});
         
         console.log('[Sidebar] Host access check result:', hostStatus);
         setIsHostMode(hostStatus.hostMode || false);
@@ -238,6 +226,38 @@ export function Sidebar({ currentPage, onPageChange, isCompact }: SidebarProps) 
     };
 
     checkHostAccess();
+  }, [isFiveM]);
+
+  // Load system info (framework and database) without any mock fallback
+  useEffect(() => {
+    const loadSystemInfo = async () => {
+      if (!isFiveM) {
+        // Outside NUI, don't invent data
+        setFrameworkLabel('Unknown');
+        setDbLabel('Unknown');
+        return;
+      }
+      try {
+        const info = await fetchNui<{ framework: { detected: boolean; type: string }; database: { connected: boolean; type: string } }>(
+          'sidebar:getSystemInfo',
+          {}
+        );
+        if (info && info.framework && info.database) {
+          const fw = info.framework.type || 'Unknown';
+          const db = info.database.type || 'Unknown';
+          setFrameworkLabel(fw);
+          setDbLabel(db);
+        } else {
+          setFrameworkLabel('Unknown');
+          setDbLabel('Unknown');
+        }
+      } catch (err) {
+        console.error('[Sidebar] Failed to load system info:', err);
+        setFrameworkLabel('Unknown');
+        setDbLabel('Unknown');
+      }
+    };
+    loadSystemInfo();
   }, [isFiveM]);
 
   // Filter menu items - hide host-only items if not in host mode or not NRG staff
@@ -303,7 +323,7 @@ export function Sidebar({ currentPage, onPageChange, isCompact }: SidebarProps) 
           <div className="flex items-center justify-between">
             <span>Build: v1.0.0</span>
             <Badge variant="outline" className={(isCompact ? 'text-[9px] px-1 py-0' : 'text-xs px-2 py-0') + ' bg-blue-500/20 text-blue-400 border-blue-500/30'}>
-              {sqlStatus}
+              {dbLabel}
             </Badge>
           </div>
           <div className="flex items-center justify-between">
@@ -312,7 +332,7 @@ export function Sidebar({ currentPage, onPageChange, isCompact }: SidebarProps) 
               <span className="truncate">Ready</span>
             </div>
             <Badge variant="outline" className={(isCompact ? 'text-[9px] px-1 py-0' : 'text-xs px-2 py-0') + ' bg-green-500/20 text-green-400 border-green-500/30'}>
-              {detectedFramework}
+              {frameworkLabel}
             </Badge>
           </div>
         </div>

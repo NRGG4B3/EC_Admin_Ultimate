@@ -21,7 +21,7 @@ export function getRuntimeConfig(): RuntimeConfig {
   const isNUI = typeof (window as any).GetParentResourceName !== 'undefined';
   
   // Check if running in development mode
-  const isDevelopment = import.meta.env.DEV;
+  const isDevelopment = (import.meta as any).env?.DEV ?? false;
   
   // Determine server type
   // Priority:
@@ -64,7 +64,7 @@ export function getApiBaseUrl(): string {
   }
   
   // In development, use local API
-  if (import.meta.env.DEV) {
+  if ((import.meta as any).env?.DEV) {
     return 'http://localhost:30120/';
   }
   
@@ -85,8 +85,9 @@ export function isNUIEnvironment(): boolean {
 export function postNUI<T = any>(event: string, data?: any): Promise<T> {
   return new Promise((resolve, reject) => {
     if (!isNUIEnvironment()) {
-      console.warn('Not in NUI environment, using mock response');
-      resolve({} as T);
+      const err = new Error('Not in NUI environment');
+      console.warn('[NUI] postNUI called outside FiveM:', event);
+      reject(err);
       return;
     }
 

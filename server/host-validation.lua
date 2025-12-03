@@ -119,3 +119,54 @@ RegisterNetEvent('ec_admin:host:requestData', function(dataType)
 end)
 
 Logger.Success("Host validation system loaded", '🛡️')
+
+-- ==========================================
+-- System Info (Framework/Database) for Sidebar
+-- ==========================================
+-- Provides accurate, non-mock environment details to the UI
+lib.callback.register('ec_admin:getSystemInfo', function(source)
+    -- Framework detection
+    local frameworkType = 'standalone'
+    if _G.ECFramework and (_G.ECFramework.Type or _G.ECFramework.Framework or _G.ECFramework.Name) then
+        frameworkType = (_G.ECFramework.Type or _G.ECFramework.Framework or _G.ECFramework.Name)
+    else
+        if GetResourceState('qbx_core') == 'started' then
+            frameworkType = 'qbx'
+        elseif GetResourceState('qb-core') == 'started' then
+            frameworkType = 'qb-core'
+        elseif GetResourceState('es_extended') == 'started' then
+            frameworkType = 'esx'
+        else
+            frameworkType = 'standalone'
+        end
+    end
+
+    -- Database detection
+    local dbType = 'none'
+    if GetResourceState('oxmysql') == 'started' then
+        dbType = 'oxmysql'
+    elseif GetResourceState('mysql-async') == 'started' then
+        dbType = 'mysql-async'
+    end
+
+    local dbConnected = false
+    if MySQL then
+        if type(MySQL.ready) == 'boolean' then
+            dbConnected = MySQL.ready
+        elseif MySQL.Sync or MySQL.query then
+            -- Assume connected if the adapter is present
+            dbConnected = true
+        end
+    end
+
+    return {
+        framework = {
+            detected = frameworkType ~= 'standalone',
+            type = frameworkType
+        },
+        database = {
+            connected = dbConnected == true,
+            type = dbType
+        }
+    }
+end)

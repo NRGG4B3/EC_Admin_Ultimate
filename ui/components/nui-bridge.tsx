@@ -377,7 +377,7 @@ export const DataActions = {
   },
 
   getPlayerDetails: async (playerId: number) => {
-    return fetchNui('getPlayerDetails', { playerId }, {});
+    return fetchNui('getPlayerDetails', { playerId });
   },
 
   getVehicles: async () => {
@@ -409,11 +409,11 @@ export const DataActions = {
   },
 
   getEconomyStats: async () => {
-    return fetchNui('getEconomyStats', {}, {});
+    return fetchNui('getEconomyStats', {});
   },
 
   getPerformanceMetrics: async () => {
-    return fetchNui('getPerformanceMetrics', {}, {});
+    return fetchNui('getPerformanceMetrics', {});
   },
 
   getAIDetections: async () => {

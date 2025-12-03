@@ -76,34 +76,10 @@ export function Topbar({
     recentAlerts: number;
   } | null>(null);
 
-  // Load admin profile on mount with timeout and fallback
+  // Load admin profile on mount
   useEffect(() => {
-    // Mock data for fallback
-    const mockAdminProfile = {
-      success: true,
-      data: {
-        name: 'Admin',
-        username: 'admin',
-        email: 'admin@server.com',
-        role: 'superadmin',
-        roleLabel: 'Super Admin',
-        avatar: null,
-        isSuperUser: true
-      }
-    };
-
-    const mockQuickStats = {
-      success: true,
-      data: {
-        playersOnline: liveData?.playersOnline || 0,
-        openReports: 0,
-        activeBans: 0,
-        recentAlerts: liveData?.alerts?.length || 0
-      }
-    };
-
     // Load admin profile with 3 second timeout
-    fetchNui('topbar:getAdminProfile', {}, mockAdminProfile, 3000)
+    fetchNui('topbar:getAdminProfile', {}, undefined, 3000)
       .then((response: any) => {
         if (response.success && response.data) {
           console.log('[Topbar] Admin profile loaded:', response.data);
@@ -111,13 +87,11 @@ export function Topbar({
         }
       })
       .catch((error) => {
-        console.warn('[Topbar] Failed to load admin profile, using fallback:', error.message);
-        // Use mock data as fallback
-        setAdminProfile(mockAdminProfile.data);
+        console.warn('[Topbar] Failed to load admin profile:', error.message);
       });
     
     // Load quick stats with 3 second timeout
-    fetchNui('topbar:getQuickStats', {}, mockQuickStats, 3000)
+    fetchNui('topbar:getQuickStats', {}, undefined, 3000)
       .then((response: any) => {
         if (response.success && response.data) {
           console.log('[Topbar] Quick stats loaded:', response.data);
@@ -125,23 +99,11 @@ export function Topbar({
         }
       })
       .catch((error) => {
-        console.warn('[Topbar] Failed to load quick stats, using fallback:', error.message);
-        // Use mock data as fallback
-        setQuickStats(mockQuickStats.data);
+        console.warn('[Topbar] Failed to load quick stats:', error.message);
       });
     
     // Load server settings for logo and name
-    const mockSettings = {
-      success: true,
-      data: {
-        general: {
-          serverName: 'My FiveM Server',
-          serverLogo: ''
-        }
-      }
-    };
-    
-    fetchNui('settings:getData', {}, mockSettings, 3000)
+    fetchNui('settings:getData', {}, undefined, 3000)
       .then((response: any) => {
         if (response.success && response.data && response.data.general) {
           console.log('[Topbar] Server settings loaded');
@@ -161,17 +123,7 @@ export function Topbar({
   // Update quick stats every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      const mockQuickStats = {
-        success: true,
-        data: {
-          playersOnline: liveData?.playersOnline || 0,
-          openReports: 0,
-          activeBans: 0,
-          recentAlerts: liveData?.alerts?.length || 0
-        }
-      };
-
-      fetchNui('topbar:getQuickStats', {}, mockQuickStats, 3000)
+      fetchNui('topbar:getQuickStats', {}, undefined, 3000)
         .then((response: any) => {
           if (response.success && response.data) {
             setQuickStats(response.data);
@@ -188,12 +140,7 @@ export function Topbar({
   
   // Handle logout - no longer needed for quick actions, but kept for potential future use
   const handleLogout = () => {
-    const mockLogoutResponse = {
-      success: true,
-      message: 'Logged out successfully'
-    };
-
-    fetchNui('topbar:logout', {}, mockLogoutResponse, 2000)
+    fetchNui('topbar:logout', {}, undefined, 2000)
       .then((response: any) => {
         if (response.success) {
           console.log('[Topbar] Logout successful');

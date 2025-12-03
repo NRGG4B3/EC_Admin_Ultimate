@@ -9773,3 +9773,1960 @@
 [2025-12-03T03:20:38.245Z] Resource Hub (Port 3017): GET /health
 [2025-12-03T03:20:38.323Z] Emergency Control (Port 3018): GET /health
 [2025-12-03T03:20:38.368Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:20:49.269Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:20:49.310Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:20:49.356Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:20:49.401Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:20:49.441Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:20:49.478Z] Report System (Port 3005): GET /health
+[2025-12-03T03:20:49.520Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:20:49.550Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:20:49.591Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:20:49.623Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:20:49.656Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:20:49.707Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:20:49.740Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:20:49.768Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:20:49.809Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:20:49.848Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:20:49.876Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:20:49.949Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:20:49.996Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:20:50.061Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:20:51.126Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:21:00.188Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:21:00.253Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:21:00.279Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:21:00.314Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:21:00.361Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:21:00.421Z] Report System (Port 3005): GET /health
+[2025-12-03T03:21:00.502Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:21:00.570Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:21:00.635Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:21:00.683Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:21:00.725Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:21:00.759Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:21:00.809Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:21:00.875Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:21:00.917Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:21:00.968Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:21:01.016Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:21:01.087Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:21:01.149Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:21:01.199Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:21:11.217Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:21:11.300Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:21:11.347Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:21:11.429Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:21:11.544Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:21:11.671Z] Report System (Port 3005): GET /health
+[2025-12-03T03:21:11.725Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:21:11.796Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:21:11.859Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:21:11.912Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:21:11.967Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:21:12.052Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:21:12.101Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:21:12.147Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:21:12.187Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:21:12.238Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:21:12.293Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:21:12.347Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:21:12.407Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:21:12.442Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:21:21.126Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:21:23.350Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:21:23.429Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:21:23.499Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:21:23.545Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:21:23.588Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:21:23.688Z] Report System (Port 3005): GET /health
+[2025-12-03T03:21:23.779Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:21:23.856Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:21:23.936Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:21:24.009Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:21:24.042Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:21:24.093Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:21:24.127Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:21:24.180Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:21:24.254Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:21:24.302Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:21:24.338Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:21:24.411Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:21:24.462Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:21:24.494Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:21:35.244Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:21:35.355Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:21:35.416Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:21:35.473Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:21:35.531Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:21:35.588Z] Report System (Port 3005): GET /health
+[2025-12-03T03:21:35.659Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:21:35.735Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:21:35.777Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:21:35.844Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:21:35.919Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:21:35.972Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:21:36.033Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:21:36.076Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:21:36.140Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:21:36.192Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:21:36.248Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:21:36.301Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:21:36.345Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:21:36.390Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:21:47.209Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:21:47.319Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:21:47.450Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:21:47.535Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:21:47.586Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:21:47.649Z] Report System (Port 3005): GET /health
+[2025-12-03T03:21:47.742Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:21:47.830Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:21:47.866Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:21:47.908Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:21:47.944Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:21:47.982Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:21:48.020Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:21:48.074Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:21:48.128Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:21:48.185Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:21:48.240Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:21:48.288Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:21:48.320Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:21:48.370Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:21:51.136Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:21:59.197Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:21:59.261Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:21:59.330Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:21:59.430Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:21:59.504Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:21:59.558Z] Report System (Port 3005): GET /health
+[2025-12-03T03:21:59.619Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:21:59.669Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:21:59.707Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:21:59.741Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:21:59.790Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:21:59.827Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:21:59.854Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:21:59.901Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:21:59.952Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:22:00.035Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:22:00.139Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:22:00.176Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:22:00.207Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:22:00.294Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:22:11.193Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:22:11.241Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:22:11.331Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:22:11.372Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:22:11.423Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:22:11.470Z] Report System (Port 3005): GET /health
+[2025-12-03T03:22:11.500Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:22:11.541Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:22:11.574Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:22:11.611Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:22:11.637Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:22:11.676Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:22:11.712Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:22:11.765Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:22:11.814Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:22:11.855Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:22:11.900Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:22:11.938Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:22:11.990Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:22:12.025Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:22:21.138Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:22:22.249Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:22:22.302Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:22:22.358Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:22:22.393Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:22:22.427Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:22:22.479Z] Report System (Port 3005): GET /health
+[2025-12-03T03:22:22.551Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:22:22.608Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:22:22.634Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:22:22.681Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:22:22.738Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:22:22.791Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:22:22.825Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:22:22.860Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:22:22.894Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:22:22.941Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:22:22.983Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:22:23.019Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:22:23.055Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:22:23.105Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:22:33.208Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:22:33.242Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:22:33.276Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:22:33.334Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:22:33.372Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:22:33.420Z] Report System (Port 3005): GET /health
+[2025-12-03T03:22:33.459Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:22:33.518Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:22:33.562Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:22:33.593Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:22:33.629Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:22:33.664Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:22:33.687Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:22:33.741Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:22:33.791Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:22:33.869Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:22:33.930Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:22:33.982Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:22:34.032Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:22:34.072Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:22:45.504Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:22:45.577Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:22:45.619Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:22:45.671Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:22:45.780Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:22:45.849Z] Report System (Port 3005): GET /health
+[2025-12-03T03:22:45.935Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:22:46.008Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:22:46.111Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:22:46.164Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:22:46.247Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:22:46.342Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:22:46.419Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:22:46.477Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:22:46.510Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:22:46.544Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:22:46.589Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:22:46.617Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:22:46.665Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:22:46.712Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:22:46.732Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:22:46.748Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:22:46.787Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:22:46.869Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:22:47.011Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:22:51.148Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:22:57.289Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:22:57.500Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:22:57.564Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:22:57.642Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:22:57.770Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:22:57.874Z] Report System (Port 3005): GET /health
+[2025-12-03T03:22:57.949Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:22:58.033Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:22:58.107Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:22:58.171Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:22:58.224Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:22:58.285Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:22:58.338Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:22:58.403Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:22:58.469Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:22:58.522Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:22:58.551Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:22:58.612Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:22:58.667Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:22:58.733Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:23:09.234Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:23:09.338Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:23:09.384Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:23:09.449Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:23:09.544Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:23:09.624Z] Report System (Port 3005): GET /health
+[2025-12-03T03:23:09.705Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:23:09.744Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:23:09.793Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:23:09.864Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:23:09.940Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:23:09.997Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:23:10.075Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:23:10.115Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:23:10.150Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:23:10.211Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:23:10.273Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:23:10.361Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:23:10.400Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:23:10.501Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:23:21.165Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:23:21.203Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:23:21.243Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:23:21.287Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:23:21.367Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:23:21.454Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:23:21.549Z] Report System (Port 3005): GET /health
+[2025-12-03T03:23:21.646Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:23:21.706Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:23:21.752Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:23:21.804Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:23:21.845Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:23:21.914Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:23:21.962Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:23:22.016Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:23:22.084Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:23:22.108Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:23:22.161Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:23:22.203Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:23:22.255Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:23:22.297Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:23:33.250Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:23:33.290Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:23:33.324Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:23:33.365Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:23:33.418Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:23:33.482Z] Report System (Port 3005): GET /health
+[2025-12-03T03:23:33.556Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:23:33.636Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:23:33.675Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:23:33.746Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:23:33.787Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:23:33.822Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:23:33.872Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:23:33.923Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:23:33.969Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:23:34.041Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:23:34.128Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:23:34.193Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:23:34.234Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:23:34.261Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:23:45.208Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:23:45.258Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:23:45.301Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:23:45.346Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:23:45.421Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:23:45.449Z] Report System (Port 3005): GET /health
+[2025-12-03T03:23:45.510Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:23:45.573Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:23:45.682Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:23:45.780Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:23:45.843Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:23:45.920Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:23:46.012Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:23:46.071Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:23:46.168Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:23:46.275Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:23:46.314Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:23:46.407Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:23:46.458Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:23:46.505Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:23:51.187Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:23:57.221Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:23:57.292Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:23:57.361Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:23:57.484Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:23:57.575Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:23:57.603Z] Report System (Port 3005): GET /health
+[2025-12-03T03:23:57.660Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:23:57.737Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:23:57.808Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:23:57.851Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:23:57.907Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:23:57.954Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:23:58.014Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:23:58.068Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:23:58.136Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:23:58.209Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:23:58.249Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:23:58.293Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:23:58.348Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:23:58.379Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:24:09.216Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:24:09.274Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:24:09.341Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:24:09.383Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:24:09.426Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:24:09.474Z] Report System (Port 3005): GET /health
+[2025-12-03T03:24:09.507Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:24:09.536Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:24:09.570Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:24:09.613Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:24:09.659Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:24:09.701Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:24:09.733Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:24:09.777Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:24:09.812Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:24:09.873Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:24:09.934Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:24:10.010Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:24:10.043Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:24:10.138Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:24:20.271Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:24:20.307Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:24:20.355Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:24:20.420Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:24:20.477Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:24:20.575Z] Report System (Port 3005): GET /health
+[2025-12-03T03:24:20.624Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:24:20.671Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:24:20.711Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:24:20.801Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:24:20.885Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:24:20.951Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:24:21.027Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:24:21.105Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:24:21.156Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:24:21.194Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:24:21.204Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:24:21.244Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:24:21.272Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:24:21.342Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:24:21.400Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:24:32.289Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:24:32.383Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:24:32.584Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:24:32.659Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:24:32.741Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:24:32.805Z] Report System (Port 3005): GET /health
+[2025-12-03T03:24:32.869Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:24:32.909Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:24:32.981Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:24:33.024Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:24:33.101Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:24:33.141Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:24:33.195Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:24:33.279Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:24:33.335Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:24:33.658Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:24:34.068Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:24:35.540Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:24:35.750Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:24:36.154Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:24:47.264Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:24:47.311Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:24:47.363Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:24:47.399Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:24:47.441Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:24:47.525Z] Report System (Port 3005): GET /health
+[2025-12-03T03:24:47.574Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:24:47.629Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:24:47.681Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:24:47.739Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:24:47.778Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:24:47.851Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:24:47.917Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:24:47.993Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:24:48.033Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:24:48.064Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:24:48.109Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:24:48.180Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:24:48.213Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:24:48.248Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:24:51.198Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:24:58.221Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:24:58.252Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:24:58.313Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:24:58.359Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:24:58.438Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:24:58.506Z] Report System (Port 3005): GET /health
+[2025-12-03T03:24:58.560Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:24:58.596Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:24:58.650Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:24:58.683Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:24:58.733Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:24:58.768Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:24:58.810Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:24:58.847Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:24:58.916Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:24:58.975Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:24:59.084Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:24:59.143Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:24:59.190Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:24:59.240Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:25:09.343Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:25:09.597Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:25:09.898Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:25:10.075Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:25:10.389Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:25:10.806Z] Report System (Port 3005): GET /health
+[2025-12-03T03:25:10.880Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:25:11.103Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:25:11.211Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:25:11.313Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:25:11.382Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:25:11.444Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:25:11.494Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:25:11.529Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:25:11.609Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:25:11.665Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:25:11.703Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:25:11.757Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:25:11.801Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:25:11.846Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:25:21.199Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:25:22.302Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:25:22.401Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:25:22.458Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:25:22.516Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:25:22.564Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:25:22.598Z] Report System (Port 3005): GET /health
+[2025-12-03T03:25:22.626Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:25:22.672Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:25:22.721Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:25:22.789Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:25:22.835Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:25:22.876Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:25:22.922Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:25:22.956Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:25:22.993Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:25:23.035Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:25:23.079Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:25:23.167Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:25:23.250Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:25:23.296Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:25:34.224Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:25:34.313Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:25:34.342Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:25:34.379Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:25:34.403Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:25:34.427Z] Report System (Port 3005): GET /health
+[2025-12-03T03:25:34.464Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:25:34.496Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:25:34.535Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:25:34.567Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:25:34.600Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:25:34.653Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:25:34.702Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:25:34.738Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:25:34.791Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:25:34.841Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:25:34.900Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:25:34.927Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:25:34.957Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:25:35.006Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:25:45.265Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:25:45.313Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:25:45.397Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:25:45.444Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:25:45.524Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:25:45.564Z] Report System (Port 3005): GET /health
+[2025-12-03T03:25:45.623Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:25:45.656Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:25:45.704Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:25:45.765Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:25:45.831Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:25:45.866Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:25:45.914Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:25:45.951Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:25:46.000Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:25:46.042Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:25:46.088Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:25:46.168Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:25:46.251Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:25:46.314Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:25:51.200Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:25:57.207Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:25:57.316Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:25:57.378Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:25:57.419Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:25:57.469Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:25:57.560Z] Report System (Port 3005): GET /health
+[2025-12-03T03:25:57.659Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:25:57.724Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:25:57.835Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:25:57.943Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:25:57.991Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:25:58.029Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:25:58.084Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:25:58.165Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:25:58.211Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:25:58.270Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:25:58.380Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:25:58.449Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:25:58.563Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:25:58.652Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:26:09.205Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:26:09.271Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:26:09.330Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:26:09.370Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:26:09.439Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:26:09.502Z] Report System (Port 3005): GET /health
+[2025-12-03T03:26:09.552Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:26:09.648Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:26:09.698Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:26:09.739Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:26:09.789Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:26:09.838Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:26:09.878Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:26:09.934Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:26:09.989Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:26:10.041Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:26:10.096Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:26:10.147Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:26:10.202Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:26:10.260Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:26:21.221Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:26:21.663Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:26:21.739Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:26:21.791Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:26:21.865Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:26:22.030Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:26:22.108Z] Report System (Port 3005): GET /health
+[2025-12-03T03:26:22.157Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:26:22.205Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:26:22.248Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:26:22.293Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:26:22.333Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:26:22.410Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:26:22.473Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:26:22.535Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:26:22.632Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:26:22.705Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:26:22.738Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:26:22.806Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:26:22.853Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:26:22.908Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:26:34.248Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:26:34.313Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:26:34.364Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:26:34.412Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:26:34.469Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:26:34.562Z] Report System (Port 3005): GET /health
+[2025-12-03T03:26:34.619Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:26:34.688Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:26:34.740Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:26:34.818Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:26:34.856Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:26:34.882Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:26:34.923Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:26:34.953Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:26:34.984Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:26:35.049Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:26:35.082Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:26:35.122Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:26:35.177Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:26:35.211Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:26:46.234Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:26:46.293Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:26:46.344Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:26:46.387Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:26:46.433Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:26:46.467Z] Report System (Port 3005): GET /health
+[2025-12-03T03:26:46.501Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:26:46.538Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:26:46.569Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:26:46.594Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:26:46.636Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:26:46.678Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:26:46.722Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:26:46.761Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:26:46.810Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:26:46.842Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:26:46.889Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:26:46.914Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:26:46.967Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:26:46.994Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:26:51.225Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:26:57.153Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:26:57.198Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:26:57.262Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:26:57.344Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:26:57.425Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:26:57.495Z] Report System (Port 3005): GET /health
+[2025-12-03T03:26:57.531Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:26:57.575Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:26:57.644Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:26:57.686Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:26:57.743Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:26:57.779Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:26:57.901Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:26:57.980Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:26:58.024Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:26:58.078Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:26:58.153Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:26:58.357Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:26:58.525Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:26:58.676Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:27:09.213Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:27:09.246Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:27:09.301Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:27:09.364Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:27:09.438Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:27:09.516Z] Report System (Port 3005): GET /health
+[2025-12-03T03:27:09.568Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:27:09.608Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:27:09.665Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:27:09.727Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:27:09.769Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:27:09.842Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:27:09.875Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:27:09.937Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:27:09.985Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:27:10.021Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:27:10.066Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:27:10.106Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:27:10.149Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:27:10.179Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:27:20.204Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:27:20.233Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:27:20.270Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:27:20.299Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:27:20.332Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:27:20.359Z] Report System (Port 3005): GET /health
+[2025-12-03T03:27:20.406Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:27:20.444Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:27:20.479Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:27:20.506Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:27:20.551Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:27:20.596Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:27:20.633Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:27:20.677Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:27:20.715Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:27:20.738Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:27:20.770Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:27:20.807Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:27:20.836Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:27:20.888Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:27:21.226Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:27:31.256Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:27:31.312Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:27:31.383Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:27:31.435Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:27:31.500Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:27:31.595Z] Report System (Port 3005): GET /health
+[2025-12-03T03:27:31.683Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:27:31.714Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:27:31.770Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:27:31.835Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:27:31.903Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:27:31.952Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:27:31.982Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:27:32.027Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:27:32.061Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:27:32.104Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:27:32.157Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:27:32.200Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:27:32.256Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:27:32.295Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:27:43.194Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:27:43.235Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:27:43.262Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:27:43.306Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:27:43.341Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:27:43.377Z] Report System (Port 3005): GET /health
+[2025-12-03T03:27:43.418Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:27:43.465Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:27:43.527Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:27:43.557Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:27:43.585Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:27:43.622Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:27:43.650Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:27:43.702Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:27:43.767Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:27:43.803Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:27:43.843Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:27:43.871Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:27:43.925Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:27:43.977Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:27:47.127Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:27:47.236Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:27:47.360Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:27:47.470Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:27:47.581Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:27:51.233Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:27:54.260Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:27:54.292Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:27:54.332Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:27:54.392Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:27:54.487Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:27:54.539Z] Report System (Port 3005): GET /health
+[2025-12-03T03:27:54.596Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:27:54.690Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:27:54.755Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:27:54.789Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:27:54.833Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:27:54.864Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:27:54.926Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:27:55.022Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:27:55.075Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:27:55.101Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:27:55.127Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:27:55.157Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:27:55.211Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:27:55.246Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:28:05.295Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:28:05.329Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:28:05.380Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:28:05.431Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:28:05.533Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:28:05.594Z] Report System (Port 3005): GET /health
+[2025-12-03T03:28:05.678Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:28:05.748Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:28:05.800Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:28:05.834Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:28:05.886Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:28:05.913Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:28:05.956Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:28:05.991Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:28:06.025Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:28:06.065Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:28:06.091Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:28:06.115Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:28:06.150Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:28:06.173Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:28:16.245Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:28:16.273Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:28:16.311Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:28:16.341Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:28:16.367Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:28:16.409Z] Report System (Port 3005): GET /health
+[2025-12-03T03:28:16.449Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:28:16.472Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:28:16.507Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:28:16.537Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:28:16.570Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:28:16.614Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:28:16.665Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:28:16.691Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:28:16.741Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:28:16.784Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:28:16.816Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:28:16.848Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:28:16.889Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:28:16.934Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:28:21.234Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:28:27.221Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:28:27.269Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:28:27.302Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:28:27.340Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:28:27.386Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:28:27.416Z] Report System (Port 3005): GET /health
+[2025-12-03T03:28:27.477Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:28:27.514Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:28:27.560Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:28:27.616Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:28:27.649Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:28:27.692Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:28:27.737Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:28:27.771Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:28:27.798Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:28:27.828Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:28:27.873Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:28:27.927Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:28:27.963Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:28:27.998Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:28:38.222Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:28:38.255Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:28:38.278Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:28:38.335Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:28:38.394Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:28:38.465Z] Report System (Port 3005): GET /health
+[2025-12-03T03:28:38.497Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:28:38.543Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:28:38.574Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:28:38.609Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:28:38.662Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:28:38.722Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:28:38.774Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:28:38.834Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:28:38.871Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:28:38.904Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:28:38.950Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:28:38.986Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:28:39.049Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:28:39.097Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:28:49.181Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:28:49.209Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:28:49.235Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:28:49.260Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:28:49.289Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:28:49.316Z] Report System (Port 3005): GET /health
+[2025-12-03T03:28:49.344Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:28:49.392Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:28:49.432Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:28:49.470Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:28:49.495Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:28:49.536Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:28:49.577Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:28:49.610Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:28:49.644Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:28:49.698Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:28:49.744Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:28:49.773Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:28:49.803Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:28:49.859Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:28:51.239Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:29:00.172Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:29:00.205Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:29:00.250Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:29:00.300Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:29:00.363Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:29:00.420Z] Report System (Port 3005): GET /health
+[2025-12-03T03:29:00.520Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:29:00.578Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:29:00.618Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:29:00.659Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:29:00.710Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:29:00.750Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:29:00.794Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:29:00.831Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:29:00.881Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:29:00.926Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:29:00.959Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:29:00.986Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:29:01.015Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:29:01.055Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:29:11.248Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:29:11.286Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:29:11.342Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:29:11.408Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:29:11.436Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:29:11.495Z] Report System (Port 3005): GET /health
+[2025-12-03T03:29:11.536Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:29:11.578Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:29:11.627Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:29:11.655Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:29:11.704Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:29:11.745Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:29:11.788Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:29:11.855Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:29:11.913Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:29:11.956Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:29:11.987Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:29:12.038Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:29:12.095Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:29:12.122Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:29:21.245Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:29:22.195Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:29:22.229Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:29:22.254Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:29:22.312Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:29:22.376Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:29:22.458Z] Report System (Port 3005): GET /health
+[2025-12-03T03:29:22.510Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:29:22.545Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:29:22.578Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:29:22.631Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:29:22.676Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:29:22.737Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:29:22.800Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:29:22.852Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:29:22.905Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:29:22.952Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:29:22.980Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:29:23.028Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:29:23.070Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:29:23.112Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:29:34.251Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:29:34.282Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:29:34.340Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:29:34.379Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:29:34.404Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:29:34.436Z] Report System (Port 3005): GET /health
+[2025-12-03T03:29:34.497Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:29:34.527Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:29:34.574Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:29:34.611Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:29:34.642Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:29:34.671Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:29:34.728Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:29:34.773Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:29:34.799Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:29:34.825Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:29:34.858Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:29:34.897Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:29:34.958Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:29:34.998Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:29:45.225Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:29:45.304Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:29:45.364Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:29:45.436Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:29:45.495Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:29:45.556Z] Report System (Port 3005): GET /health
+[2025-12-03T03:29:45.621Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:29:45.668Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:29:45.707Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:29:45.756Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:29:45.802Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:29:45.862Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:29:45.922Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:29:45.965Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:29:46.030Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:29:46.089Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:29:46.141Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:29:46.190Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:29:46.273Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:29:46.339Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:29:51.254Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:29:57.310Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:29:57.409Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:29:57.456Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:29:57.504Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:29:57.549Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:29:57.587Z] Report System (Port 3005): GET /health
+[2025-12-03T03:29:57.626Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:29:57.667Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:29:57.709Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:29:57.791Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:29:57.851Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:29:57.913Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:29:57.966Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:29:58.019Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:29:58.073Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:29:58.121Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:29:58.161Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:29:58.212Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:29:58.311Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:29:58.362Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:30:09.516Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:30:09.601Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:30:09.659Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:30:09.703Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:30:09.784Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:30:09.875Z] Report System (Port 3005): GET /health
+[2025-12-03T03:30:09.944Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:30:10.039Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:30:10.116Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:30:10.205Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:30:10.312Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:30:10.428Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:30:10.512Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:30:10.558Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:30:10.595Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:30:10.646Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:30:10.702Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:30:10.750Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:30:10.808Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:30:10.838Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:30:21.280Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:30:22.280Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:30:22.341Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:30:22.396Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:30:22.451Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:30:22.492Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:30:22.546Z] Report System (Port 3005): GET /health
+[2025-12-03T03:30:22.605Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:30:22.656Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:30:22.688Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:30:22.718Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:30:22.778Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:30:22.819Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:30:22.904Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:30:22.964Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:30:23.017Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:30:23.067Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:30:23.098Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:30:23.149Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:30:23.209Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:30:23.270Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:30:34.231Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:30:34.260Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:30:34.290Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:30:34.317Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:30:34.367Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:30:34.412Z] Report System (Port 3005): GET /health
+[2025-12-03T03:30:34.450Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:30:34.498Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:30:34.551Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:30:34.598Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:30:34.642Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:30:34.809Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:30:34.857Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:30:34.906Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:30:34.989Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:30:35.040Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:30:35.063Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:30:35.091Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:30:35.125Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:30:35.160Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:30:45.196Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:30:45.234Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:30:45.272Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:30:45.315Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:30:45.360Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:30:45.401Z] Report System (Port 3005): GET /health
+[2025-12-03T03:30:45.452Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:30:45.518Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:30:45.549Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:30:45.613Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:30:45.693Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:30:45.749Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:30:45.809Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:30:45.844Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:30:45.888Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:30:45.920Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:30:45.965Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:30:45.998Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:30:46.033Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:30:46.061Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:30:51.286Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:30:56.197Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:30:56.224Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:30:56.277Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:30:56.319Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:30:56.355Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:30:56.403Z] Report System (Port 3005): GET /health
+[2025-12-03T03:30:56.447Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:30:56.487Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:30:56.530Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:30:56.577Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:30:56.610Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:30:56.649Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:30:56.691Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:30:56.725Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:30:56.768Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:30:56.808Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:30:56.848Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:30:56.899Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:30:56.943Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:30:56.973Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:31:07.251Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:31:07.284Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:31:07.314Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:31:07.347Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:31:07.414Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:31:07.471Z] Report System (Port 3005): GET /health
+[2025-12-03T03:31:07.563Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:31:07.627Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:31:07.702Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:31:07.753Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:31:07.805Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:31:07.843Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:31:07.955Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:31:08.031Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:31:08.085Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:31:08.114Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:31:08.145Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:31:08.192Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:31:08.223Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:31:08.255Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:31:19.259Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:31:19.290Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:31:19.323Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:31:19.350Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:31:19.409Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:31:19.460Z] Report System (Port 3005): GET /health
+[2025-12-03T03:31:19.517Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:31:19.561Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:31:19.609Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:31:19.664Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:31:19.804Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:31:19.883Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:31:19.944Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:31:19.989Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:31:20.051Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:31:20.120Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:31:20.172Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:31:20.211Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:31:20.247Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:31:20.280Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:31:21.297Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:31:31.233Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:31:31.263Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:31:31.302Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:31:31.352Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:31:31.396Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:31:31.442Z] Report System (Port 3005): GET /health
+[2025-12-03T03:31:31.492Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:31:31.530Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:31:31.576Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:31:31.613Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:31:31.650Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:31:31.681Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:31:31.731Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:31:31.773Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:31:31.809Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:31:31.837Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:31:31.896Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:31:31.999Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:31:32.118Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:31:32.163Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:31:42.231Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:31:42.268Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:31:42.312Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:31:42.373Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:31:42.420Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:31:42.450Z] Report System (Port 3005): GET /health
+[2025-12-03T03:31:42.514Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:31:42.579Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:31:42.614Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:31:42.662Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:31:42.702Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:31:42.745Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:31:42.780Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:31:42.813Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:31:42.848Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:31:42.885Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:31:42.927Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:31:42.967Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:31:42.997Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:31:43.027Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:31:51.302Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:31:53.175Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:31:53.205Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:31:53.234Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:31:53.262Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:31:53.291Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:31:53.320Z] Report System (Port 3005): GET /health
+[2025-12-03T03:31:53.380Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:31:53.441Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:31:53.480Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:31:53.521Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:31:53.608Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:31:53.653Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:31:53.718Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:31:53.786Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:31:53.834Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:31:53.862Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:31:53.894Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:31:53.957Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:31:54.003Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:31:54.041Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:32:05.063Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:32:05.319Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:32:05.431Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:32:05.510Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:32:05.550Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:32:05.613Z] Report System (Port 3005): GET /health
+[2025-12-03T03:32:05.663Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:32:05.755Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:32:05.887Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:32:05.926Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:32:05.978Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:32:06.048Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:32:06.077Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:32:06.131Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:32:06.173Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:32:06.213Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:32:06.246Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:32:06.277Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:32:06.299Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:32:06.351Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:32:17.220Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:32:17.259Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:32:17.307Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:32:17.403Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:32:17.504Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:32:17.586Z] Report System (Port 3005): GET /health
+[2025-12-03T03:32:17.695Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:32:17.779Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:32:17.864Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:32:17.947Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:32:18.012Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:32:18.081Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:32:18.155Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:32:18.211Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:32:18.279Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:32:18.339Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:32:18.430Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:32:18.489Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:32:18.620Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:32:18.755Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:32:21.330Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:32:30.208Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:32:30.240Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:32:30.266Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:32:30.301Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:32:30.350Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:32:30.383Z] Report System (Port 3005): GET /health
+[2025-12-03T03:32:30.423Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:32:30.504Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:32:30.536Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:32:30.564Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:32:30.599Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:32:30.636Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:32:30.672Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:32:30.706Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:32:30.735Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:32:30.788Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:32:30.814Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:32:30.862Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:32:30.903Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:32:30.964Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:32:41.537Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:32:41.700Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:32:41.743Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:32:41.815Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:32:41.903Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:32:42.013Z] Report System (Port 3005): GET /health
+[2025-12-03T03:32:42.066Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:32:42.104Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:32:42.135Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:32:42.182Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:32:42.233Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:32:42.259Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:32:42.286Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:32:42.315Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:32:42.356Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:32:42.384Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:32:42.420Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:32:42.465Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:32:42.507Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:32:42.549Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:32:47.726Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:32:47.821Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:32:47.959Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:32:48.038Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:32:48.152Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:32:51.335Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:32:53.202Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:32:53.248Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:32:53.296Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:32:53.333Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:32:53.390Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:32:53.437Z] Report System (Port 3005): GET /health
+[2025-12-03T03:32:53.504Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:32:53.543Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:32:53.574Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:32:53.621Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:32:53.651Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:32:53.685Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:32:53.749Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:32:53.796Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:32:53.840Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:32:53.889Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:32:53.928Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:32:53.960Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:32:53.992Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:32:54.037Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:33:04.173Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:33:04.217Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:33:04.253Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:33:04.286Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:33:04.322Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:33:04.367Z] Report System (Port 3005): GET /health
+[2025-12-03T03:33:04.401Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:33:04.446Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:33:04.499Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:33:04.533Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:33:04.583Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:33:04.616Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:33:04.645Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:33:04.688Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:33:04.722Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:33:04.792Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:33:04.852Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:33:04.908Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:33:04.953Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:33:04.993Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:33:15.220Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:33:15.251Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:33:15.283Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:33:15.322Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:33:15.353Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:33:15.379Z] Report System (Port 3005): GET /health
+[2025-12-03T03:33:15.429Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:33:15.464Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:33:15.510Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:33:15.561Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:33:15.604Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:33:15.664Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:33:15.707Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:33:15.739Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:33:15.765Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:33:15.816Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:33:15.866Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:33:15.903Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:33:15.939Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:33:15.983Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:33:21.338Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:33:26.226Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:33:26.259Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:33:26.293Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:33:26.355Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:33:26.393Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:33:26.445Z] Report System (Port 3005): GET /health
+[2025-12-03T03:33:26.487Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:33:26.528Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:33:26.590Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:33:26.622Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:33:26.654Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:33:26.700Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:33:26.732Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:33:26.768Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:33:26.813Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:33:26.846Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:33:26.882Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:33:26.915Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:33:26.959Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:33:27.012Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:33:37.264Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:33:37.310Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:33:37.345Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:33:37.389Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:33:37.446Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:33:37.529Z] Report System (Port 3005): GET /health
+[2025-12-03T03:33:37.587Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:33:37.632Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:33:37.665Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:33:37.703Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:33:37.739Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:33:37.785Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:33:37.823Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:33:37.852Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:33:37.891Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:33:37.915Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:33:37.960Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:33:37.989Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:33:38.026Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:33:38.069Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:33:48.436Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:33:48.555Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:33:48.685Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:33:48.793Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:33:48.899Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:33:48.963Z] Report System (Port 3005): GET /health
+[2025-12-03T03:33:49.065Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:33:49.138Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:33:49.415Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:33:49.551Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:33:49.582Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:33:49.636Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:33:49.712Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:33:49.801Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:33:49.852Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:33:49.927Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:33:49.969Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:33:50.004Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:33:50.105Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:33:50.194Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:33:51.357Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:34:01.199Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:34:01.279Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:34:01.344Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:34:01.396Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:34:01.468Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:34:01.530Z] Report System (Port 3005): GET /health
+[2025-12-03T03:34:01.568Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:34:01.624Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:34:01.682Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:34:01.731Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:34:01.769Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:34:01.809Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:34:01.853Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:34:01.900Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:34:01.942Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:34:01.999Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:34:02.041Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:34:02.105Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:34:02.138Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:34:02.173Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:34:12.250Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:34:12.311Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:34:12.363Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:34:12.404Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:34:12.459Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:34:12.501Z] Report System (Port 3005): GET /health
+[2025-12-03T03:34:12.548Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:34:12.583Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:34:12.643Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:34:12.691Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:34:12.726Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:34:12.757Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:34:12.793Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:34:12.863Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:34:12.897Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:34:12.945Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:34:12.984Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:34:13.036Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:34:13.070Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:34:13.117Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:34:21.362Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:34:23.213Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:34:23.247Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:34:23.289Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:34:23.333Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:34:23.365Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:34:23.391Z] Report System (Port 3005): GET /health
+[2025-12-03T03:34:23.421Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:34:23.457Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:34:23.510Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:34:23.541Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:34:23.573Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:34:23.608Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:34:23.639Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:34:23.685Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:34:23.719Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:34:23.744Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:34:23.778Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:34:23.809Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:34:23.873Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:34:23.904Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:34:34.238Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:34:34.285Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:34:34.319Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:34:34.374Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:34:34.439Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:34:34.518Z] Report System (Port 3005): GET /health
+[2025-12-03T03:34:34.556Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:34:34.595Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:34:34.667Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:34:34.695Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:34:34.734Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:34:34.768Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:34:34.829Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:34:34.857Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:34:34.887Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:34:34.944Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:34:34.990Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:34:35.035Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:34:35.063Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:34:35.108Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:34:45.277Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:34:45.317Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:34:45.374Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:34:45.416Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:34:45.456Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:34:45.496Z] Report System (Port 3005): GET /health
+[2025-12-03T03:34:45.544Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:34:45.618Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:34:45.669Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:34:45.715Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:34:45.756Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:34:45.801Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:34:45.842Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:34:45.882Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:34:45.923Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:34:45.959Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:34:46.000Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:34:46.040Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:34:46.081Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:34:46.109Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:34:51.375Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:34:57.263Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:34:57.319Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:34:57.355Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:34:57.426Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:34:57.486Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:34:57.548Z] Report System (Port 3005): GET /health
+[2025-12-03T03:34:57.595Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:34:57.652Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:34:57.747Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:34:57.783Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:34:57.840Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:34:57.880Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:34:57.925Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:34:57.960Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:34:58.010Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:34:58.073Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:34:58.114Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:34:58.181Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:34:58.257Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:34:58.366Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:35:09.189Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:35:09.246Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:35:09.301Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:35:09.342Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:35:09.386Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:35:09.421Z] Report System (Port 3005): GET /health
+[2025-12-03T03:35:09.463Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:35:09.493Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:35:09.521Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:35:09.552Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:35:09.596Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:35:09.650Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:35:09.684Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:35:09.745Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:35:09.826Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:35:09.906Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:35:09.953Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:35:09.999Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:35:10.055Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:35:10.127Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:35:21.241Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:35:21.273Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:35:21.311Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:35:21.337Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:35:21.371Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:35:21.377Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:35:21.398Z] Report System (Port 3005): GET /health
+[2025-12-03T03:35:21.435Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:35:21.469Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:35:21.508Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:35:21.574Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:35:21.605Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:35:21.656Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:35:21.685Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:35:21.714Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:35:21.776Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:35:21.807Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:35:21.834Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:35:21.882Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:35:21.933Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:35:21.965Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:35:32.166Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:35:32.200Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:35:32.233Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:35:32.290Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:35:32.335Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:35:32.370Z] Report System (Port 3005): GET /health
+[2025-12-03T03:35:32.400Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:35:32.435Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:35:32.461Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:35:32.503Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:35:32.534Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:35:32.565Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:35:32.596Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:35:32.633Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:35:32.674Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:35:32.716Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:35:32.765Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:35:32.809Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:35:32.843Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:35:32.911Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:35:43.275Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:35:43.338Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:35:43.393Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:35:43.456Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:35:43.507Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:35:43.544Z] Report System (Port 3005): GET /health
+[2025-12-03T03:35:43.573Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:35:43.628Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:35:43.665Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:35:43.698Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:35:43.742Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:35:43.784Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:35:43.843Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:35:43.925Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:35:43.976Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:35:44.072Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:35:44.147Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:35:44.212Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:35:44.254Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:35:44.321Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:35:51.382Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:35:55.195Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:35:55.252Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:35:55.304Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:35:55.359Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:35:55.446Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:35:55.494Z] Report System (Port 3005): GET /health
+[2025-12-03T03:35:55.680Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:35:55.805Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:35:55.972Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:35:56.183Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:35:56.454Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:35:56.486Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:35:56.523Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:35:56.572Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:35:56.636Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:35:56.672Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:35:56.705Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:35:56.735Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:35:56.779Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:35:56.819Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:36:07.212Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:36:07.241Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:36:07.277Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:36:07.304Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:36:07.334Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:36:07.361Z] Report System (Port 3005): GET /health
+[2025-12-03T03:36:07.394Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:36:07.423Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:36:07.503Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:36:07.527Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:36:07.564Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:36:07.589Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:36:07.622Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:36:07.647Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:36:07.677Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:36:07.705Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:36:07.748Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:36:07.781Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:36:07.829Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:36:07.892Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:36:18.217Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:36:18.243Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:36:18.297Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:36:18.330Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:36:18.389Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:36:18.434Z] Report System (Port 3005): GET /health
+[2025-12-03T03:36:18.492Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:36:18.553Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:36:18.625Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:36:18.687Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:36:18.733Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:36:18.772Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:36:18.819Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:36:18.846Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:36:18.877Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:36:18.910Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:36:18.938Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:36:18.975Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:36:19.065Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:36:19.136Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:36:21.390Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:36:30.189Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:36:30.265Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:36:30.316Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:36:30.365Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:36:30.418Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:36:30.472Z] Report System (Port 3005): GET /health
+[2025-12-03T03:36:30.559Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:36:30.654Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:36:30.735Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:36:30.808Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:36:30.919Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:36:31.003Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:36:31.060Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:36:31.144Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:36:31.360Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:36:31.465Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:36:31.522Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:36:31.627Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:36:31.681Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:36:31.778Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:36:43.190Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:36:43.224Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:36:43.254Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:36:43.279Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:36:43.303Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:36:43.339Z] Report System (Port 3005): GET /health
+[2025-12-03T03:36:43.365Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:36:43.420Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:36:43.454Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:36:43.498Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:36:43.580Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:36:43.617Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:36:43.674Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:36:43.722Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:36:43.786Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:36:43.824Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:36:43.861Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:36:43.904Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:36:43.954Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:36:44.003Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:36:51.393Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:36:54.165Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:36:54.194Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:36:54.221Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:36:54.246Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:36:54.276Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:36:54.302Z] Report System (Port 3005): GET /health
+[2025-12-03T03:36:54.330Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:36:54.355Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:36:54.382Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:36:54.440Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:36:54.484Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:36:54.523Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:36:54.562Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:36:54.596Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:36:54.625Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:36:54.685Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:36:54.718Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:36:54.765Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:36:54.810Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:36:54.838Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:37:05.290Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:37:05.354Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:37:05.484Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:37:05.595Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:37:05.636Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:37:05.689Z] Report System (Port 3005): GET /health
+[2025-12-03T03:37:05.757Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:37:05.789Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:37:05.814Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:37:05.861Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:37:05.909Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:37:05.971Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:37:06.029Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:37:06.077Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:37:06.133Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:37:06.159Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:37:06.193Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:37:06.242Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:37:06.293Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:37:06.334Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:37:17.234Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:37:17.269Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:37:17.296Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:37:17.312Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:37:17.361Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:37:17.401Z] Report System (Port 3005): GET /health
+[2025-12-03T03:37:17.469Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:37:17.524Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:37:17.582Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:37:17.613Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:37:17.652Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:37:17.690Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:37:17.719Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:37:17.758Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:37:17.797Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:37:17.826Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:37:17.875Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:37:17.907Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:37:17.947Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:37:17.987Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:37:21.393Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:37:29.154Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:37:29.196Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:37:29.231Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:37:29.273Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:37:29.302Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:37:29.327Z] Report System (Port 3005): GET /health
+[2025-12-03T03:37:29.355Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:37:29.378Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:37:29.400Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:37:29.429Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:37:29.465Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:37:29.494Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:37:29.532Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:37:29.566Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:37:29.593Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:37:29.625Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:37:29.649Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:37:29.691Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:37:29.726Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:37:29.763Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:37:40.180Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:37:40.228Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:37:40.270Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:37:40.314Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:37:40.368Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:37:40.393Z] Report System (Port 3005): GET /health
+[2025-12-03T03:37:40.423Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:37:40.464Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:37:40.497Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:37:40.527Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:37:40.569Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:37:40.595Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:37:40.622Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:37:40.652Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:37:40.689Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:37:40.720Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:37:40.771Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:37:40.807Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:37:40.874Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:37:40.923Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:37:48.306Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:37:48.432Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:37:48.521Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:37:48.642Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:37:48.735Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:37:51.244Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:37:51.320Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:37:51.372Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:37:51.399Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:37:51.400Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:37:51.435Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:37:51.462Z] Report System (Port 3005): GET /health
+[2025-12-03T03:37:51.503Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:37:51.544Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:37:51.575Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:37:51.608Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:37:51.635Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:37:51.668Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:37:51.698Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:37:51.732Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:37:51.772Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:37:51.821Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:37:51.858Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:37:51.893Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:37:51.946Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:37:51.992Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:38:02.299Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:38:02.416Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:38:02.485Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:38:02.534Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:38:02.568Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:38:02.605Z] Report System (Port 3005): GET /health
+[2025-12-03T03:38:02.656Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:38:02.705Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:38:02.752Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:38:02.791Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:38:02.822Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:38:02.877Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:38:02.928Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:38:03.015Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:38:03.088Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:38:03.138Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:38:03.186Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:38:03.248Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:38:03.280Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:38:03.320Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:38:14.246Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:38:14.286Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:38:14.327Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:38:14.372Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:38:14.417Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:38:14.449Z] Report System (Port 3005): GET /health
+[2025-12-03T03:38:14.480Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:38:14.510Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:38:14.538Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:38:14.578Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:38:14.620Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:38:14.653Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:38:14.690Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:38:14.724Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:38:14.761Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:38:14.808Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:38:14.844Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:38:14.888Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:38:14.919Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:38:14.950Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:38:21.401Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:38:25.198Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:38:25.230Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:38:25.256Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:38:25.289Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:38:25.321Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:38:25.384Z] Report System (Port 3005): GET /health
+[2025-12-03T03:38:25.425Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:38:25.452Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:38:25.503Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:38:25.545Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:38:25.579Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:38:25.621Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:38:25.682Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:38:25.738Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:38:25.784Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:38:25.836Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:38:25.872Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:38:25.913Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:38:25.969Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:38:26.009Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:38:36.166Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:38:36.191Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:38:36.233Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:38:36.258Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:38:36.287Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:38:36.344Z] Report System (Port 3005): GET /health
+[2025-12-03T03:38:36.413Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:38:36.460Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:38:36.500Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:38:36.528Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:38:36.574Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:38:36.601Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:38:36.640Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:38:36.676Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:38:36.725Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:38:36.779Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:38:36.822Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:38:36.867Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:38:36.904Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:38:36.932Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:38:47.275Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:38:47.308Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:38:47.352Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:38:47.393Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:38:47.433Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:38:47.476Z] Report System (Port 3005): GET /health
+[2025-12-03T03:38:47.513Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:38:47.538Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:38:47.567Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:38:47.602Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:38:47.631Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:38:47.654Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:38:47.680Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:38:47.701Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:38:47.737Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:38:47.767Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:38:47.796Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:38:47.827Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:38:47.859Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:38:47.895Z] Host Dashboard (Port 3019): GET /health
+[2025-12-03T03:38:51.406Z] ♥️  HEARTBEAT - All 20 APIs running
+[2025-12-03T03:38:58.222Z] Main Gateway (Port 3000): GET /health
+[2025-12-03T03:38:58.265Z] Global Ban System (Port 3001): GET /health
+[2025-12-03T03:38:58.308Z] AI Detection (Port 3002): GET /health
+[2025-12-03T03:38:58.350Z] Player Analytics (Port 3003): GET /health
+[2025-12-03T03:38:58.405Z] Server Metrics (Port 3004): GET /health
+[2025-12-03T03:38:58.458Z] Report System (Port 3005): GET /health
+[2025-12-03T03:38:58.484Z] Anticheat Sync (Port 3006): GET /health
+[2025-12-03T03:38:58.514Z] Backup Storage (Port 3007): GET /health
+[2025-12-03T03:38:58.548Z] Screenshot Storage (Port 3008): GET /health
+[2025-12-03T03:38:58.579Z] Webhook Relay (Port 3009): GET /health
+[2025-12-03T03:38:58.608Z] Global Chat Hub (Port 3010): GET /health
+[2025-12-03T03:38:58.639Z] Player Tracking (Port 3011): GET /health
+[2025-12-03T03:38:58.665Z] Server Registry (Port 3012): GET /health
+[2025-12-03T03:38:58.707Z] License Validation (Port 3013): GET /health
+[2025-12-03T03:38:58.756Z] Update Checker (Port 3014): GET /health
+[2025-12-03T03:38:58.803Z] Audit Logging (Port 3015): GET /health
+[2025-12-03T03:38:58.857Z] Performance Monitor (Port 3016): GET /health
+[2025-12-03T03:38:58.906Z] Resource Hub (Port 3017): GET /health
+[2025-12-03T03:38:58.975Z] Emergency Control (Port 3018): GET /health
+[2025-12-03T03:38:59.186Z] Host Dashboard (Port 3019): GET /health
