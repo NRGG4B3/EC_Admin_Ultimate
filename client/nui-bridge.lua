@@ -928,9 +928,6 @@ end)
 
 Logger.Success('✅ NUI bridge initialized successfully')
 Logger.Info('🎮 Press F2 to open admin menu')
-    local result = lib.callback.await('ec_admin:getAIAnalytics', false, data)
-    cb(result or { success = false, error = 'No response from server' })
-end)
 
 -- ==========================================
 -- HOUSING & JOBS
