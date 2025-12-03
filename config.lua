@@ -184,9 +184,9 @@ Config.VehicleScanning = {
 
 -- Vehicle Spawn Settings
 Config.VehicleSpawn = {
-    defaultPlate = 'ADMIN',  -- Default plate for spawned vehicles
+    defaultPlate = 'ECBetaG4B3',  -- Default plate for spawned vehicles
     spawnInVehicle = true,  -- Put admin in vehicle after spawning
-    fullyUpgraded = true,  -- Max upgrades on spawned vehicles
+    fullyUpgraded = false,  -- Max upgrades on spawned vehicles
     godMode = false  -- Make spawned vehicles invincible
 }
 
