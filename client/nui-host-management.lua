@@ -40,6 +40,52 @@ RegisterNUICallback('getHostDashboardStats', function(data, cb)
     })
 end)
 
+-- Host System Stats (normalized for HostDashboard UI)
+-- Maps to server-side aggregate stats and converts to UI's HostStats shape
+RegisterNUICallback('getHostSystemStats', function(data, cb)
+    local stats = lib.callback.await('ec_admin:host:getDashboardStats', false) or {}
+
+    local payload = {
+        total_apis = stats.totalAPIs or (stats.onlineAPIs or 0) + (stats.offlineAPIs or 0) + (stats.degradedAPIs or 0),
+        online_apis = stats.onlineAPIs or 0,
+        degraded_apis = stats.degradedAPIs or 0,
+        offline_apis = stats.offlineAPIs or 0,
+        system_health = stats.systemHealth or 0,
+
+        total_cities = stats.totalCities or 0,
+        online_cities = stats.onlineCities or 0,
+        ec_admin_cities = stats.ecAdminCities or 0,
+        customer_cities = stats.customerCities or 0,
+        total_players_online = stats.totalPlayers or 0,
+
+        total_requests_today = stats.totalRequestsToday or stats.actionsToday or 0,
+        total_requests_all_time = stats.totalRequestsAllTime or 0,
+        avg_response_time = stats.avgResponseTime or 0,
+        total_errors_today = stats.totalErrorsToday or 0,
+        avg_uptime = stats.avgUptime or 0,
+
+        total_bans = stats.totalBans or 0,
+        bans_today = stats.bansToday or 0,
+        pending_appeals = stats.pendingAppeals or 0,
+        total_warnings = stats.totalWarnings or 0,
+        warnings_today = stats.warningsToday or 0,
+
+        total_memory_usage = stats.totalMemoryUsage or 0,
+        total_cpu_usage = stats.totalCPUUsage or 0,
+        database_size = stats.databaseSize or 0,
+
+        total_webhooks = stats.totalWebhooks or 0,
+        active_webhooks = stats.activeWebhooks or stats.totalWebhooks or 0,
+        webhook_executions_today = stats.webhookExecutions24h or 0,
+
+        critical_alerts = stats.criticalAlerts or (stats.activeAlerts and #stats.activeAlerts or 0),
+        warnings_system = stats.warningsSystem or 0,
+        recent_alerts = stats.activeAlerts or {}
+    }
+
+    respond(cb, payload)
+end)
+
 -- ==========================================
 -- GLOBAL BANS
 -- ==========================================
@@ -165,6 +211,25 @@ RegisterNUICallback('getHostActionLogs', function(data, cb)
     respond(cb, result or {})
 end)
 
+-- System Logs for Host Dashboard (maps to host action logs for now)
+RegisterNUICallback('getSystemLogs', function(data, cb)
+    local result = lib.callback.await('ec_admin:host:getActionLogs', false, data.filters or {})
+    -- Normalize to SystemLog shape expected by UI
+    local logs = {}
+    for _, entry in ipairs(result or {}) do
+        table.insert(logs, {
+            id = entry.id or 0,
+            log_type = 'info',
+            source = entry.city_name or 'host',
+            message = entry.action_type or 'action',
+            details = entry.details or '',
+            timestamp = entry.timestamp or os.time(),
+            resolved = false
+        })
+    end
+    respond(cb, logs)
+end)
+
 -- ==========================================
 -- NRG STAFF MANAGEMENT
 -- ==========================================
@@ -284,6 +349,11 @@ RegisterNUICallback('getCityDetails', function(data, cb)
     respond(cb, result or {})
 end)
 
+RegisterNUICallback('disconnectCity', function(data, cb)
+    TriggerServerEvent('ec_admin:host:executeCityCommand', { cityId = data.cityId, command = 'disconnect' })
+    cb({ success = true })
+end)
+
 -- ==========================================
 -- ANALYTICS & REPORTS
 -- ==========================================
@@ -291,6 +361,26 @@ end)
 RegisterNUICallback('getHostAnalytics', function(data, cb)
     local result = lib.callback.await('ec_admin:host:getAnalytics', false, data.timeRange or '24h')
     respond(cb, result or {})
+end)
+
+-- Sales Projections for Host Dashboard (derive from analytics)
+RegisterNUICallback('getSalesProjections', function(data, cb)
+    local analytics = lib.callback.await('ec_admin:host:getAnalytics', false, '6mo') or {}
+    local projections = {}
+    -- Expect analytics.monthly if available
+    local monthly = analytics.monthly or analytics
+    if type(monthly) == 'table' then
+        for _, m in ipairs(monthly) do
+            table.insert(projections, {
+                month = m.month or 'N/A',
+                projected_revenue = m.revenue or 0,
+                projected_customers = m.customers or 0,
+                projected_mrr = m.mrr or 0,
+                confidence = m.confidence or 75
+            })
+        end
+    end
+    respond(cb, projections)
 end)
 
 RegisterNUICallback('exportHostReport', function(data, cb)

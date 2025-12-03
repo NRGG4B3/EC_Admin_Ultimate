@@ -1,3 +1,69 @@
+-- EC Admin Ultimate - Host Control Server Callbacks
+-- Secures and processes host-control actions requested from UI
+
+local function ensureHostAccess(source)
+    local ok = false
+    if exports and exports[GetCurrentResourceName()] and exports[GetCurrentResourceName()].IsHostModeEnabled then
+        ok = exports[GetCurrentResourceName()]:IsHostModeEnabled()
+    end
+    if not ok then return false end
+    if exports and exports[GetCurrentResourceName()] and exports[GetCurrentResourceName()].IsNRGStaff then
+        return exports[GetCurrentResourceName()]:IsNRGStaff(source)
+    end
+    return false
+end
+
+local function safeLog(level, msg)
+    if Logger and Logger[level] then
+        Logger[level](msg)
+    else
+        print(msg)
+    end
+end
+
+lib.callback.register('ec_admin:host:controlAPI', function(source, data)
+    if not ensureHostAccess(source) then
+        safeLog('Error', ('[Host Control] Denied controlAPI from %s'):format(source))
+        return { success = false, error = 'Access denied' }
+    end
+    local api = data.apiName
+    local action = data.action
+    local params = data.params or {}
+
+    TriggerEvent('ec_admin:host:performAPIAction', api, action, params)
+    safeLog('Info', ('[Host Control] %s -> %s requested by %s'):format(api or 'nil', action or 'nil', source))
+    return { success = true }
+end)
+
+lib.callback.register('ec_admin:host:executeCityCommand', function(source, data)
+    if not ensureHostAccess(source) then
+        safeLog('Error', ('[Host Control] Denied executeCityCommand from %s'):format(source))
+        return { success = false, error = 'Access denied' }
+    end
+    TriggerEvent('ec_admin:host:executeCityCommand', data.cityId, data.command, data.params)
+    safeLog('Info', ('[Host Control] City %s command %s by %s'):format(tostring(data.cityId), tostring(data.command), source))
+    return { success = true }
+end)
+
+lib.callback.register('ec_admin:host:emergencyStopAPI', function(source, data)
+    if not ensureHostAccess(source) then
+        safeLog('Error', ('[Host Control] Denied emergencyStopAPI from %s'):format(source))
+        return { success = false, error = 'Access denied' }
+    end
+    TriggerEvent('ec_admin:host:performAPIAction', data.apiName, 'emergencyStop', { reason = data.reason })
+    safeLog('Warn', ('[Host Control] Emergency stop %s by %s: %s'):format(tostring(data.apiName), source, tostring(data.reason)))
+    return { success = true }
+end)
+
+lib.callback.register('ec_admin:host:restartAPI', function(source, data)
+    if not ensureHostAccess(source) then
+        safeLog('Error', ('[Host Control] Denied restartAPI from %s'):format(source))
+        return { success = false, error = 'Access denied' }
+    end
+    TriggerEvent('ec_admin:host:performAPIAction', data.apiName, 'restart', {})
+    safeLog('Info', ('[Host Control] Restart %s by %s'):format(tostring(data.apiName), source))
+    return { success = true }
+end)
 -- EC Admin Ultimate - Host Control Callbacks (Server)
 -- All lib.callback.register for host data
 -- Author: NRG Development
@@ -83,51 +149,23 @@ lib.callback.register('ec_admin:host:getAPILogs', function(source, apiName, filt
     if not exports['ec_admin_ultimate']:HasPermission(source, 'ec_admin.host.view') then
         return nil
     end
+    -- Prefer MetricsDB if available; else return empty, non-mock result
+    if _G.MetricsDB and _G.MetricsDB.GetAPILogs then
+        return _G.MetricsDB.GetAPILogs(apiName, filters)
+    end
     
-    -- NOTE: host-api-management-callbacks.lua has a duplicate but is not loaded
+    -- Attempt export-based retrieval if provided by host resource
+    if exports['ec_admin_ultimate'] and exports['ec_admin_ultimate'].GetAPILogs then
+        return exports['ec_admin_ultimate']:GetAPILogs(apiName, filters)
+    end
     
-    -- Mock data for now (would call actual API)
     return {
+        success = false,
         apiName = apiName,
-        logs = {
-            {
-                id = 1,
-                timestamp = os.time() - 300,
-                level = 'info',
-                message = 'API started successfully',
-                details = {}
-            },
-            {
-                id = 2,
-                timestamp = os.time() - 240,
-                level = 'info',
-                message = 'Connection established from city-001',
-                details = {cityId = 'city-001'}
-            },
-            {
-                id = 3,
-                timestamp = os.time() - 180,
-                level = 'warn',
-                message = 'High response time detected',
-                details = {responseTime = 523}
-            },
-            {
-                id = 4,
-                timestamp = os.time() - 120,
-                level = 'error',
-                message = 'Connection timeout to database',
-                details = {error = 'ETIMEDOUT'}
-            },
-            {
-                id = 5,
-                timestamp = os.time() - 60,
-                level = 'info',
-                message = 'Database connection restored',
-                details = {}
-            }
-        },
-        totalLogs = 1234,
-        filters = filters
+        logs = {},
+        totalLogs = 0,
+        filters = filters,
+        error = 'APILog source unavailable'
     }
 end)
 
@@ -138,47 +176,22 @@ lib.callback.register('ec_admin:host:getAPIMetrics', function(source, apiName, t
     if not exports['ec_admin_ultimate']:HasPermission(source, 'ec_admin.host.view') then
         return nil
     end
-    
-    -- NOTE: host-api-management-callbacks.lua has a duplicate but is not loaded
-    
-    -- Mock data for now (would call actual API)
-    local metrics = {
-        apiName = apiName,
-        timeRange = timeRange or '1h',
-        data = {
-            requests = {},
-            responseTime = {},
-            errors = {},
-            cpu = {},
-            memory = {}
-        }
-    }
-    
-    -- Generate sample data points
-    for i = 1, 60 do
-        table.insert(metrics.data.requests, {
-            timestamp = os.time() - (60 - i) * 60,
-            value = math.random(50, 200)
-        })
-        table.insert(metrics.data.responseTime, {
-            timestamp = os.time() - (60 - i) * 60,
-            value = math.random(20, 150)
-        })
-        table.insert(metrics.data.errors, {
-            timestamp = os.time() - (60 - i) * 60,
-            value = math.random(0, 5)
-        })
-        table.insert(metrics.data.cpu, {
-            timestamp = os.time() - (60 - i) * 60,
-            value = math.random(20, 80)
-        })
-        table.insert(metrics.data.memory, {
-            timestamp = os.time() - (60 - i) * 60,
-            value = math.random(512, 2048)
-        })
+    -- Prefer MetricsDB if available; else return empty, non-mock result
+    if _G.MetricsDB and _G.MetricsDB.GetAPIMetrics then
+        return _G.MetricsDB.GetAPIMetrics(apiName, timeRange)
     end
     
-    return metrics
+    if exports['ec_admin_ultimate'] and exports['ec_admin_ultimate'].GetAPIMetrics then
+        return exports['ec_admin_ultimate']:GetAPIMetrics(apiName, timeRange)
+    end
+    
+    return {
+        success = false,
+        apiName = apiName,
+        timeRange = timeRange or '1h',
+        data = {},
+        error = 'APIMetrics source unavailable'
+    }
 end)
 
 -- Get API configuration
@@ -187,30 +200,19 @@ lib.callback.register('ec_admin:host:getAPIConfig', function(source, apiName)
     if not exports['ec_admin_ultimate']:HasPermission(source, 'ec_admin.host.view') then
         return nil
     end
+    if exports['ec_admin_ultimate'] and exports['ec_admin_ultimate'].GetAPIConfig then
+        return exports['ec_admin_ultimate']:GetAPIConfig(apiName)
+    end
     
-    -- Mock data for now (would read actual config)
+    if _G.MetricsDB and _G.MetricsDB.GetAPIConfig then
+        return _G.MetricsDB.GetAPIConfig(apiName)
+    end
+    
     return {
+        success = false,
         apiName = apiName,
-        config = {
-            enabled = true,
-            port = 30000,
-            maxConnections = 100,
-            timeout = 30000,
-            rateLimiting = {
-                enabled = true,
-                maxRequests = 1000,
-                timeWindow = 60
-            },
-            authentication = {
-                required = true,
-                methods = {'api-key', 'jwt'}
-            },
-            logging = {
-                level = 'info',
-                maxSize = '100MB',
-                retention = 7
-            }
-        }
+        config = nil,
+        error = 'API config source unavailable'
     }
 end)
 
@@ -220,38 +222,20 @@ lib.callback.register('ec_admin:host:getCityAnalytics', function(source, cityId,
     if not exports['ec_admin_ultimate']:HasPermission(source, 'ec_admin.host.view') then
         return nil
     end
+    if exports['ec_admin_ultimate'] and exports['ec_admin_ultimate'].GetCityAnalytics then
+        return exports['ec_admin_ultimate']:GetCityAnalytics(cityId, timeRange)
+    end
     
-    -- Mock data for now (would aggregate from analytics API)
+    if _G.MetricsDB and _G.MetricsDB.GetCityAnalytics then
+        return _G.MetricsDB.GetCityAnalytics(cityId, timeRange)
+    end
+    
     return {
+        success = false,
         cityId = cityId,
         timeRange = timeRange or '24h',
-        analytics = {
-            playerCount = {
-                current = 48,
-                peak = 64,
-                average = 42,
-                trend = '+12%'
-            },
-            performance = {
-                avgTps = 49.8,
-                avgCpu = 45.5,
-                avgMemory = 2048,
-                uptime = 99.8
-            },
-            events = {
-                total = 12456,
-                playerJoin = 234,
-                playerLeave = 198,
-                adminActions = 45,
-                reports = 12
-            },
-            apiUsage = {
-                ['global-bans'] = 245,
-                ['player-tracking'] = 1234,
-                ['anticheat-sync'] = 567,
-                ['analytics'] = 890
-            }
-        }
+        analytics = nil,
+        error = 'City analytics source unavailable'
     }
 end)
 
@@ -261,24 +245,18 @@ lib.callback.register('ec_admin:host:getAllCitiesAnalytics', function(source, ti
     if not exports['ec_admin_ultimate']:HasPermission(source, 'ec_admin.host.view') then
         return nil
     end
+    if exports['ec_admin_ultimate'] and exports['ec_admin_ultimate'].GetAllCitiesAnalytics then
+        return exports['ec_admin_ultimate']:GetAllCitiesAnalytics(timeRange)
+    end
     
-    -- Mock data for now (would aggregate from all cities)
+    if _G.MetricsDB and _G.MetricsDB.GetAllCitiesAnalytics then
+        return _G.MetricsDB.GetAllCitiesAnalytics(timeRange)
+    end
+    
     return {
+        success = false,
         timeRange = timeRange or '24h',
-        totalCities = 12,
-        onlineCities = 11,
-        totalPlayers = 384,
-        totalRequests = 145678,
-        totalBans = 156,
-        totalReports = 89,
-        avgUptime = 99.8,
-        topAPIs = {
-            {name = 'player-tracking', requests = 45678},
-            {name = 'global-bans', requests = 23456},
-            {name = 'analytics', requests = 19876},
-            {name = 'anticheat-sync', requests = 15432},
-            {name = 'config-sync', requests = 12345}
-        }
+        error = 'Aggregate analytics source unavailable'
     }
 end)
 
@@ -288,26 +266,18 @@ lib.callback.register('ec_admin:host:getAPIHealthChecks', function(source)
     if not exports['ec_admin_ultimate']:HasPermission(source, 'ec_admin.host.view') then
         return nil
     end
-    
-    -- Mock data for now (would run actual health checks)
-    local apis = exports['ec_admin_ultimate']:GetAPIsStatus()
-    local healthChecks = {}
-    
-    for _, api in ipairs(apis) do
-        table.insert(healthChecks, {
-            apiName = api.name,
-            status = api.status,
-            lastCheck = os.time(),
-            checks = {
-                {name = 'HTTP', status = 'pass', responseTime = math.random(10, 50)},
-                {name = 'Database', status = 'pass', responseTime = math.random(5, 30)},
-                {name = 'Cache', status = 'pass', responseTime = math.random(1, 10)},
-                {name = 'Storage', status = 'pass', responseTime = math.random(5, 20)}
-            }
-        })
+    if exports['ec_admin_ultimate'] and exports['ec_admin_ultimate'].RunAPIHealthChecks then
+        return exports['ec_admin_ultimate']:RunAPIHealthChecks()
     end
     
-    return healthChecks
+    if _G.MetricsDB and _G.MetricsDB.RunAPIHealthChecks then
+        return _G.MetricsDB.RunAPIHealthChecks()
+    end
+    
+    return {
+        success = false,
+        error = 'Health check source unavailable'
+    }
 end)
 
 -- ✅ PRODUCTION READY: Get webhook execution statistics from database

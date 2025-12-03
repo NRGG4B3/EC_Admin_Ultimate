@@ -388,7 +388,7 @@ lib.callback.register('ec_admin:getPlayerProfile', function(source, data)
         -- Inventory (REAL from Framework)
         inventory = inventory,
         
-        -- Activity (placeholder - needs database)
+    -- Activity (no mock - needs database)
         lastLogin = os.time(),
         lastSeen = os.time(),
         lastSeenDate = os.date('%Y-%m-%d %H:%M:%S'),
@@ -397,14 +397,14 @@ lib.callback.register('ec_admin:getPlayerProfile', function(source, data)
         playtime = '0h 0m',
         playtimeMinutes = 0,
         
-        -- Moderation (placeholder - needs database)
+    -- Moderation (no mock - needs database)
         warnings = 0,
         kicks = 0,
         bans = 0,
         commendations = 0,
         lastWarning = nil,
         
-        -- Advanced stats (placeholder - needs database)
+    -- Advanced stats (no mock - needs database)
         deaths = 0,
         kills = 0,
         arrests = 0,

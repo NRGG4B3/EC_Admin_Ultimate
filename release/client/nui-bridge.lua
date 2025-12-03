@@ -723,7 +723,6 @@ end)
 
 -- Align with UI bridge API: removeMoney
 RegisterNUICallback('removeMoney', function(data, cb)
-    -- Prefer server-side callback to ensure validation and logging
     local result = lib.callback.await('ec_admin:removeMoney', false, data)
     cb(result or { success = false, error = 'No response from server' })
 end)

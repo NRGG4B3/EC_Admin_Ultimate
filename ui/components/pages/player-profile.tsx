@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { LineChart as RechartsLine, Line, AreaChart, Area, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { toastSuccess, toastError } from '../../lib/toast';
+import { formatRelativeTime, formatDateTime } from '../../lib/time';
 
 interface PlayerProfilePageProps {
   playerId?: number;
@@ -421,18 +422,7 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
   };
 
   // Helper functions
-  const formatTimestamp = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    
-    if (hours < 1) return 'Just now';
-    if (hours < 24) return hours + 'h ago';
-    const days = Math.floor(hours / 24);
-    if (days < 7) return days + 'd ago';
-    return date.toLocaleDateString();
-  };
+  const formatTimestamp = (timestamp: string | number) => formatRelativeTime(timestamp);
 
   const formatMoney = (amount: number) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);

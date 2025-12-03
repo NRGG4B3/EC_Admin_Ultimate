@@ -235,7 +235,7 @@ local function DetectVPN(ip)
     end
     
     -- Random check for demo (replace with real API)
-    local isVpn = math.random(1, 10) > 8
+    local isVpn = false -- No mock VPN detection; requires real check
     
     securityData.vpnCache[ip] = {
         isVpn = isVpn,

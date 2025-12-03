@@ -38,11 +38,11 @@ local function GenerateInitialHistory()
     -- Generate last 60 minutes of fake data (1 point per minute)
     for i = 60, 1, -1 do
         local timestamp = now - (i * 60)
-        local players = math.max(0, basePlayers + math.random(-5, 5))
-        local cpu = math.random(20, 45)
-        local memory = baseMemory + math.random(-100, 300)
-        local tps = math.random(55, 60)
-        local vehicles = math.random(5, 30)
+    local players = basePlayers
+    local cpu = 0
+    local memory = baseMemory
+    local tps = 0
+    local vehicles = 0
         
         table.insert(metricsHistory.timestamps, timestamp)
         table.insert(metricsHistory.players, players)

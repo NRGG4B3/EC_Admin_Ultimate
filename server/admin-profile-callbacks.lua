@@ -121,7 +121,7 @@ lib.callback.register('adminProfile:getData', function(source, data)
     local profile = {
         name = playerName,
         username = identifiers.license or identifiers.steam or 'Unknown',
-        email = 'admin@server.com', -- Placeholder
+    email = nil,
         role = role,
         roleLabel = roleLabel,
         avatar = nil, -- No avatar by default
@@ -143,7 +143,7 @@ lib.callback.register('adminProfile:getData', function(source, data)
             accountCreated = os.date('%Y-%m-%d')
         },
         
-        -- Recent activity (placeholder)
+    -- Recent activity (no mock)
         recentActivity = {},
         
         -- Permissions
@@ -194,7 +194,7 @@ lib.callback.register('adminProfile:getStats', function(source, data)
     local playerId = source
     
     -- In production, load from database
-    -- For now, return placeholder stats
+    -- No mock stats; return zeros if unavailable
     
     local stats = {
         totalActions = 0,

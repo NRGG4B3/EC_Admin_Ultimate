@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { fetchNui } from '../nui-bridge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
@@ -131,28 +132,16 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
     { model: 'bmx', name: 'BMX', class: 'Cycles' },
   ];
 
-  // Load all available vehicles for spawning
+  // Load all available vehicles for spawning (strict NUI)
   useEffect(() => {
     const loadAvailableVehicles = async () => {
       setIsLoadingVehicles(true);
       
       try {
-        const isInGame = !!(window as any).GetParentResourceName;
-        
-        if (isInGame) {
-          // @ts-ignore
-          const response = await fetch('https://' + ((window as any).GetParentResourceName?.() || 'ec_admin_ultimate') + '/getAllVehicles', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({})
-          });
-          
-          const data = await response.json();
-          
-          if (data.success && data.vehicles) {
-            console.log('[Vehicles] Loaded ' + data.vehicles.length + ' available vehicles (' + data.customCount + ' custom)');
-            setAvailableVehicles(data.vehicles);
-          }
+        const data = await fetchNui<{ success: boolean; vehicles: any[]; customCount: number }>('getAllVehicles', {}, { success: true, vehicles: [], customCount: 0 });
+        if (data && data.success && Array.isArray(data.vehicles)) {
+          console.log('[Vehicles] Loaded ' + data.vehicles.length + ' available vehicles (' + (data.customCount || 0) + ' custom)');
+          setAvailableVehicles(data.vehicles);
         }
       } catch (error) {
         console.error('[Vehicles] Failed to load available vehicles:', error);
@@ -186,92 +175,23 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
     };
   };
 
-  // Load vehicles with FiveM integration (REAL DATA ONLY - NO MOCKS)
+  // Load vehicles (strict NUI - no mocks)
   useEffect(() => {
     const loadVehicles = async () => {
       setIsLoading(true);
       
       try {
-        console.log('[Vehicles] Fetching real vehicle data from server');
-        
-        // Check if we're in Figma/browser environment (no FiveM NUI)
-        const isInGame = !!(window as any).GetParentResourceName;
-        
-        let data: any;
-        
-        if (isInGame) {
-          // IN-GAME MODE: Fetch real vehicle data
-          console.log('[Vehicles] IN-GAME MODE - Fetching real vehicle data');
-          
-          // @ts-ignore
-          const response = await fetch('https://' + ((window as any).GetParentResourceName?.() || 'ec_admin_ultimate') + '/getVehicles', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({})
-          });
-          
-          if (!response.ok) {
-            throw new Error('HTTP ' + response.status + ': ' + response.statusText);
-          }
-          
-          data = await response.json();
-          
-          // Validate response
-          if (!data || typeof data !== 'object') {
-            throw new Error('Invalid response structure');
-          }
-          
-          if (!data.success) {
-            throw new Error(data.error || 'Server returned success=false');
-          }
-          
-          if (!Array.isArray(data.vehicles)) {
-            throw new Error('Invalid vehicles data: expected array, got ' + typeof data.vehicles);
-          }
-          
-          console.log('[Vehicles] ✅ Received ' + data.vehicles.length + ' vehicles from server');
-          
+        const data = await fetchNui<{ success: boolean; vehicles: Vehicle[]; stats?: VehicleStats; error?: string }>('getVehicles', {}, { success: true, vehicles: [], stats: { totalVehicles: 0, spawnedVehicles: 0, ownedVehicles: 0, impoundedVehicles: 0, totalValue: 0 } });
+        if (data && data.success) {
+          console.log('[Vehicles] Loaded ' + (data.vehicles?.length || 0) + ' vehicles');
+          setVehicles(data.vehicles || []);
+          setStats(data.stats || calculateStats(data.vehicles || []));
         } else {
-          // FIGMA/BROWSER MODE ONLY: Use mock data
-          console.log('[Vehicles] BROWSER/FIGMA MODE - Using mock data (NOT IN-GAME)');
-          data = {
-            success: true,
-            vehicles: [
-              { id: 1, model: 'T20', plate: 'ABC123', owner: 'John Doe', status: 'spawned', location: { x: 215.5, y: -810.2, z: 30.8 }, condition: 85, fuel: 65, mileage: 12450, value: 2500000 },
-              { id: 2, model: 'Police', plate: 'LSPD42', owner: 'LSPD', status: 'spawned', location: { x: 425.1, y: -981.8, z: 30.7 }, condition: 95, fuel: 80, mileage: 8900, value: 0 },
-              { id: 3, model: 'Zentorno', plate: 'XYZ789', owner: 'Jane Smith', status: 'stored', location: null, condition: 100, fuel: 100, mileage: 3200, value: 1800000 },
-              { id: 4, model: 'Ambulance', plate: 'EMS001', owner: 'EMS', status: 'spawned', location: { x: 298.5, y: -584.3, z: 43.2 }, condition: 90, fuel: 70, mileage: 15600, value: 0 },
-              { id: 5, model: 'Sultan', plate: 'DEF456', owner: 'Mike Johnson', status: 'impounded', location: null, condition: 45, fuel: 20, mileage: 45000, value: 120000 }
-            ],
-            stats: {
-              totalVehicles: 5,
-              spawnedVehicles: 3,
-              ownedVehicles: 3,
-              impoundedVehicles: 1,
-              totalValue: 4420000
-            }
-          };
-        }
-        
-        if (data.success && data.vehicles) {
-          console.log('[Vehicles] Loaded ' + data.vehicles.length + ' vehicles from server');
-          setVehicles(data.vehicles);
-          setStats(data.stats || calculateStats(data.vehicles));
-        } else {
-          const errorMsg = data.error || 'Failed to load vehicles from server';
+          const errorMsg = data?.error || 'Failed to load vehicles';
           console.error('[Vehicles] CRITICAL ERROR:', errorMsg);
           toast.error(errorMsg);
-          // IN-GAME: Show error, NOT mock data
-          if (isInGame) {
-            setVehicles([]);
-          }
-          setStats({
-            totalVehicles: 0,
-            spawnedVehicles: 0,
-            ownedVehicles: 0,
-            impoundedVehicles: 0,
-            totalValue: 0
-          });
+          setVehicles([]);
+          setStats({ totalVehicles: 0, spawnedVehicles: 0, ownedVehicles: 0, impoundedVehicles: 0, totalValue: 0 });
         }
       } catch (error) {
         console.error('[Vehicles] Failed to load vehicles:', error);
@@ -292,28 +212,13 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
 
     loadVehicles();
 
-    // Set up auto-refresh every 30 seconds
+    // Set up auto-refresh every 30 seconds (strict NUI)
     const refreshInterval = setInterval(async () => {
       try {
-        // Check if we're in Figma/browser environment
-        const isInGame = !!(window as any).GetParentResourceName;
-        
-        if (!isInGame) {
-          // Skip auto-refresh in Figma
-          return;
-        }
-        
-        // @ts-ignore
-        const response = await fetch('https://' + ((window as any).GetParentResourceName?.() || 'ec_admin_ultimate') + '/getVehicles', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({})
-        });
-
-        const data = await response.json();
-        if (data.success && data.vehicles) {
-          setVehicles(data.vehicles);
-          setStats(data.stats || calculateStats(data.vehicles));
+        const data = await fetchNui<{ success: boolean; vehicles: Vehicle[]; stats?: VehicleStats }>('getVehicles', {}, { success: true, vehicles: [], stats: { totalVehicles: 0, spawnedVehicles: 0, ownedVehicles: 0, impoundedVehicles: 0, totalValue: 0 } });
+        if (data && data.success) {
+          setVehicles(data.vehicles || []);
+          setStats(data.stats || calculateStats(data.vehicles || []));
         }
       } catch (error) {
         console.error('[Vehicles] Auto-refresh failed:', error);
@@ -456,44 +361,18 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
       // Check if we're in Figma/browser environment
       const isInGame = !!(window as any).GetParentResourceName;
       
-      let result: any;
-      
-      if (isInGame) {
-        // @ts-ignore
-        const response = await fetch('https://' + ((window as any).GetParentResourceName?.() || 'ec_admin_ultimate') + '/' + actionConfig.callback, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(actionConfig.data)
-        });
-        result = await response.json();
-      } else {
-        // FIGMA/BROWSER MODE: Mock success
-        result = { success: true };
-      }
+      const result = await fetchNui<{ success: boolean; message?: string; error?: string }>(actionConfig.callback, actionConfig.data, { success: true });
       
       if (result.success) {
         toast.success(result.message || 'Action completed successfully');
         
         console.log('[Vehicles] Action completed, refreshing vehicle list...');
         
-        // Check if we're in Figma/browser environment
-        const isInGame = !!(window as any).GetParentResourceName;
-        
-        if (isInGame) {
-          // Refresh vehicle list from server
-          // @ts-ignore
-          const refreshResponse = await fetch('https://' + ((window as any).GetParentResourceName?.() || 'ec_admin_ultimate') + '/getVehicles', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({})
-          });
-
-          const refreshData = await refreshResponse.json();
-          if (refreshData.success && refreshData.vehicles) {
-            setVehicles(refreshData.vehicles);
-            setStats(refreshData.stats || calculateStats(refreshData.vehicles));
-            console.log('[Vehicles] Refreshed: ' + refreshData.vehicles.length + ' vehicles loaded');
-          }
+        const refreshData = await fetchNui<{ success: boolean; vehicles: Vehicle[]; stats?: VehicleStats }>('getVehicles', {}, { success: true, vehicles: [], stats: { totalVehicles: 0, spawnedVehicles: 0, ownedVehicles: 0, impoundedVehicles: 0, totalValue: 0 } });
+        if (refreshData && refreshData.success) {
+          setVehicles(refreshData.vehicles || []);
+          setStats(refreshData.stats || calculateStats(refreshData.vehicles || []));
+          console.log('[Vehicles] Refreshed: ' + (refreshData.vehicles?.length || 0) + ' vehicles loaded');
         }
       } else {
         toast.error(result.error || 'Action failed');

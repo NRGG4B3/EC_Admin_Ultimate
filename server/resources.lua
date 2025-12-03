@@ -33,9 +33,9 @@ function Resources.GetData(source)
         
         if status == 'started' then
             -- Get actual metrics if available
-            cpuUsage = math.random(5, 25) -- Simulated
-            memoryUsage = math.random(64, 512) -- Simulated
-            threads = math.random(2, 12) -- Simulated
+            cpuUsage = 0
+            memoryUsage = 0
+            threads = 0
         end
 
         table.insert(resources, {

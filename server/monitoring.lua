@@ -336,18 +336,18 @@ AddEventHandler('ec-admin:getServerMetrics', function()
     local response = {
         playersOnline = metrics.playersOnline,
         totalResources = metrics.resourceCount,
-        cachedVehicles = math.floor(metrics.playersOnline * 2.5), -- Estimated
+        cachedVehicles = 0,
         serverTPS = metrics.serverTPS,
         memoryUsage = metrics.memoryUsage,
-        networkIn = math.random(80, 150) / 100, -- Simulated MB/s
-        networkOut = math.random(60, 120) / 100, -- Simulated MB/s
-        cpuUsage = math.random(15, 45), -- Simulated
+        networkIn = 0,
+        networkOut = 0,
+        cpuUsage = 0,
         uptime = timeMetrics.server and timeMetrics.server.uptime or (GetGameTimer() - monitoringData.server.startTime),
         lastRestart = timeMetrics.server and timeMetrics.server.lastRestart or (monitoringData.server.startTime * 1000),
-        activeEvents = math.floor(metrics.playersOnline * 1.8), -- Estimated
+        activeEvents = 0,
         database = {
-            queries = math.floor(metrics.uptime / 1000), -- Estimated
-            avgResponseTime = math.random(8, 25) -- Simulated
+            queries = 0,
+            avgResponseTime = 0
         },
         alerts = alerts,
         players = playerData,

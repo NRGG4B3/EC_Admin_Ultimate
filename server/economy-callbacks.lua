@@ -226,16 +226,24 @@ lib.callback.register('ec_admin:getEconomyData', function(source, data)
     
     local totalMoney = totalCash + totalBank
     local averageMoney = #playerList > 0 and (totalMoney / #playerList) or 0
-    
-    -- Generate mock transactions for demo (TODO: Replace with real transaction system)
-    local transactions = {}
-    
-    -- Generate mock categories
-    local categories = {
-        { category = 'Cash', amount = totalCash, percentage = totalMoney > 0 and (totalCash / totalMoney * 100) or 0, trend = 'up' },
-        { category = 'Bank', amount = totalBank, percentage = totalMoney > 0 and (totalBank / totalMoney * 100) or 0, trend = 'up' }
-    }
-    
+        -- No mock data; return empty until wired to real transaction system
+        return {
+            success = true,
+            playerWealth = playerList,
+            transactions = {},
+            categories = {},
+            serverStats = {
+                totalCash = totalCash,
+                totalBank = totalBank,
+                totalCrypto = 0,
+                totalWealth = totalMoney,
+                averageWealth = math.floor(averageMoney),
+                suspiciousCount = 0,
+                recentTransactions = 0
+            },
+            frozen = false
+        }
+    end)
     return {
         success = true,
         playerWealth = playerList,

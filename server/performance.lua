@@ -105,14 +105,14 @@ local function GetSystemMetrics()
     
     local metrics = {
         cpu = {
-            usage = 0, -- GetServerCPUUsage() doesn't exist in FiveM - using placeholder
+            usage = 0, -- FiveM server lacks CPU usage; keep 0 (no mock)
             cores = GetConvarInt('sv_maxClients', 48),
-            threads = resourceCount, -- Fixed: Use resource count instead of non-existent function
-            temperature = 50 + math.random(0, 20) -- Simulated
+            threads = resourceCount, -- approximate threads via resource count
+            temperature = 0 -- no simulated temperature
         },
         memory = {
             used = collectgarbage('count'),
-            total = 16384, -- Simulated total
+            total = 0,
             percentage = 0,
             available = 0
         },
@@ -219,8 +219,8 @@ local function GetResourcePerformance()
                 name = resourceName,
                 cpu = cpuUsage,
                 memory = memoryUsage / 1024, -- Convert to MB
-                threads = math.random(4, 16), -- Simulated
-                events = math.random(100, 2000), -- Simulated
+                threads = 0,
+                events = 0,
                 status = status
             })
         end

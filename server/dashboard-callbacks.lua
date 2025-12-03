@@ -146,7 +146,7 @@ lib.callback.register('ec_admin:getServerMetrics', function(source)
     
     -- Get real CPU usage estimate (based on TPS degradation)
     local cpuEstimate = math.floor((60 - currentTPS) / 60 * 100)
-    if cpuEstimate < 10 then cpuEstimate = math.random(10, 20) end
+    if cpuEstimate < 10 then cpuEstimate = 10 end
     if cpuEstimate > 90 then cpuEstimate = 90 end
     
     -- Resource health check (resources using high CPU)
@@ -162,7 +162,7 @@ lib.callback.register('ec_admin:getServerMetrics', function(source)
         end
     end
     
-    -- Create mock top resources for display
+    -- Removed mock top resources; will return actual started resources or empty
     local topResources = {}
     
     -- Return comprehensive data matching UI structure
@@ -186,8 +186,8 @@ lib.callback.register('ec_admin:getServerMetrics', function(source)
         
         -- Network
         avgPing = avgPing,
-        networkIn = math.random(50, 150), -- KB/s (TODO: Real network stats)
-        networkOut = math.random(100, 300), -- KB/s
+    networkIn = 0, -- No mock network stats
+    networkOut = 0,
         
         -- Time & uptime
         uptime = serverUptimeSeconds,
@@ -224,3 +224,26 @@ lib.callback.register('ec_admin:getServerMetrics', function(source)
 end)
 
 Logger.Info('Dashboard callbacks loaded successfully', '✅')
+
+-- ============================================================================
+-- METRICS HISTORY (BASIC STRUCTURE)
+-- ============================================================================
+-- Returns a history payload for charts. If a metrics collector exists, it can
+-- populate real historical series; otherwise we return an empty dataset to keep
+-- UI strictly live without mock data.
+
+lib.callback.register('ec_admin:getMetricsHistory', function(source, period)
+    -- period can be '10m','20m','1h','24h' etc. Currently unused.
+    return {
+        success = true,
+        data = {
+            labels = {},
+            datasets = {
+                players = {},
+                cpu = {},
+                memory = {},
+                tps = {}
+            }
+        }
+    }
+end)

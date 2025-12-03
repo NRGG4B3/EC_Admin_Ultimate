@@ -246,9 +246,9 @@ function TimeMonitoring.CreatePerformanceSnapshot()
     -- Create snapshot
     local snapshot = {
         timestamp = currentTime * 1000, -- JS timestamp
-        cpu = math.random(15, 65),      -- Simulated (would be real in production)
-        memory = math.random(40, 80),   -- Simulated
-        tps = math.random(45, 50) + math.random(),  -- Simulated
+        cpu = 0,      -- No mock; server does not expose CPU
+        memory = 0,   -- No mock
+        tps = 0,      -- No mock
         players = playerCount
     }
     

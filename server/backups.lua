@@ -95,7 +95,7 @@ end
 -- Get file size
 local function GetFileSize(filepath)
     -- Simulate file size calculation
-    return math.random(100000000, 5000000000) -- 100MB to 5GB
+    return 0 -- No mock size; real size calculation not available
 end
 
 -- Calculate directory size

@@ -29,46 +29,18 @@ export function Dashboard({ liveData, onOpenQuickActionsCenter }: DashboardProps
   const [error, setError] = useState<string | null>(null);
   const [metricsData, setMetricsData] = useState<any>(null);
 
-  // Fetch server metrics with percentage changes and health status
+  // Fetch server metrics with percentage changes and health status (strict NUI-only)
   // Memoize to prevent unnecessary re-fetches
   useEffect(() => {
     let isMounted = true;
     
     const fetchServerMetrics = async () => {
       try {
-        const isInGame = !!(window as any).GetParentResourceName;
-        
-        if (!isInGame) {
-          // FIGMA/BROWSER MODE ONLY: Use mock data
-          console.log('[Dashboard] BROWSER/FIGMA MODE - Using mock metrics');
-          if (isMounted) {
-            setMetricsData({
-              success: true,
-              playersOnline: 42,
-              serverTPS: 58,
-              memoryUsage: 2847,
-              cpuUsage: 34
-            });
-          }
-          return;
-        }
-        
-        // IN-GAME MODE: Fetch real metrics
-        console.log('[Dashboard] IN-GAME MODE - Fetching real server metrics');
-        
-        // @ts-ignore - NUI callback
-        const resourceName = (window as any).GetParentResourceName?.() || 'ec_admin_ultimate';
-        const response = await fetch(`https://${resourceName}/getServerMetrics`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({})
-        });
-
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
-        }
-
-        const data = await response.json();
+        // Strict NUI bridge: always call native fetchNui; no browser mock
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const fetchNui = (window as any)?.fetchNui as (event: string, data?: any) => Promise<any>;
+        if (!fetchNui) throw new Error('NUI bridge unavailable');
+        const data = await fetchNui('getServerMetrics', {});
         
         if (!data || typeof data !== 'object') {
           throw new Error('Invalid response structure');
@@ -78,7 +50,7 @@ export function Dashboard({ liveData, onOpenQuickActionsCenter }: DashboardProps
           throw new Error(data.error || 'Server returned success=false');
         }
         
-        console.log('[Dashboard] ✅ Received real metrics:', data.playersOnline, 'players,', data.serverTPS, 'TPS');
+        console.log('[Dashboard] ✅ Metrics:', data.playersOnline, 'players,', data.serverTPS, 'TPS');
         
         if (isMounted && data.success) {
           // Only update if data has actually changed (prevent unnecessary re-renders)
@@ -91,8 +63,8 @@ export function Dashboard({ liveData, onOpenQuickActionsCenter }: DashboardProps
         }
       } catch (err) {
         console.error('[Dashboard] CRITICAL ERROR fetching metrics:', err);
-        // IN-GAME: Show error, don't fallback to mock
-        if (isMounted && !!(window as any).GetParentResourceName) {
+        // Show error; no mock fallbacks
+        if (isMounted) {
           setMetricsData({ success: false, error: err.message || 'Failed to fetch metrics' });
         }
       }
@@ -110,42 +82,15 @@ export function Dashboard({ liveData, onOpenQuickActionsCenter }: DashboardProps
     };
   }, []); // Empty deps - only run once on mount
 
-  // Fetch real historical data from API
+  // Fetch historical data via strict NUI (no mock)
   useEffect(() => {
     const fetchMetricsHistory = async () => {
       try {
         setLoading(true);
-        
-        const isInGame = !!(window as any).GetParentResourceName;
-        
-        if (!isInGame) {
-          // FIGMA MODE: Generate mock historical data
-          const mockHistory = Array.from({ length: 20 }, (_, i) => {
-            const time = new Date(Date.now() - (20 - i) * 60000);
-            return {
-              time: time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-              players: 35 + Math.floor(Math.random() * 15),
-              tps: 55 + Math.floor(Math.random() * 5),
-              memory: 2500 + Math.floor(Math.random() * 500),
-              cpu: 30 + Math.floor(Math.random() * 10),
-              avgPing: 45 + Math.floor(Math.random() * 20)
-            };
-          });
-          setHistoricalData(mockHistory);
-          setError(null);
-          setLoading(false);
-          return;
-        }
-        
-        // @ts-ignore - NUI callback
-        const resourceName = (window as any).GetParentResourceName?.() || 'ec_admin_ultimate';
-        const response = await fetch(`https://${resourceName}/getMetricsHistory`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({})
-        });
-
-        const data = await response.json();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const fetchNui = (window as any)?.fetchNui as (event: string, data?: any) => Promise<any>;
+        if (!fetchNui) throw new Error('NUI bridge unavailable');
+        const data = await fetchNui('getMetricsHistory', {});
         
         if (data.success && (data.history || data.data)) {
           // Support both `history` and `data` keys
@@ -187,7 +132,7 @@ export function Dashboard({ liveData, onOpenQuickActionsCenter }: DashboardProps
       } catch (err) {
         console.error('[Dashboard] Failed to fetch metrics history:', err);
         setError('Failed to load metrics history');
-        // Use fallback data
+        // Minimal fallback: current liveData snapshot
         setHistoricalData([{
           time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
           players: liveData.playersOnline,

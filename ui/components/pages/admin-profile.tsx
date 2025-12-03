@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { toastSuccess, toastError } from '../../lib/toast';
 import { QuickActionsWidget } from '../quick-actions-widget';
+import { formatRelativeTime, formatDateTime } from '../../lib/time';
 
 interface AdminProfilePageProps {
   liveData: any;
@@ -487,11 +488,11 @@ export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }
               <div className="grid grid-cols-3 gap-4">
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="size-4 text-muted-foreground" />
-                  <span>Joined {new Date(profile.joined_date * 1000).toLocaleDateString()}</span>
+                  <span>Joined {formatRelativeTime(profile.joined_date)}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Clock className="size-4 text-muted-foreground" />
-                  <span>Last login {new Date(profile.last_login * 1000).toLocaleString()}</span>
+                  <span>Last login {formatRelativeTime(profile.last_login)}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="size-4 text-muted-foreground" />
@@ -721,7 +722,7 @@ export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }
                             </div>
                           </div>
                           <div className="text-xs text-muted-foreground">
-                            {new Date(item.timestamp * 1000).toLocaleString()}
+                            {formatRelativeTime(item.timestamp)}
                           </div>
                         </div>
                       );
@@ -783,7 +784,7 @@ export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }
                       <div>
                         <p className="text-sm font-medium">{session.ip_address}</p>
                         <p className="text-xs text-muted-foreground">
-                          Login: {new Date(session.login_time * 1000).toLocaleString()}
+                          Login: {formatRelativeTime(session.login_time)}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1028,7 +1029,7 @@ export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }
                             </div>
                           )}
                           <div className="ml-11 mt-2 text-xs text-muted-foreground">
-                            {new Date(item.timestamp * 1000).toLocaleDateString()} at {new Date(item.timestamp * 1000).toLocaleTimeString()}
+                            {formatDateTime(item.timestamp)}
                           </div>
                         </div>
                       );

@@ -109,9 +109,9 @@ lib.callback.register('ec_admin:getResources', function(source, data)
                 id = resourceName,
                 name = resourceName,
                 status = state == 'started' and 'running' or (state == 'stopped' and 'stopped' or 'error'),
-                cpu = math.random(1, 10) / 10, -- FiveM doesn't expose CPU per resource, mock it
+                cpu = 0, -- FiveM doesn't expose CPU per resource on server; return 0 (no mock)
                 memory = math.floor(memUsage * 100) / 100,
-                threads = math.random(1, 5),
+                threads = 0,
                 uptime = state == 'started' and (os.time() - (GlobalState.serverStartTime or os.time())) or 0
             })
         end
@@ -158,8 +158,8 @@ lib.callback.register('ec_admin:getNetworkMetrics', function(source, data)
             peakToday = peakPlayers,
             avgPing = avgPing,
             bandwidth = {
-                ['in'] = math.random(80, 150) / 10, -- Mock bandwidth (FiveM doesn't expose this)
-                out = math.random(50, 100) / 10
+                ['in'] = 0, -- FiveM server does not expose bandwidth reliably; return 0 (no mock)
+                out = 0
             },
             connections = #players
         }
@@ -174,11 +174,11 @@ lib.callback.register('ec_admin:getDatabaseMetrics', function(source, data)
     -- These are framework-specific and would need to be implemented
     -- For now, return reasonable defaults
     
-    local queries = GlobalState.dbQueriesPerSecond or math.random(50, 150)
-    local avgQueryTime = math.random(5, 25)
-    local slowQueries = math.random(0, 5)
-    local connections = math.random(10, 30)
-    local size = math.random(500, 2000) -- MB
+    local queries = GlobalState.dbQueriesPerSecond or 0
+    local avgQueryTime = GlobalState.dbAvgQueryTime or 0
+    local slowQueries = GlobalState.dbSlowQueries or 0
+    local connections = GlobalState.dbConnections or 0
+    local size = GlobalState.dbSizeMB or 0 -- MB
     
     return {
         success = true,

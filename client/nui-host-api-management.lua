@@ -82,4 +82,8 @@ RegisterNUICallback('getHostAPIHealthSummary', function(data, cb)
     end)
 end)
 
-print('[EC Admin Ultimate] Host API Management NUI Callbacks loaded')
+if Logger and Logger.Info then
+    Logger.Info('[EC Admin Ultimate] Host API Management NUI Callbacks loaded')
+else
+    print('[EC Admin Ultimate] Host API Management NUI Callbacks loaded')
+end

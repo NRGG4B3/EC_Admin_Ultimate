@@ -1,60 +1,67 @@
 -- EC Admin Ultimate - Host Control NUI Callbacks
--- Only active when Config.Role == 'host'
+-- Bridges UI host-control actions to server callbacks; active only for Host users
 
 -- Host service action (start/stop/restart)
+-- Deprecated: legacy hostServiceAction. Use 'controlAPI' from UI.
 RegisterNUICallback('hostServiceAction', function(data, cb)
-    local service = data.service
-    local action = data.action
-    
-    print(string.format('^3[Host Control] Service action: %s %s^0', action, service))
-    
-    -- Forward to server
-    TriggerServerEvent('ec_admin:host:serviceAction', service, action)
-    
-    cb({ success = true, message = string.format('%s %s initiated', service, action) })
+    local result = lib.callback.await('ec_admin:host:controlAPI', false, {
+        apiName = data.service,
+        action = data.action,
+        params = data.params
+    })
+    cb(result or { success = false, error = 'No response from server' })
 end)
 
 -- Host uninstall service
 RegisterNUICallback('hostUninstallService', function(data, cb)
-    local service = data.service
-    
-    print(string.format('^3[Host Control] Uninstall service: %s^0', service))
-    
-    -- Forward to server
-    TriggerServerEvent('ec_admin:host:uninstallService', service)
-    
-    cb({ success = true, message = string.format('%s uninstall initiated', service) })
+    local result = lib.callback.await('ec_admin:host:controlAPI', false, {
+        apiName = data.service,
+        action = 'uninstall'
+    })
+    cb(result or { success = false, error = 'No response from server' })
 end)
 
 -- Host toggle web admin
 RegisterNUICallback('hostToggleWebAdmin', function(data, cb)
-    local enabled = data.enabled
-    
-    print(string.format('^3[Host Control] Toggle web admin: %s^0', enabled and 'ENABLED' or 'DISABLED'))
-    
-    -- Forward to server (use the new event that triggers full toggle)
-    TriggerServerEvent('ec_admin:host:toggleAdminMenu', enabled)
-    
-    cb({ success = true, message = string.format('Admin menu %s', enabled and 'enabled' or 'disabled') })
+    local result = lib.callback.await('ec_admin:host:controlAPI', false, {
+        apiName = 'web-admin',
+        action = data.enabled and 'enable' or 'disable'
+    })
+    cb(result or { success = false, error = 'No response from server' })
 end)
 
 -- Host get logs
 RegisterNUICallback('hostGetLogs', function(data, cb)
-    local service = data.service
-    
-    print(string.format('^3[Host Control] Get logs: %s^0', service))
-    
-    -- Return mock logs for now (would fetch real logs from server)
-    cb({
-        success = true,
-        logs = {
-            '[2025-11-07 10:30:15] Service started successfully',
-            '[2025-11-07 10:30:16] Listening on assigned port',
-            '[2025-11-07 10:30:20] Incoming request processed',
-            '[2025-11-07 10:30:20] Response: 200 OK (12ms)',
-            '[2025-11-07 10:31:05] Health check passed',
-        }
+    local result = lib.callback.await('ec_admin:host:getAPILogs', false, {
+        apiName = data.service,
+        filters = data.filters
     })
+    cb(result or { success = false, error = 'No response from server' })
 end)
 
-print('^2[Host Control] NUI callbacks registered^0')
+if Logger and Logger.Info then
+    Logger.Info('[Host Control] NUI callbacks registered')
+else
+    print('^2[Host Control] NUI callbacks registered^0')
+end
+
+-- New UI endpoints used by pages/host-control.tsx
+RegisterNUICallback('controlAPI', function(data, cb)
+    local result = lib.callback.await('ec_admin:host:controlAPI', false, data)
+    cb(result or { success = false, error = 'No response from server' })
+end)
+
+RegisterNUICallback('executeCityCommand', function(data, cb)
+    local result = lib.callback.await('ec_admin:host:executeCityCommand', false, data)
+    cb(result or { success = false, error = 'No response from server' })
+end)
+
+RegisterNUICallback('emergencyStopAPI', function(data, cb)
+    local result = lib.callback.await('ec_admin:host:emergencyStopAPI', false, data)
+    cb(result or { success = false, error = 'No response from server' })
+end)
+
+RegisterNUICallback('restartAPI', function(data, cb)
+    local result = lib.callback.await('ec_admin:host:restartAPI', false, data)
+    cb(result or { success = false, error = 'No response from server' })
+end)

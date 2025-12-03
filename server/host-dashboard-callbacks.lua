@@ -74,21 +74,36 @@ local function buildHostDashboard()
 
                 if statusCode == 200 then
                     status = 'online'
-                    responseTime = math.random(10, 50) -- Mock response time
                 elseif statusCode == 503 then
                     status = 'degraded'
-                    responseTime = math.random(100, 500)
+                end
+
+                -- Try to parse response for real metrics if provided
+                local uptime = 0
+                local requests = 0
+                local errorRate = 0
+                local lastRestart = nil
+
+                if response and type(response) == 'string' then
+                    local ok, parsed = pcall(json.decode, response)
+                    if ok and type(parsed) == 'table' then
+                        uptime = tonumber(parsed.uptime) or uptime
+                        requests = tonumber(parsed.requests) or requests
+                        errorRate = tonumber(parsed.errorRate) or errorRate
+                        lastRestart = parsed.lastRestart or lastRestart
+                        responseTime = tonumber(parsed.avgResponseTime or parsed.responseTime) or responseTime
+                    end
                 end
 
                 apiStatusCache[api.name] = {
                     name = api.name,
                     port = api.port,
                     status = status,
-                    uptime = math.random(86400, 2592000), -- 1-30 days
-                    requests = math.random(10000, 1000000),
+                    uptime = uptime,
+                    requests = requests,
                     avgResponseTime = responseTime,
-                    errorRate = status == 'online' and math.random(0, 5) or math.random(10, 50),
-                    lastRestart = os.date('%Y-%m-%d %H:%M:%S', os.time() - math.random(86400, 604800))
+                    errorRate = errorRate,
+                    lastRestart = lastRestart
                 }
             end, 'GET', '', { ['Content-Type'] = 'application/json' }, { timeout = 2000 })
         end

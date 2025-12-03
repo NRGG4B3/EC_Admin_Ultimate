@@ -100,7 +100,9 @@ export function AnticheatPage({ liveData, userPermissions }: AnticheatPageProps)
     const fetchAllData = async () => {
       setIsLoading(true);
 
-      const isInGame = !!(window as any).GetParentResourceName;
+  // Use strict NUI bridge only
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fetchNui = (window as any)?.fetchNui as (event: string, data?: any) => Promise<any>;
       
       try {
         // Fetch all data in parallel based on active tab
@@ -111,20 +113,8 @@ export function AnticheatPage({ liveData, userPermissions }: AnticheatPageProps)
           promises.push(
             (async () => {
               try {
-                let data: any;
-                if (isInGame) {
-                  const response = await fetch(`https://${(window as any).GetParentResourceName?.() || 'ec_admin_ultimate'}/getAnticheatDetections`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({})
-                  });
-                  data = await response.json();
-                } else {
-                  data = { success: true, detections: [
-                    { id: 1, playerName: 'Suspicious Player', playerId: 42, type: 'Speed Hack', severity: 'high', timestamp: Date.now() - 120000, autoAction: 'Kicked' },
-                    { id: 2, playerName: 'Test User', playerId: 15, type: 'Aimbot', severity: 'critical', timestamp: Date.now() - 30000, autoAction: 'Banned' }
-                  ]};
-                }
+                if (!fetchNui) throw new Error('NUI bridge unavailable');
+                const data = await fetchNui('getAnticheatAlerts', {});
                 return { type: 'detections', ...data };
               } catch (err) {
                 console.error('[Anticheat] Failed to fetch detections:', err);
@@ -139,19 +129,8 @@ export function AnticheatPage({ liveData, userPermissions }: AnticheatPageProps)
           promises.push(
             (async () => {
               try {
-                let data: any;
-                if (isInGame) {
-                  const response = await fetch(`https://${(window as any).GetParentResourceName?.() || 'ec_admin_ultimate'}/getAnticheatHistory`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({})
-                  });
-                  data = await response.json();
-                } else {
-                  data = { success: true, history: [
-                    { id: 1, playerName: 'Cheater123', type: 'Godmode', severity: 'critical', timestamp: Date.now() - 3600000, action: 'Permanent Ban' }
-                  ]};
-                }
+                if (!fetchNui) throw new Error('NUI bridge unavailable');
+                const data = await fetchNui('getAnticheatAlerts', { history: true });
                 return { type: 'history', ...data };
               } catch (err) {
                 console.error('[Anticheat] Failed to fetch history:', err);
@@ -166,19 +145,8 @@ export function AnticheatPage({ liveData, userPermissions }: AnticheatPageProps)
           promises.push(
             (async () => {
               try {
-                let data: any;
-                if (isInGame) {
-                  const response = await fetch(`https://${(window as any).GetParentResourceName?.() || 'ec_admin_ultimate'}/getAIPatterns`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({})
-                  });
-                  data = await response.json();
-                } else {
-                  data = { success: true, patterns: [
-                    { pattern: 'Rapid Teleport', confidence: 95, occurrences: 12 }
-                  ]};
-                }
+                if (!fetchNui) throw new Error('NUI bridge unavailable');
+                const data = await fetchNui('getAnticheatAlerts', { patterns: true });
                 return { type: 'patterns', ...data };
               } catch (err) {
                 console.error('[Anticheat] Failed to fetch AI patterns:', err);

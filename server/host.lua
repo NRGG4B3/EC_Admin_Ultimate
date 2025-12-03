@@ -154,23 +154,42 @@ function GetAPIsStatus()
     local apis = {}
     
     for _, apiName in ipairs(API_LIST) do
-        -- Make request to each API's health endpoint
         local port = API_PORTS[apiName]
         local url = 'http://127.0.0.1:' .. port .. '/health'
-        
-        -- This would be async in production, but for now we'll return mock data
-        -- In production, you'd use PerformHttpRequest for each API
-        table.insert(apis, {
-            name = apiName,
-            port = port,
-            status = 'online', -- Would be determined by actual health check
-            uptime = math.random(3600, 86400),
-            requests = math.random(1000, 100000),
-            avgResponseTime = math.random(10, 150),
-            errorRate = math.random(0, 5) / 100,
-            version = '1.0.0',
-            lastRestart = os.date('%Y-%m-%d %H:%M:%S', os.time() - math.random(3600, 86400))
-        })
+
+        PerformHttpRequest(url, function(statusCode, responseText)
+            local status = 'offline'
+            if statusCode == 200 then
+                status = 'online'
+            elseif statusCode == 503 then
+                status = 'degraded'
+            end
+
+            local uptime, requests, avgResponseTime, errorRate, version, lastRestart
+            if responseText and responseText ~= '' then
+                local ok, decoded = pcall(json.decode, responseText)
+                if ok and type(decoded) == 'table' then
+                    uptime = tonumber(decoded.uptime) or 0
+                    requests = tonumber(decoded.requests) or 0
+                    avgResponseTime = tonumber(decoded.avgResponseTime or decoded.responseTime) or 0
+                    errorRate = tonumber(decoded.errorRate) or 0
+                    version = decoded.version
+                    lastRestart = decoded.lastRestart
+                end
+            end
+
+            table.insert(apis, {
+                name = apiName,
+                port = port,
+                status = status,
+                uptime = uptime or 0,
+                requests = requests or 0,
+                avgResponseTime = avgResponseTime or 0,
+                errorRate = errorRate or 0,
+                version = version,
+                lastRestart = lastRestart
+            })
+        end, 'GET', '', { ['Content-Type'] = 'application/json' }, { timeout = 2000 })
     end
     
     return apis
@@ -184,52 +203,13 @@ function GetConnectedCities()
     
     local cities = {}
     
-    -- Call server-registry API to get connected servers
     CallHostAPI('/api/v1/servers/list', 'GET', nil, function(success, response)
         if success and response and response.servers then
             cities = response.servers
         end
     end)
     
-    -- For now, return mock data (would be replaced with actual API call)
-    return {
-        {
-            id = 'city-001',
-            name = 'Los Santos RP',
-            ip = '192.168.1.100:30120',
-            status = 'online',
-            players = 48,
-            maxPlayers = 64,
-            version = '1.0.0',
-            lastSeen = os.date('%Y-%m-%d %H:%M:%S'),
-            framework = 'qbcore',
-            connectedAPIs = {'global-bans', 'player-tracking', 'anticheat-sync', 'analytics'},
-            uptime = 86400,
-            performance = {
-                tps = 49.8,
-                memoryUsage = 2048,
-                cpuUsage = 45.5
-            }
-        },
-        {
-            id = 'city-002',
-            name = 'Liberty City RP',
-            ip = '192.168.1.101:30120',
-            status = 'online',
-            players = 32,
-            maxPlayers = 48,
-            version = '1.0.0',
-            lastSeen = os.date('%Y-%m-%d %H:%M:%S'),
-            framework = 'esx',
-            connectedAPIs = {'global-bans', 'player-tracking', 'analytics'},
-            uptime = 43200,
-            performance = {
-                tps = 50.0,
-                memoryUsage = 1536,
-                cpuUsage = 32.1
-            }
-        }
-    }
+    return cities
 end
 
 -- Get global statistics across all cities
@@ -238,20 +218,13 @@ function GetGlobalStats()
         return nil
     end
     
-    -- Would aggregate data from all APIs
-    return {
-        totalCities = 12,
-        totalPlayers = 384,
-        totalBans = 156,
-        totalReports = 89,
-        apiUptime = 99.8,
-        totalRequests = 1284567,
-        avgResponseTime = 42,
-        dataProcessed = 2.4, -- GB
-        storageUsed = 15.8, -- GB
-        totalAlerts = 23,
-        activeAlerts = 3
-    }
+    local stats = {}
+    CallHostAPI('/api/v1/servers/global-stats', 'GET', nil, function(success, response)
+        if success and type(response) == 'table' then
+            stats = response
+        end
+    end)
+    return stats
 end
 
 -- Get detailed city information
@@ -260,36 +233,13 @@ function GetCityDetails(cityId)
         return nil
     end
     
-    -- Call APIs to get city details
+    local details = {}
     CallHostAPI('/api/v1/servers/' .. cityId, 'GET', nil, function(success, response)
         if success and response then
-            return response
+            details = response
         end
     end)
-    
-    -- Mock data for now
-    return {
-        id = cityId,
-        name = 'Los Santos RP',
-        ip = '192.168.1.100:30120',
-        status = 'online',
-        players = 48,
-        maxPlayers = 64,
-        version = '1.0.0',
-        framework = 'qbcore',
-        connectedAPIs = {'global-bans', 'player-tracking', 'anticheat-sync', 'analytics'},
-        performance = {
-            tps = 49.8,
-            memoryUsage = 2048,
-            cpuUsage = 45.5,
-            networkIn = 1.2, -- MB/s
-            networkOut = 0.8 -- MB/s
-        },
-        recentPlayers = {},
-        recentBans = {},
-        recentReports = {},
-        config = {}
-    }
+    return details
 end
 
 -- Control API (start, stop, restart, configure)
