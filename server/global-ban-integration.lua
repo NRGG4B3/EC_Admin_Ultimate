@@ -325,7 +325,7 @@ function SyncGlobalBanToLocal(globalBanData)
             ['@bannedby'] = globalBanData.bannedBy or 'Global Ban System',
             ['@expire'] = globalBanData.duration == 0 and 0 or (os.time() + globalBanData.duration),
             ['@timestamp'] = os.time()
-        end, function(rowsChanged)
+        }, function(rowsChanged)
             if rowsChanged > 0 then
                 Logger.Success(string.format('✅ Synced global ban to local: %s', globalBanData.playerName))
             end

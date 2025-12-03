@@ -498,8 +498,7 @@ SetHttpHandler(function(req, res)
     -- DEBUG: Log every request (respect logger if available)
     if Logger and Logger.Debug then
         Logger.Debug(string.format('[Router DEBUG] %s %s from %s', method, path, ip))
-    else
-        Logger.Debug(string.format('[Router DEBUG] %s %s from %s', method, path, ip))
+    end
     
     -- Check if admin menu is disabled
     if not _G.ECAdminMenuEnabled and path:match('^/api/') and not path:match('^/api/health') then
@@ -711,15 +710,13 @@ SetHttpHandler(function(req, res)
         HandleHostToggle(req, res)
         LogRequest(method, path, 200, GetGameTimer() - startTime, ip)
         return
-        
     elseif path == '/host/rotate-token' then
         -- Special handling - uses req/res directly
         HandleHostRotateToken(req, res)
         LogRequest(method, path, 200, GetGameTimer() - startTime, ip)
         return
-        
-    -- Unknown endpoint
     else
+        -- Unknown endpoint
         result = {
             success = false,
             error = 'Endpoint not found',
