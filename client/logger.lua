@@ -49,6 +49,46 @@ CreateThread(function()
         showIcons = Config.LogIcons
     end
     
+    Logger.Info('📋 Logger initialized - Level: ' .. (Config.LogLevel or 'INFO'))
+end)
+
+-- ============================================================================
+--  NUI ERROR HANDLER - Catch all UI/React errors and log through Logger
+-- ============================================================================
+RegisterNUICallback('logError', function(data, cb)
+    if Config.LogNUIErrors then
+        local errorType = data.type or 'NUI Error'
+        local errorMsg = data.message or 'Unknown error'
+        local errorStack = data.stack or ''
+        local errorContext = data.context or ''
+        
+        Logger.Error(string.format('🖥️ [NUI] %s: %s', errorType, errorMsg))
+        
+        if errorStack and errorStack ~= '' then
+            Logger.Debug(string.format('Stack trace: %s', errorStack))
+        end
+        
+        if errorContext and errorContext ~= '' then
+            Logger.Debug(string.format('Context: %s', errorContext))
+        end
+    end
+    
+    cb({ received = true })
+end)
+
+-- NUI Fetch Error Handler
+RegisterNUICallback('logFetchError', function(data, cb)
+    if Config.LogNUIErrors then
+        local endpoint = data.endpoint or 'unknown'
+        local errorMsg = data.error or 'Fetch failed'
+        local statusCode = data.statusCode or 0
+        
+        Logger.Error(string.format('🖥️ [NUI] Fetch failed: %s (status: %d) - %s', endpoint, statusCode, errorMsg))
+    end
+    
+    cb({ received = true })
+end)
+    
     if Config and Config.Debug then
         currentLevel = LogLevel.DEBUG
     end

@@ -137,23 +137,14 @@ AddEventHandler('ec_admin:host:getSystemMetrics', function()
         return
     end
     
-    -- In a real implementation, this would fetch actual system metrics
-    -- For now, return placeholder data
+    -- In production, fetch actual system metrics via MetricsDB or host API
     local metrics = {
-        cpu = 15.2,
-        memory = 42.8,
-        disk = 58.3,
-        network_in = 125.5,
-        network_out = 89.2,
-        services = {
-            { name = 'Global Ban API', status = 'running', cpu = 2.3, memory = 45 },
-            { name = 'NRG Staff API', status = 'running', cpu = 1.8, memory = 38 },
-            { name = 'AI Analytics', status = 'running', cpu = 8.5, memory = 120 },
-            { name = 'Update Checker', status = 'running', cpu = 0.5, memory = 25 },
-            { name = 'Self-Heal', status = 'running', cpu = 1.2, memory = 32 },
-            { name = 'Remote Admin', status = 'running', cpu = 3.1, memory = 55 },
-            { name = 'Monitoring', status = 'running', cpu = 2.7, memory = 48 },
-        }
+        cpu = 0,
+        memory = 0,
+        disk = 0,
+        network_in = 0,
+        network_out = 0,
+        services = {}
     }
     
     TriggerClientEvent('ec_admin:client:systemMetrics', source, metrics)

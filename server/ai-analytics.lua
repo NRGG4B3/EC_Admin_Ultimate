@@ -497,11 +497,9 @@ function AIAnalytics.RetrainModel(adminSource, modelId)
             model.status = 'training'
             model.lastTrained = os.time()
             
-            -- Simulate training completion
+            -- Training completion callback (no simulated accuracy changes)
             SetTimeout(5000, function()
                 model.status = 'active'
-                -- Slightly improve accuracy
-                model.accuracy = math.min(99.9, model.accuracy + math.random(1, 3) * 0.1)
             end)
             
             Logger.Info(string.format('', model.name))

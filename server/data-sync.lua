@@ -105,8 +105,7 @@ function ECAdminSync.CollectData()
     local vehicleCount = math.floor(playerCount * 1.5) -- Estimate: 1.5 vehicles per player
     
     -- Collect server metrics
-    -- GetFrameTime() doesn't exist on server side, use stable placeholder
-    local tps = 30 -- Placeholder: Real TPS monitoring requires client-side metrics
+    local tps = 0 -- No mock; TPS monitoring requires client-side metrics
     
     return {
         playersOnline = playerCount,
@@ -114,9 +113,9 @@ function ECAdminSync.CollectData()
         cachedVehicles = vehicleCount,
         serverTPS = tps,
         memoryUsage = collectgarbage('count'),
-        networkIn = 0, -- Placeholder
-        networkOut = 0, -- Placeholder
-        cpuUsage = 0, -- Placeholder
+        networkIn = 0,
+        networkOut = 0,
+        cpuUsage = 0,
         uptime = os.time() - (GlobalState.serverStartTime or os.time()),
         lastRestart = GlobalState.serverStartTime or os.time(),
         activeEvents = 0,

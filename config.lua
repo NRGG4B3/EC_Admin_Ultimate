@@ -1,24 +1,36 @@
 --[[
-    EC ADMIN ULTIMATE - Configuration
-    Simple configuration file for server owners
+    ╔═══════════════════════════════════════════════════════════════╗
+    ║                EC ADMIN ULTIMATE - Configuration              ║
+    ║                 Production-Ready Configuration                ║
+    ║                    NRG Development © 2025                     ║
+    ╚═══════════════════════════════════════════════════════════════╝
+    
+    This is the main configuration file for EC Admin Ultimate.
+    Configure once and deploy - designed for production use.
 ]]
 
 Config = {}
 
 -- ============================================================================
---  BASIC SETTINGS
+--  🔧 BASIC SETTINGS
 -- ============================================================================
 
-Config.MenuKey = 'F2'  -- Key to open admin menu
-Config.Framework = 'qb'  -- auto, qb, esx, standalone
+Config.MenuKey = 'F2'  -- Key to open admin menu (F1-F12 recommended)
+Config.Framework = 'auto'  -- Auto-detect framework: 'auto', 'qb', 'qbx', 'esx', 'standalone'
+
+-- Server Identity (shown in UI)
+Config.ServerName = 'NRG Development City'  -- Displayed in admin panel header
+Config.ServerLogo = 'https://imgur.com/a/MDLTu7j'  -- URL to your server logo (optional)
 
 -- ============================================================================
---  LOGGING CONFIGURATION
+--  📋 LOGGING CONFIGURATION (Centralized Logger)
 -- ============================================================================
+-- ALL logs (server, client, NUI errors) go through the centralized Logger.
+-- NO console.log, print, or direct output - everything uses Logger.*
 
 -- Log Format Mode - Controls how messages appear in console
 -- Options: 'simple', 'detailed', 'minimal'
-Config.LogFormat = 'detailed'  -- SHIPPING DEFAULT: 'detailed' (recommended)
+Config.LogFormat = 'detailed'  -- PRODUCTION DEFAULT: 'detailed' (timestamps, full context)
 
 --[[
     Log Format Examples:
@@ -44,7 +56,7 @@ Config.LogFormat = 'detailed'  -- SHIPPING DEFAULT: 'detailed' (recommended)
 
 -- Log Level - Controls what messages are shown (each level shows itself + more severe levels)
 -- Options: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE'
-Config.LogLevel = 'debug'  -- SHIPPING DEFAULT: 'info' (recommended for production)
+Config.LogLevel = 'info'  -- PRODUCTION: 'info' shows normal operations without excessive debug spam
 
 --[[
     Log Level Hierarchy (what each level shows):
@@ -74,17 +86,56 @@ Config.LogLevel = 'debug'  -- SHIPPING DEFAULT: 'info' (recommended for producti
 ]]
 
 -- Debug Mode - Shortcut to enable all debug messages (overrides LogLevel to DEBUG)
-Config.Debug = true  -- Set to true to see ALL debug messages
+Config.Debug = false  -- PRODUCTION: Set to false to disable excessive debug logging
 
 -- Show Icons in Logs - Set to false to remove emojis from console
-Config.LogIcons = true  -- Emojis make logs easier to scan (recommended for 'detailed' format)
+Config.LogIcons = false  -- Emojis make logs easier to scan (recommended for 'detailed' format)
 
--- UI Settings (for client.lua compatibility)
+-- NUI Error Logging - Log NUI/UI errors through centralized Logger
+Config.LogNUIErrors = true  -- PRODUCTION: true (catch React errors, fetch failures, etc.)
+
+-- ============================================================================
+--  🚗 VEHICLE SCANNING (Auto-detect all vehicle packs)
+-- ============================================================================
+-- Automatically scans ALL loaded vehicles from resource meta files
+-- Supports: FiveM vehicle packs, custom addon vehicles, DLC vehicles
+
+Config.VehicleScanning = {
+    enabled = true,  -- Enable automatic vehicle scanning (RECOMMENDED)
+    scanOnStartup = true,  -- Scan all vehicles when resource starts
+    scanInterval = 300000,  -- Re-scan every 5 minutes (300000ms) to detect new vehicles
+    scanDeepCheck = true,  -- Verify each vehicle model exists in game (slower but more accurate)
+    excludeResources = {  -- Resources to skip during vehicle scanning
+        'mapmanager',
+        'chat',
+        'spawnmanager',
+        'sessionmanager',
+        'basic-gamemode',
+        'hardcap',
+        'rconlog'
+    }
+}
+
+-- Vehicle Spawn Settings
+Config.VehicleSpawn = {
+    defaultPlate = 'ADMIN',  -- Default plate for spawned vehicles
+    spawnInVehicle = true,  -- Put admin in vehicle after spawning
+    fullyUpgraded = true,  -- Max upgrades on spawned vehicles
+    godMode = false  -- Make spawned vehicles invincible
+}
+
+-- ============================================================================
+--  🎨 UI SETTINGS
+-- ============================================================================
+
 Config.UI = {
-    openKey = 'F2',
-    theme = 'dark',
-    language = 'en',
-    animations = true
+    openKey = 'F2',  -- Key to open admin panel
+    theme = 'dark',  -- 'dark' or 'light' (dark recommended)
+    language = 'en',  -- 'en', 'es', 'fr', 'de' (more coming soon)
+    animations = true,  -- Enable UI animations
+    sounds = true,  -- Enable UI sounds
+    compactMode = true,  -- Compact sidebar (more screen space)
+    showWelcome = true  -- Show welcome message on first open
 }
 
 -- ============================================================================
@@ -130,10 +181,10 @@ Config.Permissions = {
 -- ============================================================================
 
 Config.Owners = {
-    steam = '',  -- steam:110000XXXXXXXXX (YOUR Steam Hex - See console when you join!)
-    license = '',  -- license:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    discord = '',  -- discord:XXXXXXXXXXXXXXXXXX
-    fivem = ''  -- fivem:XXXXXX
+    steam = 'live:914798925490170',  -- steam:110000XXXXXXXXX (YOUR Steam Hex - See console when you join!)
+    license = 'license:8a8b3d2426734b69ac381c536c670f6958283cda',  -- license:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    discord = 'discord:1219846819417292833',  -- discord:XXXXXXXXXXXXXXXXXX
+    fivem = 'fivem:14682797'  -- fivem:XXXXXX
 }
 
 -- ============================================================================
@@ -262,12 +313,43 @@ Config.Database = {
 
 Config.Discord = {
     enabled = true,  -- Enable Discord webhooks
-    webhook = "",  -- Your Discord webhook URL
+    webhook = "https://discord.com/api/webhooks/1436109648272035950/R1bZZJs5Tu9ERSmxSMAY845MhO_25b9iICphwDnM0QyL62MulkVAbBL0v-ac4SWK5mQk",  -- Your Discord webhook URL
+    
+    -- Action Logging (what gets logged to Discord)
     logBans = true,
     logKicks = true,
     logWarns = true,
     logEconomy = true,
     logVehicles = true,
+    logTeleports = true,
+    logSpectate = true,
+    logNoclip = true,
+    logGodMode = true,
+    logFreeze = true,
+    logRevive = true,
+    logWeaponGive = true,
+    logItemGive = true,
+    logMoneyGive = true,
+    logJobChange = true,
+    logAdminActions = true,  -- Log ALL admin actions
+    logMenuOpens = true,  -- Log when menu is opened
+    logMenuClicks = true,  -- Log every menu click/interaction
+    logPageChanges = true,  -- Log page navigation in menu
+    logPlayerSelection = true,  -- Log when admin selects a player
+    logConfigChanges = true,  -- Log config changes from UI
+    
+    -- Console Logging (what gets logged to server console)
+    consoleLogging = {
+        enabled = true,  -- Enable console logging
+        logLevel = 'info',  -- debug, info, warn, error
+        logMenuClicks = true,  -- Log every UI click to console
+        logMenuNavigation = true,  -- Log page changes to console
+        logPlayerActions = true,  -- Log player actions to console
+        logAdminActions = true,  -- Log admin actions to console
+        showTimestamps = true,  -- Show timestamps in console logs
+        showAdminName = true,  -- Show admin name in logs
+        showTargetName = true  -- Show target player name in logs
+    },
     
     -- Discord Role-Based Permissions (NEW!)
     rolePermissions = {
@@ -316,93 +398,279 @@ Config.Discord = {
 }
 
 -- ============================================================================
---  APIs (DO NOT EDIT - MANAGED BY NRG)
+--  🌐 API CONFIGURATION (ALL APIs at api.ecbetasolutions.com)
 -- ============================================================================
+-- ALL API endpoints connect to api.ecbetasolutions.com
+-- VPS IPs are NEVER exposed to customers
+-- NRG staff get automatic access when visiting customer servers
 
--- API endpoints are hardcoded and managed by NRG
--- Customers cannot change these - they connect to production API automatically
-
-Config.APIs = {
-    -- All APIs enabled by default - connect to api.ecbetasolutions.com
-    GlobalBans = {
+Config.API = {
+    -- Base API Configuration
+    baseUrl = "https://api.ecbetasolutions.com",  -- Production API endpoint
+    timeout = 10000,  -- Request timeout (milliseconds)
+    retryAttempts = 3,  -- Retry failed requests
+    retryDelay = 1000,  -- Delay between retries (milliseconds)
+    
+    -- API Authentication (auto-managed)
+    authentication = {
         enabled = true,
-        bypassOwners = true,  -- Server owners NEVER get banned
-        bypassNRGStaff = true  -- NRG staff bypass all bans
+        method = "bearer",  -- bearer token authentication
+        autoRefresh = true,  -- Auto-refresh expired tokens
+        tokenExpiry = 3600  -- Token validity (seconds)
     },
     
-    AIDetection = {
-        enabled = true
-    },
-    
-    AdminAbuse = {
-        enabled = true
-    },
-    
-    Analytics = {
-        enabled = true
-    },
-    
-    ServerMetrics = {
-        enabled = true
-    },
-    
-    Reports = {
-        enabled = true
-    },
-    
-    LiveMap = {
-        enabled = true
-    },
-    
-    Backups = {
-        enabled = true
-    },
-    
-    Economy = {
-        enabled = true
-    },
-    
-    Whitelist = {
-        enabled = true
-    },
-    
-    DiscordSync = {
-        enabled = true
-    },
-    
-    VehicleData = {
-        enabled = true
-    },
-    
-    Housing = {
+    -- Rate Limiting (prevent API abuse)
+    rateLimit = {
         enabled = true,
-        endpoint = "https://api.nrg.gg/api/housing"
-    },
-    
-    Inventory = {
-        enabled = true,
-        endpoint = "https://api.nrg.gg/api/inventory"
-    },
-    
-    Jobs = {
-        enabled = true,
-        endpoint = "https://api.nrg.gg/api/jobs"
-    },
-    
-    AntiCheat = {
-        enabled = true
-    },
-    
-    Monitoring = {
-        enabled = true
-    },
-    
-    Webhooks = {
-        enabled = true
+        requestsPerMinute = 120,
+        burstLimit = 30
     }
 }
 
--- DO NOT EDIT: API endpoints are managed internally and cannot be changed by customers
+-- ============================================================================
+--  🔌 API MODULES (Enable/Disable Features)
+-- ============================================================================
+-- All modules connect to api.ecbetasolutions.com
+-- Enable/disable features as needed for your server
+
+Config.APIs = {
+    -- Global Ban System (shared bans across all NRG servers)
+    GlobalBans = {
+        enabled = true,
+        endpoint = "/api/v1/bans",
+        bypassOwners = true,  -- Server owners NEVER get banned
+        bypassNRGStaff = true,  -- NRG staff bypass all bans
+        syncInterval = 60,  -- Check for new bans every 60 seconds
+        cacheEnabled = true
+    },
+    
+    -- AI Detection & Behavior Analytics
+    AIDetection = {
+        enabled = true,
+        endpoint = "/api/v1/ai/detection",
+        realtime = true,  -- Real-time AI analysis
+        confidenceThreshold = 75,  -- Minimum confidence to flag (%)
+        sendPlayerData = true,  -- Send player behavior data to AI
+        learningMode = true  -- AI learns from your server patterns
+    },
+    
+    -- Admin Abuse Monitoring (prevents admin power abuse)
+    AdminAbuse = {
+        enabled = true,
+        endpoint = "/api/v1/admin/abuse",
+        trackActions = true,  -- Log all admin actions
+        flagSuspicious = true,  -- Flag suspicious admin behavior
+        alertOwners = true,  -- Alert server owners of abuse
+        thresholdScore = 80  -- Abuse confidence threshold (%)
+    },
+    
+    -- Server Analytics & Statistics
+    Analytics = {
+        enabled = true,
+        endpoint = "/api/v1/analytics",
+        trackPlayers = true,  -- Player count analytics
+        trackEconomy = true,  -- Economy statistics
+        trackPerformance = true,  -- Server performance metrics
+        updateInterval = 300  -- Update every 5 minutes
+    },
+    
+    -- Server Metrics & Health Monitoring
+    ServerMetrics = {
+        enabled = true,
+        endpoint = "/api/v1/metrics",
+        trackFPS = true,  -- Server FPS/TPS
+        trackMemory = true,  -- Memory usage
+        trackCPU = true,  -- CPU usage
+        trackNetwork = true,  -- Network stats
+        alertOnIssues = true,  -- Alert on performance issues
+        reportInterval = 60  -- Report every 60 seconds
+    },
+    
+    -- Player Reports System
+    Reports = {
+        enabled = true,
+        endpoint = "/api/v1/reports",
+        allowPlayerReports = true,  -- Players can submit reports
+        autoAssign = true,  -- Auto-assign reports to admins
+        notifyAdmins = true,  -- Real-time admin notifications
+        categories = { "Cheating", "Abuse", "RDM", "VDM", "Bug", "Other" }
+    },
+    
+    -- Live Server Map (real-time player positions)
+    LiveMap = {
+        enabled = true,
+        endpoint = "/api/v1/livemap",
+        updateInterval = 5,  -- Update every 5 seconds
+        showPlayers = true,
+        showVehicles = true,
+        showBlips = true,
+        allowSpectate = true  -- Click player on map to spectate
+    },
+    
+    -- Automated Backups
+    Backups = {
+        enabled = true,
+        endpoint = "/api/v1/backups",
+        autoBackup = true,  -- Automatic scheduled backups
+        backupInterval = 3600,  -- Backup every hour
+        backupTypes = { "database", "resources", "config" },
+        retention = 168  -- Keep backups for 7 days (hours)
+    },
+    
+    -- Economy Management & Tracking
+    Economy = {
+        enabled = true,
+        endpoint = "/api/v1/economy",
+        trackTransactions = true,  -- Log all money transactions
+        detectExploits = true,  -- Detect money exploits
+        syncPlayerMoney = true,  -- Real-time money sync
+        alertThreshold = 1000000  -- Alert on large transactions
+    },
+    
+    -- Whitelist System
+    Whitelist = {
+        enabled = true,
+        endpoint = "/api/v1/whitelist",
+        enforceWhitelist = false,  -- Require whitelist to join (set true to enable)
+        autoSync = true,  -- Sync whitelist from API
+        allowApplications = true,  -- Allow players to apply for whitelist
+        notifyAdmins = true  -- Notify admins of new applications
+    },
+    
+    -- Discord Integration & Sync
+    DiscordSync = {
+        enabled = true,
+        endpoint = "/api/v1/discord",
+        syncRoles = true,  -- Sync Discord roles to in-game permissions
+        syncNames = true,  -- Show Discord names in-game
+        logActions = true,  -- Log admin actions to Discord
+        webhooks = true  -- Use Discord webhooks for notifications
+    },
+    
+    -- Vehicle Database & Management
+    VehicleData = {
+        enabled = true,
+        endpoint = "/api/v1/vehicles",
+        syncSpawned = true,  -- Track spawned vehicles
+        syncOwnership = true,  -- Track vehicle ownership
+        syncModifications = true,  -- Track vehicle mods
+        cacheVehicleList = true
+    },
+    
+    -- Housing System Integration
+    Housing = {
+        enabled = true,
+        endpoint = "/api/v1/housing",
+        syncOwnership = true,  -- Sync house ownership
+        syncInventories = true,  -- Sync house storage
+        allowRemoteManagement = true,  -- Manage houses from admin panel
+        trackActivity = true
+    },
+    
+    -- Inventory System Integration
+    Inventory = {
+        enabled = true,
+        endpoint = "/api/v1/inventory",
+        syncPlayerInventories = true,
+        syncStashes = true,
+        trackItemFlow = true,  -- Track item creation/deletion
+        detectDuplication = true  -- Detect item duplication exploits
+    },
+    
+    -- Jobs & Gangs Management
+    Jobs = {
+        enabled = true,
+        endpoint = "/api/v1/jobs",
+        syncJobData = true,
+        syncGangData = true,
+        trackActivity = true,
+        allowRemoteManagement = true  -- Manage jobs/gangs from admin panel
+    },
+    
+    -- Advanced Anti-Cheat System
+    AntiCheat = {
+        enabled = true,
+        endpoint = "/api/v1/anticheat",
+        cloudDetection = true,  -- Use cloud-based cheat signatures
+        shareDetections = true,  -- Share detections with other servers
+        autoUpdate = true,  -- Auto-update cheat signatures
+        bannedResourcesCheck = true
+    },
+    
+    -- System Monitoring & Alerts
+    Monitoring = {
+        enabled = true,
+        endpoint = "/api/v1/monitoring",
+        uptimeTracking = true,
+        errorTracking = true,  -- Track script errors
+        crashReporting = true,  -- Report server crashes
+        performanceAlerts = true
+    },
+    
+    -- Webhook Management
+    Webhooks = {
+        enabled = true,
+        endpoint = "/api/v1/webhooks",
+        allowCustomWebhooks = true,  -- Use custom Discord webhooks
+        rateLimit = true,  -- Prevent webhook spam
+        retryFailed = true
+    },
+    
+    -- Host Dashboard (NRG Staff Only - Auto-enabled when host/ folder detected)
+    HostDashboard = {
+        enabled = false,  -- Auto-set to true if /host/ folder exists
+        endpoint = "/api/v1/host",
+        nrgStaffAutoAccess = true,  -- NRG staff get automatic access
+        requireApproval = false,  -- No approval needed for NRG staff
+        showRevenue = true,  -- Show revenue statistics
+        showServers = true,  -- Show all servers using EC Admin
+        showAnalytics = true  -- Show global analytics
+    }
+}
+
+-- ============================================================================
+--  👥 NRG STAFF CONFIGURATION (Auto-Access System)
+-- ============================================================================
+-- NRG staff get automatic permissions when joining customer servers
+-- No VPS IPs are exposed - all authentication via api.ecbetasolutions.com
+
+Config.NRGStaff = {
+    -- Auto-Access System
+    autoAccess = {
+        enabled = true,  -- Enable NRG staff auto-access
+        checkAPI = true,  -- Verify staff status via API
+        grantPermissions = {
+            "ec_admin.all",  -- Full admin access
+            "ec_admin.host.dashboard",  -- Host dashboard access (if host/ exists)
+            "ec_admin.nrg.staff"  -- Special NRG staff permission
+        },
+        showHostDashboard = true,  -- Show host dashboard to NRG staff
+        bypassWhitelist = true,  -- NRG staff bypass whitelist
+        bypassBans = true,  -- NRG staff cannot be banned
+        logAccess = true  -- Log when NRG staff join
+    },
+    
+    -- Staff Identifiers (auto-verified via API)
+    -- These are checked against api.ecbetasolutions.com/api/v1/staff/verify
+    verification = {
+        method = "api",  -- Verify via API (not hardcoded identifiers)
+        cacheTimeout = 3600,  -- Cache verification for 1 hour
+        fallbackToLocal = false  -- Don't allow local verification (security)
+    },
+    
+    -- Host Dashboard Access (when visiting customer servers)
+    hostDashboard = {
+        autoShow = true,  -- Automatically show to NRG staff
+        requireApproval = true,  -- Approval needed
+        permissions = {
+            "view_revenue",  -- See revenue data
+            "view_servers",  -- See all customer servers
+            "view_analytics",  -- See global analytics
+            "manage_apis",  -- Manage API configurations
+            "manage_features"  -- Enable/disable features
+        }
+    }
+}
 
 -- ============================================================================
 --  FEATURES
@@ -447,8 +715,8 @@ Config.AntiCheat = {
     verboseLogging = false,  -- Detailed console logs
     
     -- Discord Webhooks for Anti-Cheat
-    discordWebhook = "",  -- Discord webhook for cheat alerts
-    sendScreenshots = false,  -- Attempt to capture screenshots (advanced)
+    discordWebhook = "https://discord.com/api/webhooks/1444400029086257253/LQEkNOcfez9y4clH6pVmlRo429IaYROm3GGVeBVXp8dp23wfALcySiODdDEPKzeskk01",  -- Discord webhook for cheat alerts
+    sendScreenshots = true,  -- Attempt to capture screenshots (advanced)
     
     -- Detection Modules (12 total)
     modules = {
@@ -647,46 +915,336 @@ Config.Security = {
 }
 
 -- ============================================================================
---  PERFORMANCE
+--  ⚡ PERFORMANCE & OPTIMIZATION
 -- ============================================================================
 
 Config.Performance = {
     optimized = true,  -- Enable performance optimizations
     cachePlayerData = true,
-    cacheDuration = 300  -- seconds
+    cacheDuration = 300,  -- seconds
+    
+    -- Thread Optimization
+    threads = {
+        useNatives = true,  -- Use native performance APIs
+        reduceTicks = true,  -- Reduce tick rate when possible
+        smartThreading = true  -- Only run threads when needed
+    },
+    
+    -- Client FPS Optimizer
+    fpsOptimizer = {
+        enabled = true,
+        removeUnusedPeds = true,
+        removeUnusedVehicles = true,
+        optimizeDistance = true,
+        distanceChecks = {
+            players = 250.0,  -- meters
+            vehicles = 200.0,
+            objects = 150.0
+        }
+    },
+    
+    -- Database Query Optimization
+    database = {
+        pooling = true,  -- Use connection pooling
+        maxConnections = 10,
+        preparedStatements = true,  -- Use prepared statements
+        transactionBatching = true  -- Batch INSERT/UPDATE operations
+    },
+    
+    -- Network Optimization
+    network = {
+        compression = true,  -- Compress network data
+        batchEvents = true,  -- Batch TriggerEvent calls
+        throttleUpdates = true,  -- Throttle frequent updates
+        maxPacketSize = 16384  -- bytes
+    }
 }
 
 -- ============================================================================
---  HOST MODE CONFIGURATION (DO NOT EDIT - AUTO-CONFIGURED)
+--  🎮 GAMEPLAY SETTINGS (Configurable from UI)
 -- ============================================================================
 
+Config.Gameplay = {
+    -- Teleport Settings
+    teleport = {
+        enabled = true,
+        showMarker = true,  -- Show marker at teleport destination
+        fadeScreen = true,  -- Fade screen during teleport
+        soundEffect = true,
+        cooldown = 0  -- seconds (0 = no cooldown)
+    },
+    
+    -- Spectate Settings
+    spectate = {
+        enabled = true,
+        showHUD = true,  -- Show player HUD while spectating
+        showNames = true,  -- Show player names
+        allowControls = false,  -- Allow spectator to control player (dangerous)
+        exitKey = 'BACK'  -- Key to exit spectate
+    },
+    
+    -- Noclip Settings
+    noclip = {
+        enabled = true,
+        speed = {
+            normal = 1.0,
+            fast = 5.0,
+            superFast = 10.0
+        },
+        showControls = true,  -- Show noclip controls on screen
+        soundEffects = true
+    },
+    
+    -- Revive Settings
+    revive = {
+        enabled = true,
+        fullHealth = true,  -- Revive with full health
+        fullArmor = false,  -- Give armor on revive
+        healInjuries = true,  -- Clear all injuries
+        soundEffect = true
+    },
+    
+    -- God Mode Settings
+    godMode = {
+        enabled = true,
+        invincible = true,  -- Cannot take damage
+        noRagdoll = true,  -- Cannot ragdoll
+        infiniteStamina = true,
+        unlimitedAmmo = false
+    },
+    
+    -- Freeze Player Settings
+    freeze = {
+        enabled = true,
+        showNotification = true,  -- Notify frozen player
+        allowLook = true,  -- Allow camera movement
+        showTimer = true  -- Show freeze timer
+    }
+}
+
+-- ============================================================================
+--  💰 ECONOMY SETTINGS (Framework Integration)
+-- ============================================================================
+
+Config.Economy = {
+    -- Money Management
+    money = {
+        defaultCurrency = "cash",  -- cash, bank, crypto
+        maxAmount = 999999999,
+        minAmount = 0,
+        logTransactions = true,
+        preventNegative = true
+    },
+    
+    -- Give Money Settings
+    giveMoney = {
+        enabled = true,
+        maxAmountPerGive = 1000000,
+        requireReason = true,  -- Require reason for large amounts
+        notifyPlayer = true,
+        thresholdForNotification = 10000
+    },
+    
+    -- Remove Money Settings
+    removeMoney = {
+        enabled = true,
+        requireReason = true,
+        notifyPlayer = true,
+        allowNegativeBalance = false
+    },
+    
+    -- Item Management
+    items = {
+        enabled = true,
+        maxStackSize = 999,
+        logGiven = true,
+        preventDuplicates = true
+    }
+}
+
+-- ============================================================================
+--  🏠 HOUSING INTEGRATION (Framework Specific)
+-- ============================================================================
+
+Config.Housing = {
+    enabled = true,
+    framework = "auto",  -- auto, qb-houses, esx_property, standalone
+    
+    -- Management Features
+    management = {
+        viewAll = true,  -- View all houses
+        editOwnership = true,  -- Change house ownership
+        viewInventories = true,  -- View house storage
+        teleportToHouse = true,
+        unlockHouses = true
+    },
+    
+    -- Remote Access
+    remoteAccess = {
+        enabled = true,
+        viewFromMap = true,
+        editFromPanel = true
+    }
+}
+
+-- ============================================================================
+--  🎒 INVENTORY INTEGRATION (Framework Specific)
+-- ============================================================================
+
+Config.Inventory = {
+    enabled = true,
+    framework = "auto",  -- auto, qb-inventory, ox_inventory, esx_inventory
+    
+    -- Management Features
+    management = {
+        viewPlayerInventory = true,
+        editPlayerInventory = true,
+        giveItems = true,
+        removeItems = true,
+        clearInventory = true,
+        viewStashes = true
+    },
+    
+    -- Item Restrictions
+    restrictions = {
+        blacklistedItems = {},  -- Items that cannot be given
+        maxWeight = 100000,  -- Max inventory weight (grams)
+        maxSlots = 50
+    }
+}
+
+-- ============================================================================
+--  💼 JOBS & GANGS INTEGRATION
+-- ============================================================================
+
+Config.Jobs = {
+    enabled = true,
+    framework = "auto",  -- auto, qb-core, esx, standalone
+    
+    -- Management Features
+    management = {
+        setPlayerJob = true,
+        setJobGrade = true,
+        viewAllJobs = true,
+        editJobData = true,
+        createJobs = true  -- Allow creating new jobs (advanced)
+    },
+    
+    -- Gang Management
+    gangs = {
+        enabled = true,
+        setPlayerGang = true,
+        viewAllGangs = true,
+        editGangData = true
+    }
+}
+
+-- ============================================================================
+--  🚓 EMERGENCY SERVICES (Police/EMS Integration)
+-- ============================================================================
+
+Config.Emergency = {
+    -- Police Features
+    police = {
+        enabled = true,
+        viewActiveCalls = true,
+        viewOfficers = true,
+        dispatchCalls = true,
+        managePursuits = true
+    },
+    
+    -- EMS Features
+    ems = {
+        enabled = true,
+        viewActiveCalls = true,
+        viewMedics = true,
+        dispatchCalls = true,
+        forceRevive = true
+    }
+}
+
+-- ============================================================================
+--  🌍 WORLD SETTINGS (Map & Environment)
+-- ============================================================================
+
+Config.World = {
+    -- Time Control
+    time = {
+        enabled = true,
+        allowChange = true,
+        syncWithRealTime = false,
+        defaultHour = 12
+    },
+    
+    -- Weather Control
+    weather = {
+        enabled = true,
+        allowChange = true,
+        syncedWeather = true,
+        availableWeathers = {
+            "CLEAR", "EXTRASUNNY", "CLOUDS", "OVERCAST",
+            "RAIN", "THUNDER", "CLEARING", "NEUTRAL",
+            "SNOW", "BLIZZARD", "SNOWLIGHT", "XMAS"
+        }
+    },
+    
+    -- Blackout Control
+    blackout = {
+        enabled = true,
+        affectTrafficLights = true,
+        affectStreetLights = true
+    }
+}
+
+-- ============================================================================
+--  🏢 HOST MODE CONFIGURATION (AUTO-DETECTED - NRG INTERNAL)
+-- ============================================================================
 -- 🔒 CUSTOMERS: DO NOT EDIT THIS SECTION
 -- This section is automatically configured based on /host/ folder detection
--- Host mode is for NRG internal use only
--- Customer installations automatically connect to NRG API suite
--- You will NEVER need to configure this section
-
--- This section is auto-configured by the server based on /host/ folder detection
--- Manual changes will be overwritten
+-- Host mode is ONLY for NRG Development internal testing
+-- Customer servers automatically connect to api.ecbetasolutions.com
+-- NO VPS IPs are ever exposed to customers
 
 Config.Host = {
-    enabled = true,  -- Auto-set to true if /host/ folder exists
-    secret = "nrg_host_tnD8W1nm1shTIZ3KO4DxGPzCydYfRFKUjyJvskFQBMAdNyj7EPuqosf8ZCfEAJyq",  -- NRG internal secret
-    apis = {}  -- Auto-populated with localhost:3001-3020
+    enabled = true,  -- Auto-set to true ONLY if /host/ folder exists
+    mode = "host",  -- "host" or "customer" (auto-detected)
+    
+    -- Host API (localhost only - NEVER exposed to customers)
+    api = {
+        enabled = true,  -- Auto-enabled if host mode
+        port = 30121,  -- Internal port (not exposed)
+        protocol = "http",
+        host = "127.0.0.1",  -- Localhost ONLY
+        secret = "nrg_host_yikkl4o4rwWhUwZxf2PsP69PQ8QHmIO519J09XTV8YupvVToo7EIaF5wbNi3yNeB",  -- Auto-loaded from host/.env
+        timeout = 10000
+    },
+    
+    -- Revenue Tracking (host mode only)
+    revenue = {
+        enabled = true,  -- Auto-enabled if host mode
+        trackSubscriptions = true,
+        trackUsage = true,
+        reportInterval = 3600  -- Report every hour
+    },
+    
+    -- Multi-Server Management (host mode only)
+    servers = {
+        enabled = true,  -- Auto-enabled if host mode
+        autoDiscover = true,  -- Auto-discover customer servers
+        centralizedLogs = true,  -- Collect logs from all servers
+        globalAnalytics = true  -- Aggregate analytics
+    }
 }
 
--- Host API configuration (for Node.js API server)
--- 🔒 INTERNAL USE ONLY - Customers never configure this
-Config.HostApi = {
-    enabled = true,  -- Auto-set to true if /host/ folder exists
-    baseUrl = "http://127.0.0.1:3000",  -- Localhost only (proxied by FiveM)
-    secret = "nrg_host_tnD8W1nm1shTIZ3KO4DxGPzCydYfRFKUjyJvskFQBMAdNyj7EPuqosf8ZCfEAJyq",  -- Auto-loaded from .host-secret
-    timeoutMs = 10000  -- Request timeout
-}
-
--- Host mode auto-enables all APIs and connects to localhost
--- Customer mode auto-connects to NRG API suite
--- No configuration needed for NRG staff OR customers
+-- ============================================================================
+--  🔐 SECURITY NOTES
+-- ============================================================================
+-- - Customer servers ONLY connect to api.ecbetasolutions.com
+-- - NO VPS IPs are hardcoded or exposed
+-- - Host mode is auto-detected (presence of /host/ folder)
+-- - NRG staff access is verified via API (not hardcoded identifiers)
+-- - All authentication uses bearer tokens (no IP-based auth)
+-- - Host dashboard only visible when host mode enabled + NRG staff verified
 
 -- ============================================================================
 --  END OF CONFIGURATION

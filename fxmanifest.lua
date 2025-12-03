@@ -140,6 +140,9 @@ server_scripts {
     'server/database/auto-migrate.lua',  -- Auto-migration on startup
     'server/database/auto-setup.lua',    -- Database initialization
     'server/database-migration-ai.lua',  -- AI Detection tables migration
+    'server/auto-migrate-sql.lua',       -- Automatic SQL migration system (runs all SQL files)
+    'server/config-management.lua',      -- Live config updates from UI
+    'server/action-logger.lua',          -- Centralized action logger (console + webhook + DB)
     
     -- AUTO-SETUP & DIAGNOSTICS (after DB, before features)
     'server/auto-setup.lua',             -- Host/Customer auto-configuration
@@ -266,7 +269,8 @@ client_scripts {
   
     'client/startup-clean.lua',         
     'client/error-handler.lua',         
-    'client/notifications.lua',         
+    'client/notifications.lua',
+    'client/action-logger.lua',          -- Client-side action logger (UI clicks tracking)
     'client/nui-bridge.lua',            
     'client/nui-topbar.lua',            
     'client/nui-dashboard.lua',        

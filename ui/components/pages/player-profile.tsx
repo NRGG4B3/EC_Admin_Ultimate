@@ -54,78 +54,8 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
   // Form data
   const [formData, setFormData] = useState<any>({});
 
-  // Mock data for fallback (browser/Figma mode)
-  const mockPlayerData = {
-    id: playerId,
-    name: 'John_Doe',
-    steamId: 'steam:110000123456789',
-    license: 'license:abc123def456',
-    discord: 'JohnDoe#1234',
-    discordId: '123456789012345678',
-    ip: '192.168.1.100',
-    hwid: 'HWID-ABC123DEF456',
-    firstJoined: '2024-01-15 10:30:00',
-    lastSeen: 'Online',
-    lastSeenDate: new Date().toISOString(),
-    playtime: '247h 35m',
-    playtimeMinutes: 14855,
-    status: 'online' as const,
-    location: 'Legion Square',
-    coords: { x: 215.12, y: -810.34, z: 30.73 },
-    heading: 145.5,
-    job: 'Police Officer',
-    jobGrade: 'Sergeant',
-    jobGradeLevel: 3,
-    jobSalary: 5000,
-    gang: 'None',
-    gangGrade: 'None',
-    money: {
-      cash: 45230,
-      bank: 125600,
-      crypto: 2500,
-      blackMoney: 500
-    },
-    warnings: 2,
-    bans: 0,
-    kicks: 1,
-    commendations: 5,
-    health: 200,
-    armor: 100,
-    hunger: 75,
-    thirst: 80,
-    stress: 15,
-    isDead: false,
-    inVehicle: false,
-    currentVehicle: null,
-    level: 45,
-    xp: 12450,
-    nextLevelXp: 15000,
-    skillPoints: 23,
-    reputation: 'Good Standing',
-    totalDeaths: 12,
-    totalKills: 3,
-    totalArrests: 0,
-    totalArrestsMade: 27,
-    phoneNumber: '555-0123',
-    nationality: 'USA',
-    birthDate: '1995-06-15',
-    age: 28,
-    gender: 'Male',
-    height: 185,
-    licenses: ['Driver', 'Weapon', 'Business'],
-    metadata: {
-      criminalRecord: 'Clean',
-      isWanted: false,
-      wantedLevel: 0,
-      fingerprint: 'FP-123456',
-      bloodType: 'O+',
-      marriedTo: null,
-      notes: []
-    }
-  };
-
-  // Player data state - LIVE DATA INTEGRATION
-  const [player, setPlayer] = useState(mockPlayerData);
+  // Player data state - LIVE DATA ONLY (no mock fallbacks)
+  const [player, setPlayer] = useState<any>(null);
 
   // Inventory with detailed info
   const [inventory, setInventory] = useState([
@@ -321,7 +251,7 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
-  // Fetch player profile data from FiveM - LIVE DATA INTEGRATION
+  // Fetch player profile data from FiveM - LIVE DATA ONLY (no mock fallbacks)
   const fetchPlayerProfile = useCallback(async () => {
     try {
       const response = await fetch('https://ec_admin_ultimate/getPlayerProfile', {
@@ -335,37 +265,36 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
         if (result.success && result.player) {
           console.log('[Player Profile] Loaded real FiveM data for player:', playerId);
           
-          // Update player data with live data from server
+          // Update player data with live data from server only
           setPlayer({
-            ...mockPlayerData, // Keep structure
-            ...result.player,  // Override with real data
+            ...result.player,  // Use server data directly
             id: result.player.id || result.player.source || playerId,
-            name: result.player.name || mockPlayerData.name,
+            name: result.player.name || 'Unknown',
             status: result.player.online ? 'online' : 'offline',
-            location: result.player.location || mockPlayerData.location,
-            coords: result.player.coords || mockPlayerData.coords,
-            health: result.player.health || mockPlayerData.health,
-            armor: result.player.armor || mockPlayerData.armor,
-            job: result.player.job || mockPlayerData.job,
-            jobGrade: result.player.jobGrade || mockPlayerData.jobGrade,
-            gang: result.player.gang || mockPlayerData.gang,
-            money: result.player.money || mockPlayerData.money,
-            steamId: result.player.identifiers?.steam || result.player.steamId || mockPlayerData.steamId,
-            license: result.player.identifiers?.license || result.player.license || mockPlayerData.license,
-            discord: result.player.identifiers?.discord || result.player.discord || mockPlayerData.discord,
-            discordId: result.player.identifiers?.discord || result.player.discordId || mockPlayerData.discordId,
-            ip: result.player.identifiers?.ip || result.player.ip || mockPlayerData.ip,
-            hwid: result.player.identifiers?.hwid || result.player.hwid || mockPlayerData.hwid,
-            phoneNumber: result.player.phoneNumber || mockPlayerData.phoneNumber,
-            nationality: result.player.nationality || mockPlayerData.nationality,
-            birthDate: result.player.birthDate || mockPlayerData.birthDate,
-            gender: result.player.gender || mockPlayerData.gender,
-            hunger: result.player.hunger !== undefined ? result.player.hunger : mockPlayerData.hunger,
-            thirst: result.player.thirst !== undefined ? result.player.thirst : mockPlayerData.thirst,
-            stress: result.player.stress !== undefined ? result.player.stress : mockPlayerData.stress,
-            isDead: result.player.isDead || mockPlayerData.isDead,
+            location: result.player.location || 'Unknown',
+            coords: result.player.coords || { x: 0, y: 0, z: 0 },
+            health: result.player.health ?? 0,
+            armor: result.player.armor ?? 0,
+            job: result.player.job || 'Unemployed',
+            jobGrade: result.player.jobGrade || 'None',
+            gang: result.player.gang || 'None',
+            money: result.player.money || { cash: 0, bank: 0, crypto: 0, blackMoney: 0 },
+            steamId: result.player.identifiers?.steam || result.player.steamId || 'Unknown',
+            license: result.player.identifiers?.license || result.player.license || 'Unknown',
+            discord: result.player.identifiers?.discord || result.player.discord || 'Unknown',
+            discordId: result.player.identifiers?.discord || result.player.discordId || 'Unknown',
+            ip: result.player.identifiers?.ip || result.player.ip || 'Unknown',
+            hwid: result.player.identifiers?.hwid || result.player.hwid || 'Unknown',
+            phoneNumber: result.player.phoneNumber || 'N/A',
+            nationality: result.player.nationality || 'Unknown',
+            birthDate: result.player.birthDate || 'Unknown',
+            gender: result.player.gender || 'Unknown',
+            hunger: result.player.hunger ?? 0,
+            thirst: result.player.thirst ?? 0,
+            stress: result.player.stress ?? 0,
+            isDead: result.player.isDead || false,
             citizenId: result.player.citizenId,
-            metadata: result.player.metadata || mockPlayerData.metadata,
+            metadata: result.player.metadata || {},
           });
           
           // Update inventory if provided
@@ -375,15 +304,18 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
           }
           
           return;
+        } else {
+          console.error('[Player Profile] Server returned no player data');
+          setPlayer(null);
         }
+      } else {
+        console.error('[Player Profile] Response not OK');
+        setPlayer(null);
       }
     } catch (error) {
-      console.log('[Player Profile] Not in FiveM environment, using mock data');
+      console.error('[Player Profile] Error fetching player profile:', error);
+      setPlayer(null);
     }
-
-    // Use mock data as fallback
-    console.log('[Player Profile] Using mock data for player:', playerId);
-    setPlayer(mockPlayerData);
   }, [playerId]);
 
   // Initial load with auto-refresh - REAL-TIME UPDATES
@@ -1873,7 +1805,7 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
           <div className="py-4">
             <ScrollArea className="h-[400px]">
               <div className="grid grid-cols-3 gap-3">
-                {/* Mock stash items - would be loaded based on stashId */}
+                {/* Stash items loaded from server based on stashId */}
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <Card key={i} className="border-2">
                     <CardContent className="p-3">

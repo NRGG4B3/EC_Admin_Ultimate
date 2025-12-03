@@ -64,6 +64,21 @@ CREATE TABLE IF NOT EXISTS `ec_admin_logs` (
   KEY `action` (`action`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Config management (live config overrides)
+CREATE TABLE IF NOT EXISTS `ec_admin_config` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `config_key` VARCHAR(255) NOT NULL,
+  `config_value` TEXT NOT NULL,
+  `value_type` ENUM('string', 'number', 'boolean', 'json') NOT NULL DEFAULT 'string',
+  `enabled` TINYINT(1) NOT NULL DEFAULT 1,
+  `updated_by` VARCHAR(100) DEFAULT NULL,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_key` (`config_key`),
+  KEY `enabled` (`enabled`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- =====================================================
 -- BAN & MODERATION SYSTEM
 -- =====================================================

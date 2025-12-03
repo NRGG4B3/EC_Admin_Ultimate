@@ -836,8 +836,8 @@ lib.callback.register('ec_admin:globalToolExecute', function(source, data)
         return { success = true, message = 'Revived all players' }
     
     elseif action == 'clearInventories' then
-        -- TODO: Implement clear all inventories
-        return { success = true, message = 'Cleared all inventories (placeholder)' }
+        -- TODO: Implement clear all inventories via framework integration
+        return { success = false, message = 'Clear inventories not yet implemented' }
     
     else
         return { success = false, message = 'Unknown global tool action' }

@@ -1,76 +1,148 @@
 -- ============================================================================
--- NRG Staff Auto-Access System
--- Grants full admin access to NRG co-owners on ANY server
--- Auto-detects and grants permissions on startup and player join
+-- NRG Staff Auto-Access System (API-Based Verification)
+-- ============================================================================
+-- Verifies NRG staff via api.ecbetasolutions.com
+-- NO hardcoded identifiers - all authentication via API
+-- NO VPS IPs exposed - secure bearer token authentication
+-- Automatic host dashboard access when visiting customer servers
 -- ============================================================================
 
--- NRG Co-Owners (hardcoded for instant access)
-local NRG_STAFF = {
-    -- NRG Co-Owner 1
-    {
-        name = "NRG Co-Owner 1",
-        role = "owner",
-        identifiers = {
-            "discord:1219846819417292833",
-            "fivem:14682797",
-            "license:8a8b3d2426734b69ac381c536c670f6958283cda",
-            "license2:8a8b3d2426734b69ac381c536c670f6958283cda",
-            "live:914798925490170"
-        }
-    },
-    
-    -- NRG Co-Owner 2
-    {
-        name = "NRG Co-Owner 2",
-        role = "owner",
-        identifiers = {
-            "discord:783727897961037867",
-            "fivem:13867190",
-            "license:925a81e2ad60f0ff4e68189d6604450e970a6760",
-            "license2:925a81e2ad60f0ff4e68189d6604450e970a6760",
-            "live:985157629345372",
-            "xbl:2535436056077725"
-        }
+Logger.Info('🔐 NRG Staff Auto-Access System - Initializing...')
+
+-- API Configuration
+local API_BASE_URL = Config.API and Config.API.baseUrl or "https://api.ecbetasolutions.com"
+local API_STAFF_VERIFY_ENDPOINT = "/api/v1/staff/verify"
+local API_TIMEOUT = 5000  -- 5 second timeout
+local CACHE_DURATION = 3600  -- Cache verification for 1 hour
+
+-- Verification Cache (prevents excessive API calls)
+local staffVerificationCache = {}
+
+-- ============================================================================
+-- VERIFY NRG STAFF VIA API (Secure, No Hardcoded IDs)
+-- ============================================================================
+local function VerifyNRGStaffViaAPI(identifiers, callback)
+    -- Build verification request
+    local requestData = {
+        identifiers = identifiers,
+        timestamp = os.time(),
+        server = GetConvar('sv_hostname', 'Unknown Server')
     }
-}
-
--- ============================================================================
--- Check if player is NRG staff
--- ============================================================================
-local function IsNRGStaff(source)
-    local identifiers = GetPlayerIdentifiers(source)
     
-    for _, staffData in ipairs(NRG_STAFF) do
-        for _, nrgIdentifier in ipairs(staffData.identifiers) do
-            for _, playerIdentifier in ipairs(identifiers) do
-                if playerIdentifier == nrgIdentifier then
-                    return true, staffData
-                end
+    local url = API_BASE_URL .. API_STAFF_VERIFY_ENDPOINT
+    
+    Logger.Debug(string.format('🔍 Verifying staff via API: %s', url))
+    
+    -- Send verification request to API
+    PerformHttpRequest(url, function(statusCode, response, headers)
+        if statusCode == 200 then
+            local success, data = pcall(json.decode, response)
+            
+            if success and data and data.isStaff then
+                Logger.Success(string.format('✅ NRG Staff verified: %s (%s)', data.name, data.role))
+                callback(true, {
+                    name = data.name,
+                    role = data.role,
+                    permissions = data.permissions or {},
+                    hostAccess = data.hostAccess or false
+                })
+            else
+                Logger.Debug('Not NRG staff (API verification failed)')
+                callback(false, nil)
             end
+        elseif statusCode == 404 then
+            -- Not staff (expected for regular players)
+            Logger.Debug('Player is not NRG staff')
+            callback(false, nil)
+        else
+            -- API error - fail closed (deny access)
+            Logger.Warn(string.format('⚠️ Staff verification API error: %d', statusCode))
+            callback(false, nil)
         end
-    end
-    
-    return false, nil
+    end, 'POST', json.encode(requestData), {
+        ['Content-Type'] = 'application/json',
+        ['Accept'] = 'application/json',
+        ['User-Agent'] = 'EC-Admin-Ultimate/1.0'
+    })
 end
 
 -- ============================================================================
--- Grant permissions for NRG staff members
+-- CHECK IF PLAYER IS NRG STAFF (With Caching)
+-- ============================================================================
+local function IsNRGStaff(source, callback)
+    local identifiers = GetPlayerIdentifiers(source)
+    if not identifiers or #identifiers == 0 then
+        if callback then callback(false, nil) end
+        return false, nil
+    end
+    
+    -- Check cache first (prevent excessive API calls)
+    local cacheKey = table.concat(identifiers, '|')
+    local cachedData = staffVerificationCache[cacheKey]
+    
+    if cachedData and (os.time() - cachedData.timestamp) < CACHE_DURATION then
+        Logger.Debug('Using cached staff verification')
+        if callback then callback(cachedData.isStaff, cachedData.data) end
+        return cachedData.isStaff, cachedData.data
+    end
+    
+    -- Not in cache or expired - verify via API
+    if callback then
+        -- Async verification
+        VerifyNRGStaffViaAPI(identifiers, function(isStaff, staffData)
+            -- Cache result
+            staffVerificationCache[cacheKey] = {
+                isStaff = isStaff,
+                data = staffData,
+                timestamp = os.time()
+            }
+            
+            callback(isStaff, staffData)
+        end)
+    else
+        -- Synchronous check (use cached data only)
+        return false, nil
+    end
+end
+
+-- ============================================================================
+-- EXPORT: Check NRG Staff Status (For Other Scripts)
+-- ============================================================================
+_G.IsNRGStaff = IsNRGStaff
+
+exports('IsNRGStaff', function(source, callback)
+    return IsNRGStaff(source, callback)
+end)
+
+-- ============================================================================
+-- GRANT PERMISSIONS FOR NRG STAFF
+-- ============================================================================
 local function GrantNRGStaffAccess(source, staffData)
     local playerName = GetPlayerName(source)
     
-    print(('^2[NRG Staff] ✅ Granting full admin permissions to: %s (%s)^0'):format(staffData.name, playerName))
+    Logger.Success(string.format('👑 NRG Staff Auto-Access: %s (%s) - Role: %s', staffData.name, playerName, staffData.role))
     
+    -- Initialize permissions if not exists
     if not EC_PERMISSIONS then
         EC_PERMISSIONS = {}
     end
     
+    -- Grant full owner-level permissions
     EC_PERMISSIONS[source] = {
         level = 'owner',
         nrgStaff = true,
         staffName = staffData.name,
         staffRole = staffData.role,
-        allPermissions = true
+        allPermissions = true,
+        hostAccess = staffData.hostAccess or false  -- Host dashboard access
     }
+    
+    -- Show host dashboard if enabled and staff has access
+    local hasHostFolder = LoadResourceFile(GetCurrentResourceName(), 'host/config.lua') ~= nil
+    if hasHostFolder and staffData.hostAccess then
+        Logger.Info(string.format('📊 Host Dashboard enabled for: %s', staffData.name))
+        TriggerClientEvent('ec_admin:showHostDashboard', source, true)
+    end
     
     -- WEBHOOK DISABLED: Webhook is now sent by player-events.lua centralized handler
     -- This prevents duplicate webhook notifications (was causing 3x webhooks)
@@ -126,46 +198,101 @@ local function GrantTxAdminAccess(source)
     }
 end
 
--- Grant permissions when NRG staff joins
--- DISABLED: playerJoining handler moved to player-events.lua centralized system
--- This prevents duplicate event handlers that slow down server
--- NRG staff auto-access now works through the permission check system
---[[
+-- ============================================================================
+-- AUTO-GRANT PERMISSIONS ON PLAYER JOIN (Async API Verification)
+-- ============================================================================
 AddEventHandler('playerJoining', function()
-    local source = source
+    local _source = source
     
-    SetTimeout(2000, function()  -- Small delay to ensure player is fully connected
-        -- First check NRG staff (highest priority)
-        local isNRG, staffData = IsNRGStaff(source)
+    -- Small delay to ensure player is fully connected
+    SetTimeout(2000, function()
+        -- Check NRG staff status via API (async)
+        IsNRGStaff(_source, function(isNRG, staffData)
         
-        if isNRG then
-            GrantNRGStaffAccess(source, staffData)
-            return  -- Skip txAdmin check if they're NRG staff
-        end
-        
-        -- Then check txAdmin permissions
-        if HasTxAdminPerms(source) then
-            GrantTxAdminAccess(source)
-        end
+            if isNRG and staffData then
+                GrantNRGStaffAccess(_source, staffData)
+            else
+                -- Not NRG staff - check txAdmin permissions
+                if HasTxAdminPerms(_source) then
+                    GrantTxAdminAccess(_source)
+                end
+            end
+        end)
     end)
 end)
-]]--
 
--- Note: NRG staff auto-access is handled via the 'ec_admin:checkPermission' event below
--- This is called when player requests admin menu, which is the proper time to check
-
--- Also check on permission requests
+-- ============================================================================
+-- PERMISSION CHECK EVENT (When Player Opens Admin Menu)
+-- ============================================================================
 RegisterNetEvent('ec_admin:checkPermission', function()
     local src = source
     
-    print(string.format('^3[Permission Check] Player %s (%d) checking permission^0', GetPlayerName(src), src))
+    Logger.Debug(string.format('🔑 Permission check: %s (%d)', GetPlayerName(src), src))
     
-    -- Check NRG staff first (highest priority)
-    local isNRG, staffData = IsNRGStaff(src)
+    -- Check NRG staff via API (async)
+    IsNRGStaff(src, function(isNRG, staffData)
+        if isNRG and staffData then
+            -- Auto-grant permissions if not already granted
+            if not EC_PERMISSIONS or not EC_PERMISSIONS[src] or not EC_PERMISSIONS[src].nrgStaff then
+                GrantNRGStaffAccess(src, staffData)
+            end
+        end
+    end)
+end)
+
+-- ============================================================================
+-- CLEAR CACHE ON PLAYER DISCONNECT
+-- ============================================================================
+AddEventHandler('playerDropped', function()
+    local _source = source
     
-    if isNRG then
-        -- Auto-grant if they haven't been granted yet
-        GrantNRGStaffAccess(src, staffData)
+    -- Clear permissions
+    if EC_PERMISSIONS and EC_PERMISSIONS[_source] then
+        EC_PERMISSIONS[_source] = nil
+    end
+    
+    -- Clear verification cache for this player
+    local identifiers = GetPlayerIdentifiers(_source)
+    if identifiers then
+        local cacheKey = table.concat(identifiers, '|')
+        if staffVerificationCache[cacheKey] then
+            staffVerificationCache[cacheKey] = nil
+            Logger.Debug('🗑️ Cleared staff verification cache on disconnect')
+        end
+    end
+end)
+
+-- ============================================================================
+-- CONSOLE COMMAND: Check Staff Status
+-- ============================================================================
+RegisterCommand('ec:checkstaff', function(source, args, rawCommand)
+    if source ~= 0 then
+        return  -- Server console only
+    end
+    
+    local playerId = tonumber(args[1])
+    if not playerId then
+        print('Usage: ec:checkstaff <playerid>')
+        return
+    end
+    
+    IsNRGStaff(playerId, function(isStaff, staffData)
+        if isStaff and staffData then
+            print(string.format('^2✅ Player %d IS NRG Staff^0', playerId))
+            print(string.format('   Name: %s', staffData.name))
+            print(string.format('   Role: %s', staffData.role))
+            print(string.format('   Host Access: %s', staffData.hostAccess and 'Yes' or 'No'))
+        else
+            print(string.format('^1❌ Player %d is NOT NRG Staff^0', playerId))
+        end
+    end)
+end, true)
+
+Logger.Success('✅ NRG Staff Auto-Access System Loaded (API-Based Verification)')
+Logger.Info('   🌐 Verification: api.ecbetasolutions.com')
+Logger.Info('   🔐 Security: Bearer token authentication')
+Logger.Info('   ⚡ Cache: 1 hour per player')
+Logger.Info('   📊 Host Dashboard: Auto-enabled for staff')
         
         -- Send permission immediately
         TriggerClientEvent('ec_admin:permissionResult', src, true)

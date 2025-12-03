@@ -1,37 +1,61 @@
 --[[
-    EC Admin Ultimate - Client-Side Vehicle Scanner
-    Scans ALL loaded vehicle models and sends to server
-    Detects custom vehicle packs automatically
+    ╔═══════════════════════════════════════════════════════════════╗
+    ║        EC Admin Ultimate - Vehicle Scanner (Enhanced)         ║
+    ║          Scans ALL vehicle packs automatically                ║
+    ╚═══════════════════════════════════════════════════════════════╝
+    
+    Detects vehicles from:
+    - vehicles.meta files (addon vehicle packs)
+    - carvariations.meta (DLC vehicles)
+    - Hardcoded DLC vehicles list
+    - All loaded vehicle models in game
+    
+    Works with ANY vehicle pack - no configuration needed!
 ]]
-
-Logger.Info('')
 
 local VehicleScanner = {}
 VehicleScanner.ScannedVehicles = {}
 VehicleScanner.LastScan = 0
-VehicleScanner.ScanCooldown = 60000 -- 1 minute
+VehicleScanner.ScanCooldown = Config.VehicleScanning?.scanInterval or 300000 -- 5 minutes
 
 --[[
-    NEW APPROACH: Scan vehicles from resource meta files
-    This is more reliable than hash scanning
+    ENHANCED: Multi-source vehicle scanning
+    Scans from: resource meta files, DLC list, AND runtime models
 ]]
 function VehicleScanner.ScanFromResources()
+    if not Config.VehicleScanning?.enabled then
+        Logger.Warn('Vehicle scanning is disabled in config')
+        return {}
+    end
+
     local startTime = GetGameTimer()
     local scannedVehicles = {}
     local vehicleMap = {} -- To avoid duplicates
     local count = 0
+    local excludedResources = Config.VehicleScanning?.excludeResources or {}
     
-    Logger.Info('')
+    Logger.Info('🚗 Vehicle Scanner - Starting comprehensive scan...')
     
-    -- Get all active resources
+    -- ========================================================================
+    -- METHOD 1: Scan from resource meta files (addon vehicle packs)
+    -- ========================================================================
     local numResources = GetNumResources()
-    Logger.Info(string.format('', numResources))
+    Logger.Debug(string.format('Scanning %d resources for vehicle meta files', numResources))
     
     for i = 0, numResources - 1 do
         local resourceName = GetResourceByFindIndex(i)
         
-        if resourceName and GetResourceState(resourceName) == 'started' then
-            -- Method 1: Check for vehicles.meta
+        -- Skip excluded resources
+        local excluded = false
+        for _, excludeName in ipairs(excludedResources) do
+            if resourceName == excludeName then
+                excluded = true
+                break
+            end
+        end
+        
+        if not excluded and resourceName and GetResourceState(resourceName) == 'started' then
+            -- Method 1: Check for vehicles.meta (addon vehicles)
             local vehiclesMeta = LoadResourceFile(resourceName, 'data/vehicles.meta')
             if not vehiclesMeta then
                 vehiclesMeta = LoadResourceFile(resourceName, 'vehicles.meta')
@@ -43,21 +67,28 @@ function VehicleScanner.ScanFromResources()
                     local modelLower = string.lower(modelName)
                     local hash = GetHashKey(modelLower)
                     
-                    if not vehicleMap[modelLower] and IsModelInCdimage(hash) and IsModelAVehicle(hash) then
+                    -- Deep check if enabled
+                    local isValid = true
+                    if Config.VehicleScanning?.scanDeepCheck then
+                        isValid = IsModelInCdimage(hash) and IsModelAVehicle(hash)
+                    end
+                    
+                    if not vehicleMap[modelLower] and isValid then
                         vehicleMap[modelLower] = true
                         table.insert(scannedVehicles, {
                             model = modelLower,
                             hash = hash,
-                            resource = resourceName
+                            resource = resourceName,
+                            source = 'vehicles.meta'
                         })
                         count = count + 1
                     end
                 end
                 
-                Logger.Info(string.format('', resourceName))
+                Logger.Debug(string.format('Found vehicles in %s (vehicles.meta)', resourceName))
             end
             
-            -- Method 2: Check for carvariations.meta
+            -- Method 2: Check for carvariations.meta (DLC vehicles)
             local carVariations = LoadResourceFile(resourceName, 'data/carvariations.meta')
             if not carVariations then
                 carVariations = LoadResourceFile(resourceName, 'carvariations.meta')
@@ -69,16 +100,25 @@ function VehicleScanner.ScanFromResources()
                     local modelLower = string.lower(modelName)
                     local hash = GetHashKey(modelLower)
                     
-                    if not vehicleMap[modelLower] and IsModelInCdimage(hash) and IsModelAVehicle(hash) then
+                    -- Deep check if enabled
+                    local isValid = true
+                    if Config.VehicleScanning?.scanDeepCheck then
+                        isValid = IsModelInCdimage(hash) and IsModelAVehicle(hash)
+                    end
+                    
+                    if not vehicleMap[modelLower] and isValid then
                         vehicleMap[modelLower] = true
                         table.insert(scannedVehicles, {
                             model = modelLower,
                             hash = hash,
-                            resource = resourceName
+                            resource = resourceName,
+                            source = 'carvariations.meta'
                         })
                         count = count + 1
                     end
                 end
+                
+                Logger.Debug(string.format('Found vehicles in %s (carvariations.meta)', resourceName))
             end
             
             -- Method 3: Check fxmanifest.lua for data_file entries

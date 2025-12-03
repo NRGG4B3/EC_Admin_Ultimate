@@ -39,63 +39,7 @@ interface Notification {
   }>;
 }
 
-// Mock notifications
-const mockNotifications: Notification[] = [
-  {
-    id: '1',
-    type: 'player',
-    title: 'Player Joined',
-    message: 'John_Doe (ID: 1) has joined the server',
-    timestamp: Date.now() - 2 * 60 * 1000,
-    severity: 'low',
-    read: false,
-    source: 'Player Management'
-  },
-  {
-    id: '2',
-    type: 'warning',
-    title: 'High CPU Usage',
-    message: 'Server CPU usage has exceeded 80% for the past 5 minutes',
-    timestamp: Date.now() - 5 * 60 * 1000,
-    severity: 'medium',
-    read: false,
-    source: 'System Monitor'
-  },
-  {
-    id: '3',
-    type: 'error',
-    title: 'Anticheat Detection',
-    message: 'Suspicious activity detected from player Jane_Smith (ID: 2)',
-    timestamp: Date.now() - 10 * 60 * 1000,
-    severity: 'high',
-    read: true,
-    source: 'Anticheat System',
-    actions: [
-      { label: 'Ban Player', action: 'ban' },
-      { label: 'Spectate', action: 'spectate' }
-    ]
-  },
-  {
-    id: '4',
-    type: 'success',
-    title: 'Backup Completed',
-    message: 'Daily database backup completed successfully',
-    timestamp: Date.now() - 30 * 60 * 1000,
-    severity: 'low',
-    read: true,
-    source: 'Backup System'
-  },
-  {
-    id: '5',
-    type: 'vehicle',
-    title: 'Vehicle Spawned',
-    message: 'Admin spawned Adder (Plate: ADMIN01) at Legion Square',
-    timestamp: Date.now() - 60 * 60 * 1000,
-    severity: 'low',
-    read: true,
-    source: 'Vehicle Management'
-  }
-];
+// No mock notifications - must be loaded from server
 
 const typeIcons = {
   info: Info,
@@ -125,7 +69,7 @@ const severityColors = {
 };
 
 export function NotificationCenter({ isOpen, onClose }: NotificationCenterProps) {
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]); // No mock data - start empty
   const [filter, setFilter] = useState<'all' | 'unread' | 'high'>('all');
 
   const filteredNotifications = notifications.filter(notification => {

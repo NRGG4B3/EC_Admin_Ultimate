@@ -239,151 +239,44 @@ export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }
     toastSuccess({ title: 'Profile data refreshed' });
   };
 
-  // Update profile
+  // Update profile - NOT IMPLEMENTED
   const handleUpdateProfile = async () => {
-    try {
-      const response = await fetch('/api/admin/updateProfile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editForm)
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          toastSuccess({ title: 'Profile updated successfully' });
-          setIsEditing(false);
-          await fetchAdminProfileData();
-        } else {
-          toastError({ title: result.message || 'Update failed' });
-        }
-      } else {
-        toastError({ title: 'Server error' });
-      }
-    } catch (error) {
-      toastError({ title: 'Failed to update profile' });
-    }
+    toastError({ title: 'Profile update not yet implemented' });
+    // TODO: Wire to NUI callback 'updateAdminProfile' when server callback is ready
   };
 
-  // Update password
+  // Update password - NOT IMPLEMENTED
   const handleUpdatePassword = async () => {
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       toastError({ title: 'Passwords do not match' });
       return;
     }
-
-    try {
-      const response = await fetch('/api/admin/updatePassword', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          admin_id: profile?.admin_id,
-          currentPassword: passwordForm.currentPassword,
-          newPassword: passwordForm.newPassword
-        })
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          toastSuccess({ title: 'Password updated successfully' });
-          setPasswordModal(false);
-          setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-        } else {
-          toastError({ title: result.message || 'Update failed' });
-        }
-      }
-    } catch (error) {
-      toastError({ title: 'Failed to update password' });
-    }
+    toastError({ title: 'Password update not yet implemented' });
+    // TODO: Wire to NUI callback 'updateAdminPassword' when server callback is ready
   };
 
-  // Update preferences
+  // Update preferences - NOT IMPLEMENTED
   const handleUpdatePreferences = async () => {
-    try {
-      const response = await fetch('/api/admin/updatePreferences', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ admin_id: profile?.admin_id, preferences: notificationSettings })
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          toastSuccess({ title: 'Preferences updated successfully' });
-          setNotificationModal(false);
-        } else {
-          toastError({ title: result.message || 'Update failed' });
-        }
-      }
-    } catch (error) {
-      toastError({ title: 'Failed to update preferences' });
-    }
+    toastError({ title: 'Preferences update not yet implemented' });
+    // TODO: Wire to NUI callback 'updateAdminPreferences' when server callback is ready
   };
 
-  // End session
+  // End session - NOT IMPLEMENTED
   const handleEndSession = async (session_id: string) => {
-    try {
-      const response = await fetch('/api/admin/endSession', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ session_id })
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          toastSuccess({ title: 'Session ended successfully' });
-          await fetchAdminProfileData();
-        } else {
-          toastError({ title: result.message || 'Failed to end session' });
-        }
-      }
-    } catch (error) {
-      toastError({ title: 'Failed to end session' });
-    }
+    toastError({ title: 'End session not yet implemented' });
+    // TODO: Wire to NUI callback 'endAdminSession' when server callback is ready
   };
 
-  // Clear activity
+  // Clear activity - NOT IMPLEMENTED
   const handleClearActivity = async () => {
-    try {
-      const response = await fetch('/api/admin/clearActivity', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ admin_id: profile?.admin_id })
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          toastSuccess({ title: 'Activity log cleared successfully' });
-          await fetchAdminProfileData();
-        } else {
-          toastError({ title: result.message || 'Failed to clear activity' });
-        }
-      }
-    } catch (error) {
-      toastError({ title: 'Failed to clear activity' });
-    }
+    toastError({ title: 'Clear activity not yet implemented' });
+    // TODO: Wire to NUI callback 'clearAdminActivity' when server callback is ready
   };
 
-  // Export data
+  // Export data - NOT IMPLEMENTED
   const handleExportData = async () => {
-    try {
-      const response = await fetch('/api/admin/exportProfile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ admin_id: profile?.admin_id })
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        console.log('[Admin Profile] Export:', result.data);
-        toastSuccess({ title: 'Profile data exported to console' });
-      }
-    } catch (error) {
-      toastError({ title: 'Failed to export data' });
-    }
+    toastError({ title: 'Export profile not yet implemented' });
+    // TODO: Wire to NUI callback 'exportAdminProfile' when server callback is ready
   };
 
   // Get data from state
