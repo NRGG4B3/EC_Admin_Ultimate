@@ -28,7 +28,7 @@ local function HandleError(errorMessage)
     end
     
     -- Log to console
-    print(string.format('^1[EC Admin ERROR] %s^0', errorMessage))
+    Logger.Error(errorMessage)
 end
 
 -- Wrap functions with error handling
@@ -51,7 +51,7 @@ exports('SafeCall', function(func, ...)
 end)
 
 -- Catch unhandled errors
-Citizen.CreateThread(function()
+CreateThread(function()
     SetTimeout(5000, function()
         Logger.Info('✅ Client error handler active')
     end)

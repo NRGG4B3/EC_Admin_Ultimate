@@ -10,7 +10,7 @@ local APIWrapper = {}
 local function WaitForDependencies()
     local timeout = 0
     while (not _G.APIHealth or not _G.APIFallback) and timeout < 100 do
-        Citizen.Wait(100)
+        Wait(100)
         timeout = timeout + 1
     end
     
@@ -290,10 +290,10 @@ end
 _G.APIWrapper = APIWrapper
 
 -- Initialize after dependencies load
-Citizen.CreateThread(function()
+CreateThread(function()
     if WaitForDependencies() then
         Logger.Info('✅ API Wrapper ready - Auto-fallback enabled')
     else
-        Logger.Info('')
+        Logger.Warn('⚠️ API Wrapper initialized with degraded dependencies')
     end
 end)

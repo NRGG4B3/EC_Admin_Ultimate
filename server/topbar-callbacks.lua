@@ -26,7 +26,7 @@ local function FormatUptime(seconds)
     return string.format('%dh %dm', hours, minutes)
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
     if GetResourceState('qb-core') == 'started' then
         QBCore = exports['qb-core']:GetCoreObject()
         Logger.Debug('Topbar: QBCore detected')

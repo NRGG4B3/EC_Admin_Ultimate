@@ -27,7 +27,7 @@ AddEventHandler('playerDropped', function()
 end)
 
 -- Update activity (for AFK detection)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(30000) -- Check every 30 seconds
         
@@ -64,7 +64,7 @@ end
 local playerHistory = {}  -- Stores hourly player counts
 local peakTodayCount = 0
 
-Citizen.CreateThread(function()
+CreateThread(function()
     -- Initialize history array (24 hours)
     for i = 0, 23 do
         playerHistory[i] = {

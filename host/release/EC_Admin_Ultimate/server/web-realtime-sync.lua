@@ -16,13 +16,13 @@ local QBCore = nil
 local ESX = nil
 
 -- Detect framework
-Citizen.CreateThread(function()
+CreateThread(function()
     if GetResourceState('qb-core') == 'started' then
         QBCore = exports['qb-core']:GetCoreObject()
-        print('^2[EC Web Sync] QBCore detected^0')
+        Logger.Info('QBCore detected', '🌐')
     elseif GetResourceState('es_extended') == 'started' then
         ESX = exports['es_extended']:getSharedObject()
-        print('^2[EC Web Sync] ESX detected^0')
+        Logger.Info('ESX detected', '🌐')
     end
 end)
 
@@ -32,7 +32,7 @@ lib.callback.register('ec_admin:webAction', function(source, data)
     local payload = data.payload
     local adminId = data.adminId or 'web-admin'
     
-    print(string.format('^3[EC Web Sync] Action from web: %s^0', action))
+    Logger.Info(string.format('Action from web: %s', action), '🌐')
     
     -- Verify permission (you can add ACE checks here)
     -- For now, we assume web access is authenticated

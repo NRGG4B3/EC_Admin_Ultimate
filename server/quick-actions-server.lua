@@ -34,17 +34,17 @@ CreateThread(function()
     if GetResourceState('qbx_core') == 'started' then
         Framework = exports.qbx_core
         FrameworkName = "qbx"
-        print("^2[EC Admin QA] Framework: QBX Core^0")
+        Logger.Info("✅ Framework: QBX Core")
     elseif GetResourceState('qb-core') == 'started' then
         Framework = exports['qb-core']:GetCoreObject()
         FrameworkName = "qb"
-        print("^2[EC Admin QA] Framework: QB-Core^0")
+        Logger.Info("✅ Framework: QB-Core")
     elseif GetResourceState('es_extended') == 'started' then
         Framework = exports['es_extended']:getSharedObject()
         FrameworkName = "esx"
-        print("^2[EC Admin QA] Framework: ESX^0")
+        Logger.Info("✅ Framework: ESX")
     else
-        print("^3[EC Admin QA] Framework: Standalone Mode^0")
+        Logger.Warn("⚠️ Framework: Standalone Mode")
     end
 end)
 

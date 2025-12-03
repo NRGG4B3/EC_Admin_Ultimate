@@ -3,13 +3,13 @@
     Creates ec_admin_team table
 ]]
 
-Citizen.CreateThread(function()
+CreateThread(function()
     -- Wait for MySQL to be ready
     while not MySQL do
-        Citizen.Wait(100)
+        Wait(100)
     end
     
-    Citizen.Wait(2000)  -- Additional wait for database connection
+    Wait(2000)  -- Additional wait for database connection
     
     if not Config or not Config.Database or not Config.Database.enabled then
         return

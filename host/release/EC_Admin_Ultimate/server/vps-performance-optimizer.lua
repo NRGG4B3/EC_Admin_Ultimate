@@ -393,18 +393,18 @@ end
 
 -- Automatic memory cleanup
 if PERF_CONFIG.memory.autoCleanup then
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(PERF_CONFIG.memory.cleanupInterval)
+            Wait(PERF_CONFIG.memory.cleanupInterval)
             CleanupMemory()
         end
     end)
 end
 
 -- Automatic garbage collection
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(PERF_CONFIG.memory.gcInterval)
+        Wait(PERF_CONFIG.memory.gcInterval)
         collectgarbage('collect')
     end
 end)
@@ -565,9 +565,9 @@ function FlushDatabaseBatch()
 end
 
 -- Auto-flush batch operations periodically
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(5000) -- Every 5 seconds
+        Wait(5000) -- Every 5 seconds
         FlushDatabaseBatch()
     end
 end)
@@ -701,9 +701,9 @@ function FlushNotificationQueue()
 end
 
 -- Auto-flush notifications every 10 seconds
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(10000)
+        Wait(10000)
         FlushNotificationQueue()
     end
 end)

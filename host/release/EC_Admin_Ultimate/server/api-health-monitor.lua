@@ -180,20 +180,20 @@ function APIHealth.Initialize()
     DetectHostMode()
     
     local mode = APIHealth.isHostMode and "Host Mode" or "Customer Mode"
-    Logger.Info('🏥 Starting API Health Monitor (' .. mode .. ')...')
+    Logger.Info('🏥 Starting API Health Monitor (' .. mode .. ')...', '🏥')
     
     -- Initial check
-    Citizen.CreateThread(function()
-        Citizen.Wait(5000) -- Wait 5 seconds for APIs to initialize
+    CreateThread(function()
+        Wait(5000) -- Wait 5 seconds for APIs to initialize
         
-        Logger.Info('🏥 Performing initial API health check...')
+        Logger.Info('🏥 Performing initial API health check...', '🏥')
         APIHealth.CheckAllAPIs()
         
         -- Start 5-minute interval checks
         while true do
-            Citizen.Wait(APIHealth.checkInterval) -- 5 minutes
+            Wait(APIHealth.checkInterval) -- 5 minutes
             
-            Logger.Info('🏥 Performing scheduled API health check...')
+            Logger.Info('🏥 Performing scheduled API health check...', '🏥')
             APIHealth.CheckAllAPIs()
         end
     end)
@@ -212,7 +212,7 @@ end)
 _G.APIHealth = APIHealth
 
 -- Auto-initialize
-Citizen.CreateThread(function()
-    Citizen.Wait(2000) -- Wait for config to load
+CreateThread(function()
+    Wait(2000) -- Wait for config to load
     APIHealth.Initialize()
 end)

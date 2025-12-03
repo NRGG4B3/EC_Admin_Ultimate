@@ -25,7 +25,7 @@ RegisterNetEvent('ec_admin:kickPlayer', function(data)
     
     if targetId and GetPlayerName(targetId) then
         DropPlayer(targetId, string.format("Kicked by %s: %s", adminName, reason))
-        print(string.format("^2[EC Admin]^7 %s kicked player %d - Reason: %s", adminName, targetId, reason))
+        Logger.Success(string.format("👢 %s kicked player %d - Reason: %s", adminName, targetId, reason))
         
         -- Log to webhook if configured
         if Config and Config.Webhooks and Config.Webhooks.moderation then
@@ -81,7 +81,7 @@ RegisterNetEvent('ec_admin:banPlayer', function(data)
             -- Kick the player
             DropPlayer(targetId, string.format("Banned by %s: %s", adminName, reason))
             
-            print(string.format("^2[EC Admin]^7 %s banned player %d - Reason: %s", adminName, targetId, reason))
+            Logger.Success(string.format("🚫 %s banned player %d - Reason: %s", adminName, targetId, reason))
             
             -- Log to webhook
             if Config and Config.Webhooks and Config.Webhooks.moderation then
@@ -113,7 +113,7 @@ RegisterNetEvent('ec_admin:warnPlayer', function(data)
             reason = reason
         })
         
-        print(string.format("^2[EC Admin]^7 %s warned player %d - Reason: %s", adminName, targetId, reason))
+        Logger.Success(string.format("⚠️ %s warned player %d - Reason: %s", adminName, targetId, reason))
     end
 end)
 
@@ -129,7 +129,7 @@ RegisterNetEvent('ec_admin:freezePlayer', function(data)
         TriggerClientEvent('ec_admin:setFreeze', targetId, freeze)
         
         local adminName = GetPlayerName(src) or "Console"
-        print(string.format("^2[EC Admin]^7 %s %s player %d", 
+        Logger.Success(string.format("❄️ %s %s player %d", 
             adminName, freeze and "froze" or "unfroze", targetId))
     end
 end)

@@ -228,9 +228,9 @@ end
 --[[ ==================== AUTOMATIC VALIDATION ==================== ]]--
 
 -- Periodic license validation
-Citizen.CreateThread(function()
+CreateThread(function()
     -- Initial validation on startup
-    Citizen.Wait(5000)
+    Wait(5000)
     
     local licenseKey = GetConvar('ec_license_key', '')
     if licenseKey ~= '' and IsHostLicense(licenseKey) then

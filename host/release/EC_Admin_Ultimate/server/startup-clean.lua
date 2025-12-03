@@ -19,10 +19,10 @@ local function PrintCleanStartup()
 end
 
 -- Completely disable startup spam
-Citizen.CreateThread(function()
-    Citizen.Wait(3000) -- Wait for systems
+CreateThread(function()
+    Wait(3000) -- Wait for systems
     PrintCleanStartup()
-    Citizen.Wait(1000)
+    Wait(1000)
     _G.EC_SUPPRESS_STARTUP_LOGS = false
 end)
 

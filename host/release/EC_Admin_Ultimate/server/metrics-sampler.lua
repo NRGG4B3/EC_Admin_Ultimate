@@ -142,14 +142,14 @@ CreateThread(function()
 end)
 
 -- Sampler thread - runs every 60 seconds
-Citizen.CreateThread(function()
+CreateThread(function()
     -- Take initial snapshot immediately
     local initialSnapshot = GetMetricsSnapshot()
     AddToHistory(initialSnapshot)
     Logger.Success('[Metrics Sampler] Initial snapshot recorded', '✅')
     
     while true do
-        Citizen.Wait(MetricsSampler.sampleInterval)
+        Wait(MetricsSampler.sampleInterval)
         
         -- Take snapshot
         local startTime = GetGameTimer()
@@ -165,9 +165,9 @@ Citizen.CreateThread(function()
 end)
 
 -- Cleanup old history periodically (every 5 minutes)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(300000) -- 5 minutes
+        Wait(300000) -- 5 minutes
         
         -- Remove entries older than maxHistory
         local cutoffTime = os.time() - (MetricsSampler.maxHistory * 60)

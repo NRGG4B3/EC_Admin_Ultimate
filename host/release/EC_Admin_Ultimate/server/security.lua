@@ -578,16 +578,16 @@ function Security.InitializeFirewallRules()
 end
 
 -- Cleanup thread
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(3600000) -- Every hour
+        Wait(3600000) -- Every hour
         
         -- Clean expired blacklist entries
         for i = #securityData.blacklist, 1, -1 do
             local entry = securityData.blacklist[i]
             if not entry.permanent and entry.expiresAt and os.time() * 1000 > entry.expiresAt then
                 table.remove(securityData.blacklist, i)
-                Logger.Info(string.format('', entry.value))
+                Logger.Info(string.format('', entry.value), '🔒')
             end
         end
         

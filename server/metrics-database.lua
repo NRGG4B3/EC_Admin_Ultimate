@@ -272,7 +272,7 @@ function MetricsDB.CleanupOldData()
     -- Clean API logs
     MySQL.query('DELETE FROM ec_admin_api_usage WHERE timestamp < ?', {cutoffTimestamp})
     
-    print(string.format('^2[Metrics DB] ✅ Cleaned data older than %d days^0', MetricsDB.dataRetention / 86400))
+    Logger.Success(string.format('✅ Cleaned data older than %d days', MetricsDB.dataRetention / 86400))
     return true
 end
 
@@ -284,7 +284,7 @@ CreateThread(function()
     Wait(5000) -- Wait for MySQL
     
     if InitializeMetricsTables() then
-        print('^2[Metrics DB] 📊 Metrics database system initialized^0')
+        Logger.Success('📊 Metrics database system initialized')
         
         -- Cleanup thread
         CreateThread(function()

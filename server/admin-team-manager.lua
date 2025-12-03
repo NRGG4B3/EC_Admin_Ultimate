@@ -313,14 +313,14 @@ end
 -- Player joined event - check Discord roles
 AddEventHandler('playerJoining', function()
     local source = source
-    Citizen.SetTimeout(5000, function()
+    SetTimeout(5000, function()
         AdminTeam.CheckDiscordRoles(source)
     end)
 end)
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
-    Citizen.Wait(3000)  -- Wait for config and database
+CreateThread(function()
+    Wait(3000)  -- Wait for config and database
     AdminTeam.Init()
 end)
 

@@ -13,8 +13,8 @@ local isConnected = false
 local lastHeartbeat = 0
 
 -- Register with Host API on startup
-Citizen.CreateThread(function()
-    Citizen.Wait(5000) -- Wait for server to be ready
+CreateThread(function()
+    Wait(5000) -- Wait for server to be ready
     
     if API_KEY == '' then
         Logger.Info('⚠️ No Host API key configured (ec_host_api_key)')
@@ -51,9 +51,9 @@ Citizen.CreateThread(function()
 end)
 
 -- Heartbeat to keep connection alive
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(60000) -- Every minute
+        Wait(60000) -- Every minute
         
         if isConnected then
             local now = os.time()

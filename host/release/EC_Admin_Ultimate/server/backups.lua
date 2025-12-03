@@ -170,8 +170,8 @@ function Backups.CreateBackup(source, data)
     table.insert(backupData.backups, backup)
     
     -- Simulate backup creation
-    Citizen.CreateThread(function()
-        Citizen.Wait(2000) -- Simulate backup process
+    CreateThread(function()
+        Wait(2000) -- Simulate backup process
         
         -- Update backup status
         for i, b in ipairs(backupData.backups) do
@@ -180,7 +180,7 @@ function Backups.CreateBackup(source, data)
                 b.size = GetFileSize(b.location)
                 
                 if Config.verification then
-                    Citizen.Wait(1000)
+                    Wait(1000)
                     b.verified = true
                 end
                 
@@ -190,7 +190,7 @@ function Backups.CreateBackup(source, data)
             end
         end
         
-        Logger.Info(string.format('', backup.name, backup.category))
+        Logger.Info(string.format('', backup.name, backup.category), '💾')
     end)
     
     return { 
@@ -226,7 +226,7 @@ function Backups.RestoreBackup(source, data)
     backup.status = 'in-progress'
     
     -- Simulate restore process
-    Citizen.CreateThread(function()
+    CreateThread(function()
         -- Notify all admins
         for _, playerId in ipairs(GetPlayers()) do
             if HasPermission(tonumber(playerId), 'admin') then
@@ -237,12 +237,12 @@ function Backups.RestoreBackup(source, data)
             end
         end
         
-        Citizen.Wait(5000) -- Simulate restore
+        Wait(5000) -- Simulate restore
         
         -- Restore complete
         backup.status = 'completed'
         
-        Logger.Info(string.format('', backup.name))
+        Logger.Info(string.format('', backup.name), '💾')
         
         -- Notify completion
         for _, playerId in ipairs(GetPlayers()) do
@@ -427,9 +427,9 @@ function Backups.GetData(source)
 end
 
 -- AUTO BACKUP THREAD
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(Config.autoBackupInterval)
+        Wait(Config.autoBackupInterval)
         
         -- Check for scheduled backups
         local currentTime = os.time() * 1000
@@ -483,9 +483,9 @@ Citizen.CreateThread(function()
 end)
 
 -- CLEANUP THREAD
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(86400000) -- Check daily
+        Wait(86400000) -- Check daily
         
         local cutoffTime = (os.time() - (Config.retentionDays * 86400)) * 1000
         
@@ -493,7 +493,7 @@ Citizen.CreateThread(function()
             local backup = backupData.backups[i]
             if backup.timestamp < cutoffTime and backup.type ~= 'manual' then
                 table.remove(backupData.backups, i)
-                Logger.Info(string.format('', backup.name))
+                Logger.Info(string.format('', backup.name), '💾')
             end
         end
         

@@ -18,7 +18,7 @@ local combatData = {
 -- MOVEMENT TRACKING
 -- ============================================================================
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(1000) -- Update every second
         
@@ -63,7 +63,7 @@ end)
 -- ============================================================================
 
 -- Track shooting
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(0)
         
@@ -129,7 +129,7 @@ local damageTaken = 0
 local shotsTaken = 0
 local lastDamageTime = 0
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(100)
         
@@ -178,7 +178,7 @@ end)
 -- NOCLIP / COLLISION DETECTION
 -- ============================================================================
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(500)
         
@@ -220,7 +220,7 @@ end)
 local lastTeleportCheck = vector3(0, 0, 0)
 local lastTeleportTime = 0
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(100)
         
@@ -261,9 +261,9 @@ end)
 RegisterNetEvent('ec_ai:setTracking', function(enabled)
     trackingEnabled = enabled
     if enabled then
-        print('[AI Behavior] Tracking enabled')
+        Logger.Info('✅ AI Tracking enabled')
     else
-        print('[AI Behavior] Tracking disabled')
+        Logger.Info('⏹️ AI Tracking disabled')
     end
 end)
 
@@ -271,7 +271,7 @@ end)
 -- AUTO-START TRACKING
 -- ============================================================================
 
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(5000) -- Wait for player to fully load
     
     -- Request tracking status from server
@@ -279,7 +279,7 @@ Citizen.CreateThread(function()
     
     -- Enable by default
     trackingEnabled = true
-    print('[AI Behavior] Tracker initialized')
+    Logger.Success('✅ AI Behavior Tracker initialized')
 end)
 
 -- ============================================================================

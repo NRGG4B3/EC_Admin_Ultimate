@@ -295,7 +295,7 @@ function APIConnectionManager.ConnectAPI(api, retryCount)
     
     if isHostAPI and not APIConnectionManager.hostApiReady then
         -- Wait for Host API to be ready
-        Citizen.SetTimeout(1000, function()
+        SetTimeout(1000, function()
             APIConnectionManager.ConnectAPI(api, retryCount)
         end)
         return
@@ -328,7 +328,7 @@ function APIConnectionManager.ConnectAPI(api, retryCount)
                 Logger.Debug(string.format('%s failed, retrying in %dms... (Attempt %d/%d)', 
                     api.name, delay, retryCount + 1, APIConnectionManager.maxRetries), '⚠️')
                 
-                Citizen.SetTimeout(delay, function()
+                SetTimeout(delay, function()
                     APIConnectionManager.ConnectAPI(api, retryCount + 1)
                 end)
             else
@@ -367,19 +367,19 @@ function APIConnectionManager.Initialize()
         if ready then
             -- Connect to all APIs
             for _, api in ipairs(NRG_APIS) do
-                Citizen.SetTimeout(100 * _, function()  -- Stagger connections by 100ms
+                SetTimeout(100 * _, function()  -- Stagger connections by 100ms
                     APIConnectionManager.ConnectAPI(api)
                 end)
             end
             
             -- Print summary after all attempts
-            Citizen.SetTimeout(15000, function()  -- Wait 15 seconds for all retries
+            SetTimeout(15000, function()  -- Wait 15 seconds for all retries
                 APIConnectionManager.PrintSummary()
             end)
         else
             -- Host API not ready, retry after delay
             -- print('[API Manager] ⏳ Waiting for Host API to start...')
-            Citizen.SetTimeout(5000, function()
+            SetTimeout(5000, function()
                 APIConnectionManager.Initialize()
             end)
         end
@@ -462,7 +462,7 @@ function APIConnectionManager.RetryAllFailed()
     Logger.Debug(string.format('Retrying %d failed connections', retriedCount))
     
     -- Print summary after retries
-    Citizen.SetTimeout(10000, function()
+    SetTimeout(10000, function()
         APIConnectionManager.PrintSummary()
     end)
 end
@@ -480,15 +480,15 @@ RegisterCommand('api_retry', function(source)
 end, true)
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
-    Citizen.Wait(5000)  -- Wait 5 seconds for Host API to start
+CreateThread(function()
+    Wait(5000)  -- Wait 5 seconds for Host API to start
     APIConnectionManager.Initialize()
 end)
 
 -- Periodic health check (every 5 minutes)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(300000)  -- 5 minutes
+        Wait(300000)  -- 5 minutes
         
         local disconnected = 0
         for key, conn in pairs(APIConnectionManager.connections) do
@@ -498,7 +498,7 @@ Citizen.CreateThread(function()
         end
         
         if disconnected > 0 then
-            Logger.Warn(string.format('%d APIs disconnected, attempting to reconnect...', disconnected), '⚠️')
+            Logger.Warn(string.format('%d APIs disconnected, attempting to reconnect...', disconnected))
             APIConnectionManager.RetryAllFailed()
         end
     end

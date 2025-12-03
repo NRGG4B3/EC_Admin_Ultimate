@@ -3,7 +3,7 @@
     Handles all client-side vehicle actions
 ]]
 
-print("[EC Admin Client] Loading vehicles handlers...")
+Logger.Info('📦 Loading vehicles handlers')
 
 -- Remove duplicate spawnVehicle - already in quick-actions-client-complete.lua
 
@@ -256,4 +256,4 @@ AddEventHandler('ec_admin:client:cleanVehicle', function()
     end
 end)
 
-print('[EC Admin Client] ✅ Vehicle handlers loaded successfully')
+Logger.Success('✅ Vehicle handlers loaded successfully')

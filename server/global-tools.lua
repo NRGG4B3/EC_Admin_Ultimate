@@ -87,7 +87,7 @@ function GlobalTools.RestartServer(source)
     
     NotifyAdmins('Server restarting in 10 seconds...')
     
-    Citizen.SetTimeout(10000, function()
+    SetTimeout(10000, function()
         ExecuteCommand('quit')
     end)
     
@@ -101,7 +101,7 @@ function GlobalTools.ShutdownServer(source)
     
     NotifyAdmins('Server shutting down...')
     
-    Citizen.SetTimeout(5000, function()
+    SetTimeout(5000, function()
         ExecuteCommand('quit')
     end)
     

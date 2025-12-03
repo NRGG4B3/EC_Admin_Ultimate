@@ -88,9 +88,9 @@ end
 local lastFrameTime = GetGameTimer()
 local currentTPS = 60.0
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(1000) -- Update every second
+        Wait(1000) -- Update every second
         local currentTime = GetGameTimer()
         local deltaTime = (currentTime - lastFrameTime) / 1000.0
         lastFrameTime = currentTime
@@ -183,17 +183,17 @@ end
 -- ============================================================================
 
 -- Push metrics every 5 seconds
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(UPDATE_INTERVAL)
+        Wait(UPDATE_INTERVAL)
         PushMetricsToAdmins()
     end
 end)
 
 -- Save history point every minute
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(HISTORY_INTERVAL * 1000)
+        Wait(HISTORY_INTERVAL * 1000)
         AddHistoryPoint()
     end
 end)

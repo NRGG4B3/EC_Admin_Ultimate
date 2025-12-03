@@ -19,13 +19,13 @@ ECAdminSync.ActiveAdmins = {}
 
 -- Initialize sync system
 function ECAdminSync.Init()
-    print("^2[EC Admin Sync] Initializing data synchronization...^0")
+    Logger.Info('Initializing data synchronization...', '🔄')
     
     -- DISABLED: This update loop was causing server hangs by running expensive operations
     -- The BroadcastUpdate() function calls GetAllVehicles() which blocks the main thread
     -- Data will be fetched on-demand instead via network events
     --[[ DISABLED - CAUSES SERVER HANG
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
             Wait(ECAdminSync.UpdateInterval)
             ECAdminSync.BroadcastUpdate()
@@ -41,7 +41,7 @@ function ECAdminSync.Init()
     GlobalState.recentLeaves = 0
     GlobalState.recentKicks = 0
     
-    print("^2[EC Admin Sync] Data synchronization initialized (on-demand mode)^0")
+    Logger.Info('Data synchronization initialized (on-demand mode)', '🔄')
 end
 
 -- Register admin panel
@@ -268,7 +268,7 @@ AddEventHandler('ec-admin:alerts:clear', function()
 end)
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(1000)
     ECAdminSync.Init()
 end)

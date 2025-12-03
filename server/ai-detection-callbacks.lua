@@ -276,7 +276,7 @@ local function LogAIDetection(src, detectionType, confidence, patternData, behav
     -- Auto kick if high confidence bot
     if AIConfig.AutoKickBots and isBot then
         DropPlayer(src, '🤖 Automated behavior detected\nReason: Bot-like patterns identified\nConfidence: ' .. math.floor(confidence * 100) .. '%')
-        print(string.format('[EC AI] AUTO-KICKED BOT: %s (ID: %d) - Confidence: %.2f%%', playerName, src, confidence * 100))
+        Logger.Error(string.format('🤖 AUTO-KICKED BOT: %s (ID: %d) - Confidence: %.2f%%', playerName, src, confidence * 100))
     end
 end
 

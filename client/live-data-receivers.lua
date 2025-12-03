@@ -197,10 +197,10 @@ AddEventHandler('ec-admin:startSpectate', function(targetId)
 end)
 
 -- Stop spectate (ESC key)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         if isSpectating then
-            Citizen.Wait(0) -- Check frequently when spectating
+            Wait(0) -- Check frequently when spectating
             
             if IsControlJustPressed(0, 322) then -- ESC key
                 NetworkSetInSpectatorMode(false, spectateTarget)
@@ -215,7 +215,7 @@ Citizen.CreateThread(function()
                 Logger.Info('Stopped spectating')
             end
         else
-            Citizen.Wait(1000) -- Sleep when not spectating
+            Wait(1000) -- Sleep when not spectating
         end
     end
 end)
@@ -223,9 +223,9 @@ end)
 --[[ ==================== LIVE DATA PUSH ==================== ]]--
 
 -- Push live player position updates to NUI
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(5000) -- Every 5 seconds
+        Wait(5000) -- Every 5 seconds
         
         -- Only if menu is open (get from nui-bridge export)
         local success, isMenuOpen = pcall(function()

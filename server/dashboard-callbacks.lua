@@ -13,9 +13,9 @@ local lastTickTime = os.clock()
 local currentTPS = 60.0
 local tickCount = 0
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(0) -- Run every frame
+        Wait(0) -- Run every frame
         tickCount = tickCount + 1
         
         local currentTime = os.clock()

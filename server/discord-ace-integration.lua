@@ -23,24 +23,24 @@ function DiscordACE.Init()
     end
     
     if not Config or not Config.Discord or not Config.Discord.rolePermissions or not Config.Discord.rolePermissions.enabled then
-        print('[Discord ACE] Discord role permissions disabled in config')
+        Logger.Warn('⚠️ Discord role permissions disabled in config')
         return
     end
     
     if not Config.Discord.rolePermissions.guildId or Config.Discord.rolePermissions.guildId == '' then
-        print('[Discord ACE] ⚠️  Discord Guild ID not configured')
-        print('[Discord ACE] Set Config.Discord.rolePermissions.guildId in config.lua')
+        Logger.Error('❌ Discord Guild ID not configured')
+        Logger.Error('ℹ️ Set Config.Discord.rolePermissions.guildId in config.lua')
         return
     end
     
     if not Config.Discord.rolePermissions.botToken or Config.Discord.rolePermissions.botToken == '' then
-        print('[Discord ACE] ⚠️  Discord Bot Token not configured')
-        print('[Discord ACE] Set Config.Discord.rolePermissions.botToken in config.lua')
+        Logger.Error('❌ Discord Bot Token not configured')
+        Logger.Error('ℹ️ Set Config.Discord.rolePermissions.botToken in config.lua')
         return
     end
     
-    print('[Discord ACE] ✅ Discord ACE Integration initialized')
-    print('[Discord ACE] 🎮 Discord roles will auto-grant ACE permissions')
+    Logger.Success('✅ Discord ACE Integration initialized')
+    Logger.Info('🎮 Discord roles will auto-grant ACE permissions')
     
     DiscordACE.initialized = true
 end
@@ -92,13 +92,13 @@ function DiscordACE.FetchRoles(discordId, callback)
                 return
             end
         elseif statusCode == 404 then
-            print(string.format('[Discord ACE] ⚠️  Player not found in Discord server (ID: %s)', discordId))
+            Logger.Warn(string.format('⚠️ Player not found in Discord server (ID: %s)', discordId))
         elseif statusCode == 401 then
-            print('[Discord ACE] ❌ Invalid bot token')
+            Logger.Error('❌ Invalid bot token')
         elseif statusCode == 403 then
-            print('[Discord ACE] ❌ Bot does not have access to this server')
+            Logger.Error('❌ Bot does not have access to this server')
         else
-            print(string.format('[Discord ACE] ⚠️  Discord API error: %d', statusCode))
+            Logger.Error(string.format('⚠️ Discord API error: %d', statusCode))
         end
         
         callback(nil)
@@ -124,7 +124,7 @@ function DiscordACE.MapRolesToACE(roles)
                     table.insert(acePermissions, 'ec_admin.all')
                     table.insert(acePermissions, 'ec_admin.super')
                     table.insert(acePermissions, 'ec_admin.menu')
-                    print('[Discord ACE] ✅ Full Access role detected')
+                    Logger.Success('✅ Full Access role detected')
                     return acePermissions  -- Full access, no need to check other roles
                 end
             end
@@ -138,7 +138,7 @@ function DiscordACE.MapRolesToACE(roles)
                 if roleId == superAdminRole then
                     table.insert(acePermissions, 'ec_admin.super')
                     table.insert(acePermissions, 'ec_admin.menu')
-                    print('[Discord ACE] ✅ Super Admin role detected')
+                    Logger.Success('✅ Super Admin role detected')
                 end
             end
         end
@@ -151,7 +151,7 @@ function DiscordACE.MapRolesToACE(roles)
                 if roleId == adminRole then
                     if not table.contains(acePermissions, 'ec_admin.menu') then
                         table.insert(acePermissions, 'ec_admin.menu')
-                        print('[Discord ACE] ✅ Admin role detected')
+                        Logger.Success('✅ Admin role detected')
                     end
                 end
             end
@@ -197,7 +197,7 @@ function DiscordACE.GrantACE(source, permissions)
         -- Track it
         table.insert(DiscordACE.playerAces[source], permission)
         
-        print(string.format('[Discord ACE] ✅ Granted %s to %s (%s)', permission, GetPlayerName(source) or 'Unknown', identifier))
+        Logger.Success(string.format('✅ Granted %s to %s (%s)', permission, GetPlayerName(source) or 'Unknown', identifier))
     end
 end
 
@@ -216,7 +216,7 @@ function DiscordACE.RevokeACE(source)
         -- Revoke ACE permission
         ExecuteCommand(string.format('remove_principal identifier.%s ec_admin.%s', identifier, permission:gsub('ec_admin%.', '')))
         
-        print(string.format('[Discord ACE] ⚠️  Revoked %s from %s (%s)', permission, GetPlayerName(source) or 'Unknown', identifier))
+        Logger.Warn(string.format('⚠️ Revoked %s from %s (%s)', permission, GetPlayerName(source) or 'Unknown', identifier))
     end
     
     DiscordACE.playerAces[source] = nil
@@ -230,7 +230,7 @@ function DiscordACE.ProcessPlayer(source)
     
     local discordId = DiscordACE.GetDiscordId(source)
     if not discordId then
-        print(string.format('[Discord ACE] ⚠️  Player %s has no Discord linked', GetPlayerName(source) or 'Unknown'))
+        Logger.Warn(string.format('⚠️ Player %s has no Discord linked', GetPlayerName(source) or 'Unknown'))
         return
     end
     
@@ -246,12 +246,12 @@ function DiscordACE.ProcessPlayer(source)
             -- Grant ACE permissions
             DiscordACE.GrantACE(source, acePermissions)
             
-            print(string.format('[Discord ACE] ✅ Processed player %s: %d Discord roles → %d ACE permissions', 
+            Logger.Success(string.format('✅ Processed player %s: %d Discord roles → %d ACE permissions', 
                 GetPlayerName(source) or 'Unknown', 
                 #roles, 
                 #acePermissions))
         else
-            print(string.format('[Discord ACE] ℹ️  Player %s has %d Discord roles but no matching admin roles', 
+            Logger.Info(string.format('ℹ️ Player %s has %d Discord roles but no matching admin roles', 
                 GetPlayerName(source) or 'Unknown', 
                 #roles))
         end
@@ -263,7 +263,7 @@ AddEventHandler('playerJoining', function()
     local source = source
     
     -- Wait 5 seconds for player to fully connect
-    Citizen.SetTimeout(5000, function()
+    SetTimeout(5000, function()
         DiscordACE.ProcessPlayer(source)
     end)
 end)
@@ -288,7 +288,7 @@ RegisterCommand('refreshdiscordace', function(source, args, rawCommand)
         for _, playerId in ipairs(players) do
             DiscordACE.ProcessPlayer(tonumber(playerId))
         end
-        print('[Discord ACE] ✅ Refreshed all players')
+        Logger.Success('✅ Refreshed all players')
     else
         -- Player command - refresh self
         if EC_Perms and EC_Perms.Has(source, 'ec_admin.super') then
@@ -305,13 +305,13 @@ RegisterCommand('refreshdiscordace', function(source, args, rawCommand)
 end, false)
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
-    Citizen.Wait(3000)  -- Wait for config and database
+CreateThread(function()
+    Wait(3000)  -- Wait for config and database
     DiscordACE.Init()
     
     -- Process all currently connected players
     if DiscordACE.initialized then
-        Citizen.Wait(5000)
+        Wait(5000)
         local players = GetPlayers()
         for _, playerId in ipairs(players) do
             DiscordACE.ProcessPlayer(tonumber(playerId))
@@ -320,9 +320,9 @@ Citizen.CreateThread(function()
 end)
 
 -- Periodic cache cleanup (every 10 minutes)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(600000)  -- 10 minutes
+        Wait(600000)  -- 10 minutes
         
         local now = os.time()
         local cleaned = 0
@@ -335,7 +335,7 @@ Citizen.CreateThread(function()
         end
         
         if cleaned > 0 then
-            print(string.format('[Discord ACE] 🧹 Cleaned %d expired cache entries', cleaned))
+            Logger.Info(string.format('🧹 Cleaned %d expired cache entries', cleaned))
         end
     end
 end)

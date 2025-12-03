@@ -225,12 +225,12 @@ local function LogDetection(src, detectionType, severity, details, evidence)
         
         DropPlayer(src, '🚫 BANNED: Anticheat Detection\nType: ' .. detectionType .. '\nIf you believe this is an error, contact server staff.')
         
-        print(string.format('[EC Anticheat] BANNED %s (ID: %d) - %s', playerName, src, detectionType))
+        Logger.Error(string.format('🚫 BANNED %s (ID: %d) - %s', playerName, src, detectionType))
     elseif riskScore >= Config.RiskScoreThresholds.kick or action == 'kick' then
         -- Auto kick
         DropPlayer(src, '⚠️ KICKED: Suspicious Activity Detected\nType: ' .. detectionType .. '\nRisk Score: ' .. riskScore)
         
-        print(string.format('[EC Anticheat] KICKED %s (ID: %d) - %s', playerName, src, detectionType))
+        Logger.Warn(string.format('⚠️ KICKED %s (ID: %d) - %s', playerName, src, detectionType))
     elseif action == 'warn' then
         -- Warn player
         TriggerClientEvent('ec_admin_ultimate:client:anticheatWarning', src, {
@@ -239,10 +239,10 @@ local function LogDetection(src, detectionType, severity, details, evidence)
             riskScore = riskScore
         })
         
-        print(string.format('[EC Anticheat] WARNED %s (ID: %d) - %s', playerName, src, detectionType))
+        Logger.Info(string.format('⚠️ WARNED %s (ID: %d) - %s', playerName, src, detectionType))
     else
         -- Just log
-        print(string.format('[EC Anticheat] LOGGED %s (ID: %d) - %s', playerName, src, detectionType))
+        Logger.Info(string.format('📝 LOGGED %s (ID: %d) - %s', playerName, src, detectionType))
     end
 end
 
@@ -302,7 +302,7 @@ RegisterNetEvent('ec_admin_ultimate:server:banPlayer', function(data)
         message = 'Player banned successfully'
     })
     
-    print(string.format('[EC Anticheat] %s banned %s - Reason: %s', adminName, targetName, reason))
+    Logger.Error(string.format('🚫 %s banned %s - Reason: %s', adminName, targetName, reason))
 end)
 
 -- Unban player

@@ -261,7 +261,7 @@ local function CheckRateLimit(ipAddress)
     bucket.burst = bucket.burst + 1
     
     -- Decay burst counter
-    Citizen.SetTimeout(1000, function()
+    SetTimeout(1000, function()
         if bucket.burst > 0 then
             bucket.burst = bucket.burst - 1
         end
@@ -341,7 +341,7 @@ function ProcessRequestQueue()
     end
     
     -- Process next request
-    Citizen.SetTimeout(0, ProcessRequestQueue)
+    SetTimeout(0, ProcessRequestQueue)
 end
 
 --[[ ==================== MEMORY MANAGEMENT ==================== ]]--
@@ -393,18 +393,18 @@ end
 
 -- Automatic memory cleanup
 if PERF_CONFIG.memory.autoCleanup then
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(PERF_CONFIG.memory.cleanupInterval)
+            Wait(PERF_CONFIG.memory.cleanupInterval)
             CleanupMemory()
         end
     end)
 end
 
 -- Automatic garbage collection
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(PERF_CONFIG.memory.gcInterval)
+        Wait(PERF_CONFIG.memory.gcInterval)
         collectgarbage('collect')
     end
 end)
@@ -565,9 +565,9 @@ function FlushDatabaseBatch()
 end
 
 -- Auto-flush batch operations periodically
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(5000) -- Every 5 seconds
+        Wait(5000) -- Every 5 seconds
         FlushDatabaseBatch()
     end
 end)
@@ -601,20 +601,20 @@ end
 -- Console command to view metrics
 RegisterCommand('ec:perf', function()
     local metrics = GetPerformanceMetrics()
-    print('╔════════════════════════════════════════════════════╗')
-    print('║         EC Admin - Performance Metrics            ║')
-    print('╚════════════════════════════════════════════════════╝')
-    print('Total Requests:     ' .. metrics.totalRequests)
-    print('Cached Requests:    ' .. metrics.cachedRequests)
-    print('Active Requests:    ' .. metrics.activeRequests)
-    print('Queued Requests:    ' .. metrics.queuedRequests)
-    print('Avg Response Time:  ' .. metrics.avgResponseTime .. 'ms')
-    print('Cache Hit Rate:     ' .. metrics.cacheHitRate .. '%')
-    print('Cache Size:         ' .. metrics.cacheSize .. ' items')
-    print('Memory Usage:       ' .. metrics.memoryUsageMB .. 'MB')
-    print('Throttled Requests: ' .. metrics.throttledRequests)
-    print('Errors:             ' .. metrics.errors)
-    print('════════════════════════════════════════════════════')
+    Logger.Info('╔════════════════════════════════════════════════════╗')
+    Logger.Info('║         EC Admin - Performance Metrics            ║')
+    Logger.Info('╚════════════════════════════════════════════════════╝')
+    Logger.Info('📊 Total Requests:     ' .. metrics.totalRequests)
+    Logger.Info('📊 Cached Requests:    ' .. metrics.cachedRequests)
+    Logger.Info('📊 Active Requests:    ' .. metrics.activeRequests)
+    Logger.Info('📊 Queued Requests:    ' .. metrics.queuedRequests)
+    Logger.Info('📊 Avg Response Time:  ' .. metrics.avgResponseTime .. 'ms')
+    Logger.Info('📊 Cache Hit Rate:     ' .. metrics.cacheHitRate .. '%')
+    Logger.Info('📊 Cache Size:         ' .. metrics.cacheSize .. ' items')
+    Logger.Info('📊 Memory Usage:       ' .. metrics.memoryUsageMB .. 'MB')
+    Logger.Info('📊 Throttled Requests: ' .. metrics.throttledRequests)
+    Logger.Info('📊 Errors:             ' .. metrics.errors)
+    Logger.Info('════════════════════════════════════════════════════')
 end, true)
 
 -- Console command to clear cache
@@ -701,9 +701,9 @@ function FlushNotificationQueue()
 end
 
 -- Auto-flush notifications every 10 seconds
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(10000)
+        Wait(10000)
         FlushNotificationQueue()
     end
 end)
@@ -757,7 +757,7 @@ function SendBatchedClientEvent(source, eventName, ...)
     })
     
     -- Flush every 100ms
-    Citizen.SetTimeout(100, function()
+    SetTimeout(100, function()
         FlushClientEvents(source)
     end)
 end

@@ -71,7 +71,7 @@ if FPS_CONFIG.entityCulling.enabled then
     local playerPos = vector3(0, 0, 0)
     local lastUpdate = 0
     
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
             local now = GetGameTimer()
             
@@ -129,7 +129,7 @@ if FPS_CONFIG.entityCulling.enabled then
                 end
             end
             
-            Citizen.Wait(FPS_CONFIG.entityCulling.updateInterval)
+            Wait(FPS_CONFIG.entityCulling.updateInterval)
         end
     end)
     
@@ -199,9 +199,9 @@ if FPS_CONFIG.scripts.cacheFrequentCalls then
     local cachedPlayerId = PlayerId()
     local lastPedUpdate = 0
     
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(1000) -- Update cache every second
+            Wait(1000) -- Update cache every second
             cachedPlayerPed = PlayerPedId()
             cachedPlayerId = PlayerId()
             lastPedUpdate = GetGameTimer()
@@ -229,9 +229,9 @@ if FPS_CONFIG.scripts.removeUnusedNatives then
     SetScenarioPedDensityMultiplierThisFrame(1.0, 1.0)
     
     -- Only call once, not every frame
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(5000) -- Only update every 5 seconds
+            Wait(5000) -- Only update every 5 seconds
             
             SetPedDensityMultiplierThisFrame(1.0)
             SetVehicleDensityMultiplierThisFrame(1.0)
@@ -247,9 +247,9 @@ end
 --[[ ==================== MEMORY MANAGEMENT ==================== ]]--
 
 if FPS_CONFIG.memory.clearUnusedTextures then
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(FPS_CONFIG.memory.gcInterval)
+            Wait(FPS_CONFIG.memory.gcInterval)
             
             -- Clear unused textures
             ClearAllBrokenGlass()
@@ -285,9 +285,9 @@ end
 
 --[[ ==================== FPS MONITORING ==================== ]]--
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(1000) -- Update every second
+        Wait(1000) -- Update every second
         
         local fps = GetFrameCount()
         FPSMetrics.currentFPS = fps
@@ -306,16 +306,16 @@ end)
 
 -- Command to view FPS stats
 RegisterCommand('fps', function()
-    print('╔════════════════════════════════════════════════════╗')
-    print('║         EC Admin - FPS Statistics                 ║')
-    print('╚════════════════════════════════════════════════════╝')
-    print('Current FPS:  ' .. math.floor(FPSMetrics.currentFPS))
-    print('Average FPS:  ' .. math.floor(FPSMetrics.avgFPS))
-    print('Minimum FPS:  ' .. math.floor(FPSMetrics.minFPS))
-    print('Maximum FPS:  ' .. math.floor(FPSMetrics.maxFPS))
-    print('Samples:      ' .. FPSMetrics.samples)
-    print('════════════════════════════════════════════════════')
-    print('FPS Boost Enabled: +10-30 FPS from EC Admin')
+    Logger.Info('╔════════════════════════════════════════════════════╗')
+    Logger.Info('║         EC Admin - FPS Statistics                 ║')
+    Logger.Info('╚════════════════════════════════════════════════════╝')
+    Logger.Info('📊 Current FPS:  ' .. math.floor(FPSMetrics.currentFPS))
+    Logger.Info('📊 Average FPS:  ' .. math.floor(FPSMetrics.avgFPS))
+    Logger.Info('📊 Minimum FPS:  ' .. math.floor(FPSMetrics.minFPS))
+    Logger.Info('📊 Maximum FPS:  ' .. math.floor(FPSMetrics.maxFPS))
+    Logger.Info('📊 Samples:      ' .. FPSMetrics.samples)
+    Logger.Info('════════════════════════════════════════════════════')
+    Logger.Success('🚀 FPS Boost Enabled: +10-30 FPS from EC Admin')
 end, false)
 
 --[[ ==================== ADDITIONAL OPTIMIZATIONS ==================== ]]--

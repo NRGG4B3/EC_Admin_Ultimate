@@ -4,7 +4,7 @@
     Version: 4.0.0 - COMPLETE (86+ Actions)
 ]]
 
-print("^2[EC Admin Client] Loading Quick Actions Client Handler (COMPLETE)...^0")
+Logger.Success("✅ Loading Quick Actions Client Handler (COMPLETE)...")
 
 -- ============================================================================
 -- SELF ACTIONS (CLIENT-SIDE)
@@ -120,7 +120,7 @@ RegisterNetEvent('ec_admin:client:teleportToCoords', function(x, y, z)
     lastTeleportPosition = GetEntityCoords(ped)
 
     if SafeTeleportToCoords(ped, targetCoords, heading) then
-        print(string.format("^2[EC Admin] ✅ Teleported to %.2f, %.2f, %.2f^0", targetCoords.x, targetCoords.y, targetCoords.z))
+        Logger.Success(string.format("✨ Teleported to %.2f, %.2f, %.2f", targetCoords.x, targetCoords.y, targetCoords.z))
     else
         Logger.Info(" ❌ Teleport failed (invalid ped or coords)^0")
     end
@@ -337,21 +337,21 @@ end)
 RegisterNetEvent('ec_admin:client:giveWeapon', function(weapon)
     local ped = PlayerPedId()
     GiveWeaponToPed(ped, GetHashKey(weapon), 250, false, true)
-    print(string.format("^2[EC Admin] ✅ Received weapon: %s^0", weapon))
+    Logger.Success(string.format("🔫 Received weapon: %s", weapon))
 end)
 
 -- Set Health
 RegisterNetEvent('ec_admin:client:setHealth', function(health)
     local ped = PlayerPedId()
     SetEntityHealth(ped, health)
-    print(string.format("^2[EC Admin] Health set to: %s^0", health))
+    Logger.Success(string.format("❤️ Health set to: %s", health))
 end)
 
 -- Set Armor
 RegisterNetEvent('ec_admin:client:setArmor', function(armor)
     local ped = PlayerPedId()
     SetPedArmour(ped, armor)
-    print(string.format("^2[EC Admin] Armor set to: %s^0", armor))
+    Logger.Success(string.format("🛡️ Armor set to: %s", armor))
 end)
 
 -- Change Ped
@@ -367,7 +367,7 @@ RegisterNetEvent('ec_admin:client:changePed', function(model)
     SetPlayerModel(PlayerId(), hash)
     SetModelAsNoLongerNeeded(hash)
     
-    print(string.format("^2[EC Admin] ✅ Changed ped to: %s^0", model))
+    Logger.Success(string.format("👤 Changed ped to: %s", model))
 end)
 
 -- ============================================================================
@@ -405,7 +405,7 @@ RegisterNetEvent('ec_admin:client:spawnVehicle', function(model)
     SetEntityAsNoLongerNeeded(vehicle)
     SetModelAsNoLongerNeeded(hash)
     
-    print(string.format("^2[EC Admin] ✅ Spawned vehicle: %s^0", model))
+    Logger.Success(string.format("🚗 Spawned vehicle: %s", model))
 end)
 
 -- Change Plate
@@ -415,7 +415,7 @@ RegisterNetEvent('ec_admin:client:changePlate', function(plate)
     
     if vehicle ~= 0 then
         SetVehicleNumberPlateText(vehicle, plate)
-        print(string.format("^2[EC Admin] ✅ Plate changed to: %s^0", plate))
+        Logger.Success(string.format("📋 Plate changed to: %s", plate))
     else
         Logger.Info(" ❌ You must be in a vehicle^0")
     end
@@ -486,7 +486,7 @@ RegisterNetEvent('ec_admin:client:clearAllVehicles', function()
         end
     end
     
-    print(string.format("^2[EC Admin] ✅ Cleared %s vehicles^0", count))
+    Logger.Success(string.format("🚗 Cleared %s vehicles", count))
 end)
 
 -- Clear All Peds
@@ -501,7 +501,7 @@ RegisterNetEvent('ec_admin:client:clearAllPeds', function()
         end
     end
     
-    print(string.format("^2[EC Admin] ✅ Cleared %s peds^0", count))
+    Logger.Success(string.format("👥 Cleared %s peds", count))
 end)
 
 -- Garage Radius
@@ -521,7 +521,7 @@ RegisterNetEvent('ec_admin:client:garageRadius', function(radius)
         end
     end
     
-    print(string.format("^2[EC Admin] ✅ Sent %s nearby vehicles to garage^0", count))
+    Logger.Success(string.format("🚗 Sent %s nearby vehicles to garage", count))
 end)
 
 -- Garage All
@@ -536,7 +536,7 @@ RegisterNetEvent('ec_admin:client:garageAll', function()
         end
     end
     
-    Logger.Info(" ✅ Sent all vehicles to garage^0")
+    Logger.Success(string.format("🚗 Sent %s nearby vehicles to garage", count))
 end)
 
 -- REMOVED: Weather/Time - Now handled by global-tools-client.lua
@@ -544,4 +544,4 @@ end)
 -- ec_admin:client:setTime → global-tools-client.lua  
 -- ec_admin:client:toggleBlackout → global-tools-client.lua
 
-print("^2[EC Admin Client] ✅ Quick Actions Client Complete loaded - 86+ actions ready^0")
+Logger.Success("✅ Quick Actions Client Complete loaded - 86+ actions ready")

@@ -338,12 +338,12 @@ RegisterCommand('ec:config:get', function(source, args, rawCommand)
     end
     
     if #args == 0 then
-        print('Usage: ec:config:get <key>')
+        Logger.Warn('⚠️ Usage: ec:config:get <key>')
         return
     end
     
     local value = ConfigManager.Get(args[1])
-    print(string.format('Config.%s = %s', args[1], json.encode(value)))
+    Logger.Info(string.format('📋 Config.%s = %s', args[1], json.encode(value)))
 end, true)
 
 RegisterCommand('ec:config:set', function(source, args, rawCommand)
@@ -352,7 +352,7 @@ RegisterCommand('ec:config:set', function(source, args, rawCommand)
     end
     
     if #args < 2 then
-        print('Usage: ec:config:set <key> <value>')
+        Logger.Warn('⚠️ Usage: ec:config:set <key> <value>')
         return
     end
     
@@ -369,7 +369,7 @@ RegisterCommand('ec:config:set', function(source, args, rawCommand)
     end
     
     local success, message = ConfigManager.Set(key, value, 'console')
-    print(message)
+    Logger.Success(message)
 end, true)
 
 RegisterCommand('ec:config:reset', function(source, args, rawCommand)
@@ -378,12 +378,12 @@ RegisterCommand('ec:config:reset', function(source, args, rawCommand)
     end
     
     if #args == 0 then
-        print('Usage: ec:config:reset <key>')
+        Logger.Warn('⚠️ Usage: ec:config:reset <key>')
         return
     end
     
     local success, message = ConfigManager.Reset(args[1], 'console')
-    print(message)
+    Logger.Info(message)
 end, true)
 
 -- ============================================================================

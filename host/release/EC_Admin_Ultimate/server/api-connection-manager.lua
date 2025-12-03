@@ -480,15 +480,15 @@ RegisterCommand('api_retry', function(source)
 end, true)
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
-    Citizen.Wait(5000)  -- Wait 5 seconds for Host API to start
+CreateThread(function()
+    Wait(5000)  -- Wait 5 seconds for Host API to start
     APIConnectionManager.Initialize()
 end)
 
 -- Periodic health check (every 5 minutes)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(300000)  -- 5 minutes
+        Wait(300000)  -- 5 minutes
         
         local disconnected = 0
         for key, conn in pairs(APIConnectionManager.connections) do

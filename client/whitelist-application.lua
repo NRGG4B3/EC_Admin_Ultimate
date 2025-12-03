@@ -33,4 +33,4 @@ RegisterNUICallback('closeWhitelistApplication', function(data, cb)
     cb({ success = true })
 end)
 
-print('[EC Admin Client] ✅ Whitelist Application System loaded')
+Logger.Info('✅ Whitelist Application System loaded', '📋')

@@ -463,7 +463,7 @@ function AntiCheat.AddDetection(source, cheatType, category, confidence, method,
     
     -- Check whitelist
     if IsWhitelisted(source) then
-        print(string.format('[EC Admin] 🛡️  Anti-Cheat: Detection skipped for whitelisted player'))
+        Logger.Info('🛡️  Anti-Cheat: Detection skipped for whitelisted player')
         return nil
     end
     
@@ -572,7 +572,7 @@ function AntiCheat.AddDetection(source, cheatType, category, confidence, method,
         local finalConfidence = (confidence * 0.4) + (aiConfidence * 0.6)
         
         if finalConfidence >= config.banThreshold and matchingModule.autoAction == 'ban' then
-            Citizen.SetTimeout(5000, function()
+            SetTimeout(5000, function()
                 detection.actionTaken = true
                 detection.verified = true
                 
@@ -593,7 +593,7 @@ function AntiCheat.AddDetection(source, cheatType, category, confidence, method,
                     playerInfo.name, cheatType, confidence, aiConfidence))
             end)
         elseif finalConfidence >= config.kickThreshold and matchingModule.autoAction == 'kick' then
-            Citizen.SetTimeout(3000, function()
+            SetTimeout(3000, function()
                 detection.actionTaken = true
                 DropPlayer(source, string.format('Anti-Cheat: %s (Confidence: %.1f%%)', cheatType, finalConfidence))
                 
@@ -947,9 +947,9 @@ function AntiCheat.Initialize()
     DetectFramework()
     
     -- Start scanning loop
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(config.updateInterval)
+            Wait(config.updateInterval)
             
             if config.enabled and isSystemActive then
                 local players = GetPlayers()

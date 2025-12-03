@@ -343,7 +343,7 @@ end)
 _G.HasAdminAccess = HasAdminAccess
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(1000) -- Wait for config and database
     EC_Perms.Init()
 end)

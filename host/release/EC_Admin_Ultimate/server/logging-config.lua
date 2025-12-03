@@ -58,8 +58,8 @@ _G.print = function(...)
 end
 
 -- Disable quiet mode after 20 seconds
-Citizen.CreateThread(function()
-    Citizen.Wait(20000)
+CreateThread(function()
+    Wait(20000)
     _G.EC_ADMIN_QUIET_MODE = false
 end)
 

@@ -16,11 +16,11 @@ AddEventHandler('ec_admin:host:serviceAction', function(service, action)
     local source = source
     
     if not IsHostMode() then
-        print('^1[Host Control] Unauthorized access attempt from player ' .. source .. '^0')
+        Logger.Error("🔒 Unauthorized access attempt from player " .. source)
         return
     end
     
-    print(string.format('^2[Host Control] Service action: %s %s^0', action, service))
+    Logger.Info(string.format('🔧 Service action: %s %s', action, service))
     
     -- In a real implementation, this would:
     -- 1. Execute PM2 commands: pm2 start/stop/restart <service>
@@ -49,11 +49,11 @@ AddEventHandler('ec_admin:host:uninstallService', function(service)
     local source = source
     
     if not IsHostMode() then
-        print('^1[Host Control] Unauthorized uninstall attempt from player ' .. source .. '^0')
+        Logger.Error("🔒 Unauthorized uninstall attempt from player " .. source)
         return
     end
     
-    print(string.format('^3[Host Control] Uninstall service: %s^0', service))
+    Logger.Warn(string.format('🗑️ Uninstall service: %s', service))
     
     -- In a real implementation, this would:
     -- 1. Stop the service: pm2 stop <service>
@@ -77,11 +77,11 @@ AddEventHandler('ec_admin:host:toggleWebAdmin', function(enabled)
     local source = source
     
     if not IsHostMode() then
-        print('^1[Host Control] Unauthorized web admin toggle from player ' .. source .. '^0')
+        Logger.Error("🔒 Unauthorized web admin toggle from player " .. source)
         return
     end
     
-    print(string.format('^3[Host Control] Web admin toggle: %s^0', enabled and 'ENABLED' or 'DISABLED'))
+    Logger.Info(string.format('🌐 Web admin toggle: %s', enabled and 'ENABLED' or 'DISABLED'))
     
     -- Set the convar to enable/disable web admin
     SetConvar('ec_web_admin_enabled', tostring(enabled))

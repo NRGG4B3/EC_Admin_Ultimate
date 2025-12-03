@@ -1,7 +1,7 @@
 -- EC Admin Ultimate - Client-Side Quick Actions Handlers
 -- Handles all client-side quick action execution
 
-print("[EC Admin Client] Loading Quick Actions Handlers...")
+Logger.Info('📦 Loading Quick Actions Handlers')
 
 -- State tracking
 local noclipEnabled = false
@@ -233,21 +233,21 @@ local function PerformFlips(ped, numFlips)
     
     local dict = "anim@mp_player_intcelebrationmale@flip"
     
-    print(string.format("^3[EC Admin NoClip] Starting %d flips...^0", numFlips))
+    Logger.Info(string.format("🔄 Starting %d flips...", numFlips))
     
     CreateThread(function()
         for i = 1, numFlips do
             if not landingInProgress then 
-                print("^3[EC Admin NoClip] Landing ended, stopping flips^0")
+                Logger.Warn("🔄 Landing ended, stopping flips")
                 break 
             end
             
             -- Play flip animation
             TaskPlayAnim(ped, dict, "flip", 8.0, -8.0, 900, 49, 0, false, false, false)
-            print(string.format("^3[EC Admin NoClip] Flip %d/%d executed^0", i, numFlips))
+            Logger.Info(string.format("🔄 Flip %d/%d executed", i, numFlips))
             Wait(900) -- Each flip takes ~900ms
         end
-        print("^3[EC Admin NoClip] All flips completed^0")
+        Logger.Success("🔄 All flips completed")
     end)
 end
 
@@ -547,16 +547,16 @@ local infiniteStamina = false
 RegisterNetEvent('ec_admin:toggleStamina')
 AddEventHandler('ec_admin:toggleStamina', function()
     infiniteStamina = not infiniteStamina
-    print("[EC Admin] Infinite Stamina: " .. (infiniteStamina and "ENABLED" or "DISABLED"))
+    Logger.Info("⚡ Infinite Stamina: " .. (infiniteStamina and "✅ ENABLED" or "❌ DISABLED"))
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         if infiniteStamina then
-            Citizen.Wait(0)
+            Wait(0)
             RestorePlayerStamina(PlayerId(), 1.0)
         else
-            Citizen.Wait(500) -- Save CPU when not active
+            Wait(500) -- Save CPU when not active
         end
     end
 end)
@@ -566,16 +566,16 @@ local superJump = false
 RegisterNetEvent('ec_admin:toggleSuperJump')
 AddEventHandler('ec_admin:toggleSuperJump', function()
     superJump = not superJump
-    print("[EC Admin] Super Jump: " .. (superJump and "ENABLED" or "DISABLED"))
+    Logger.Info("🚀 Super Jump: " .. (superJump and "✅ ENABLED" or "❌ DISABLED"))
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         if superJump then
-            Citizen.Wait(0)
+            Wait(0)
             SetSuperJumpThisFrame(PlayerId())
         else
-            Citizen.Wait(500) -- Save CPU when not active
+            Wait(500) -- Save CPU when not active
         end
     end
 end)
@@ -595,7 +595,7 @@ AddEventHandler('ec_admin:toggleFastRun', function()
         SetPedMoveRateOverride(ped, 1.0)
     end
     
-    print("[EC Admin] Fast Run: " .. (fastRun and "ENABLED" or "DISABLED"))
+    Logger.Info("💨 Fast Run: " .. (fastRun and "✅ ENABLED" or "❌ DISABLED"))
 end)
 
 -- Fast Swim
@@ -611,7 +611,7 @@ AddEventHandler('ec_admin:toggleFastSwim', function()
         SetSwimMultiplierForPlayer(PlayerId(), 1.0)
     end
     
-    print("[EC Admin] Fast Swim: " .. (fastSwim and "ENABLED" or "DISABLED"))
+    Logger.Info("🏊 Fast Swim: " .. (fastSwim and "✅ ENABLED" or "❌ DISABLED"))
 end)
 
 -- Load Position (complement to Save Position)
@@ -641,9 +641,9 @@ AddEventHandler('ec_admin:changePed', function(pedModel)
     if HasModelLoaded(modelHash) then
         SetPlayerModel(PlayerId(), modelHash)
         SetModelAsNoLongerNeeded(modelHash)
-        print("[EC Admin] Ped changed to: " .. pedModel)
+        Logger.Success("👤 Ped changed to: " .. pedModel)
     else
-        print("[EC Admin] Failed to load ped model: " .. pedModel)
+        Logger.Error("👤 Failed to load ped model: " .. pedModel)
     end
 end)
 
@@ -672,7 +672,7 @@ AddEventHandler('ec_admin:teleportToMarker', function()
         
         local targetCoords = foundGround and vector3(coords.x, coords.y, groundZ) or vector3(coords.x, coords.y, coords.z)
         if SafeTeleport(ped, targetCoords, GetEntityHeading(ped)) then
-            print(foundGround and "[EC Admin] Teleported to waypoint" or "[EC Admin] Teleported to waypoint (approximate height)")
+            Logger.Success(foundGround and "✨ Teleported to waypoint" or "✨ Teleported to waypoint (approximate height)")
         else
             Logger.Info(" Teleport failed - invalid waypoint data")
         end
@@ -826,7 +826,7 @@ AddEventHandler('ec_admin:spectatePlayer', function(targetId)
         -- Start spectating
         spectatingPlayer = targetId
         NetworkSetInSpectatorMode(true, targetPed)
-        print("[EC Admin] Spectating player " .. targetId)
+        Logger.Info("👁️ Spectating player " .. targetId)
     end
 end)
 
@@ -918,7 +918,7 @@ AddEventHandler('ec_admin:spawnVehicle', function(vehicleName)
     SetPedIntoVehicle(ped, vehicle, -1)
     SetEntityAsNoLongerNeeded(vehicle)
     
-    print("[EC Admin] Spawned vehicle: " .. vehicleName)
+    Logger.Success("🚗 Spawned vehicle: " .. vehicleName)
 end)
 
 -- Flip Vehicle
@@ -947,7 +947,7 @@ AddEventHandler('ec_admin:boostVehicle', function()
         Logger.Info(" Boost activated")
         
         -- Reset after 10 seconds
-        Citizen.SetTimeout(10000, function()
+        SetTimeout(10000, function()
             SetVehicleEnginePowerMultiplier(vehicle, 1.0)
             Logger.Info(" Boost deactivated")
         end)
@@ -1007,14 +1007,14 @@ AddEventHandler('ec_admin:setWeather', function(weatherType)
     SetWeatherTypeNowPersist(weatherType)
     SetWeatherTypeNow(weatherType)
     SetWeatherTypePersist(weatherType)
-    print("[EC Admin] Weather changed to: " .. weatherType)
+    Logger.Info("🌤️ Weather changed to: " .. weatherType)
 end)
 
 -- Set Time
 RegisterNetEvent('ec_admin:setTime')
 AddEventHandler('ec_admin:setTime', function(time)
     NetworkOverrideClockTime(time, 0, 0)
-    print("[EC Admin] Time changed to: " .. time)
+    Logger.Info("⏰ Time changed to: " .. time)
 end)
 
 -- Toggle Blackout
@@ -1023,7 +1023,7 @@ RegisterNetEvent('ec_admin:toggleBlackout')
 AddEventHandler('ec_admin:toggleBlackout', function()
     blackoutEnabled = not blackoutEnabled
     SetArtificialLightsState(blackoutEnabled)
-    print("[EC Admin] Blackout: " .. (blackoutEnabled and "ENABLED" or "DISABLED"))
+    Logger.Info("🌑 Blackout: " .. (blackoutEnabled and "✅ ENABLED" or "❌ DISABLED"))
 end)
 
 -- Toggle Rainbow Paint
@@ -1031,11 +1031,11 @@ local rainbowEnabled = false
 RegisterNetEvent('ec_admin:toggleRainbow')
 AddEventHandler('ec_admin:toggleRainbow', function()
     rainbowEnabled = not rainbowEnabled
-    print("[EC Admin] Rainbow Paint: " .. (rainbowEnabled and "ENABLED" or "DISABLED"))
+    Logger.Info("🌈 Rainbow Paint: " .. (rainbowEnabled and "✅ ENABLED" or "❌ DISABLED"))
 end)
 
 -- Rainbow paint loop
-Citizen.CreateThread(function()
+CreateThread(function()
     local colors = {
         {255, 0, 0},    -- Red
         {255, 127, 0},  -- Orange
@@ -1072,14 +1072,14 @@ local boostEnabled = false
 RegisterNetEvent('ec_admin:toggleBoost')
 AddEventHandler('ec_admin:toggleBoost', function()
     boostEnabled = not boostEnabled
-    print("[EC Admin] Vehicle Boost: " .. (boostEnabled and "ENABLED" or "DISABLED"))
+    Logger.Info("⚡ Vehicle Boost: " .. (boostEnabled and "✅ ENABLED" or "❌ DISABLED"))
 end)
 
 -- Boost loop
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         if boostEnabled then
-            Citizen.Wait(0)
+            Wait(0)
             local ped = PlayerPedId()
             local vehicle = GetVehiclePedIsIn(ped, false)
             
@@ -1092,7 +1092,7 @@ Citizen.CreateThread(function()
                 end
             end
         else
-            Citizen.Wait(500) -- Save CPU when not active
+            Wait(500) -- Save CPU when not active
         end
     end
 end)
@@ -1245,4 +1245,4 @@ AddEventHandler('ec_admin:garageVehiclesServerwide', function()
     })
 end)
 
-print("[EC Admin Client] Quick Actions Handlers Loaded - 46+ actions ready")
+Logger.Success('✅ Quick Actions Handlers Loaded - 46+ actions ready')

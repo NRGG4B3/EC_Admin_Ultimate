@@ -6,10 +6,10 @@
 
 -- Simple logger replacement (no external dependencies)
 local Logger = {
-    System = function(msg) print('[EC Admin DB] ' .. msg) end,
-    Debug = function(msg) print('[EC Admin DB] ' .. msg) end,
-    Error = function(msg) print('[EC Admin DB ERROR] ' .. msg) end,
-    Success = function(msg) print('[EC Admin DB] ' .. msg) end
+    System = function(msg) Logger.Info('[EC Admin DB] ' .. msg) end,
+    Debug = function(msg) Logger.Info('[EC Admin DB] ' .. msg) end,
+    Error = function(msg) Logger.Error('[EC Admin DB ERROR] ' .. msg) end,
+    Success = function(msg) Logger.Success('[EC Admin DB] ' .. msg) end
 }
 
 local DB_AUTO = {}

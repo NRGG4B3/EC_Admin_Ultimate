@@ -273,16 +273,16 @@ function Communications.MarkMessageRead(source, data)
 end
 
 -- Cleanup old broadcasts (keep last 50)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(300000) -- 5 minutes
+        Wait(300000) -- 5 minutes
 
         if #communicationsData.broadcasts > 50 then
             local toRemove = #communicationsData.broadcasts - 50
             for i = 1, toRemove do
                 table.remove(communicationsData.broadcasts, 1)
             end
-            Logger.Info('📢 Cleaned up old broadcasts')
+            Logger.Info('📢 Cleaned up old broadcasts', '📢')
         end
     end
 end)

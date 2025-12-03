@@ -507,7 +507,7 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     end
     
     -- Don't block handshake - other checks happen after join
-    print('[EC Security] ✅ Fast security check passed for: ' .. name)
+    Logger.Success('✅ Fast security check passed for: ' .. name)
 end)
 
 -- REMOVED: Security checks moved to player-events.lua for centralization
@@ -578,9 +578,9 @@ function Security.InitializeFirewallRules()
 end
 
 -- Cleanup thread
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(3600000) -- Every hour
+        Wait(3600000) -- Every hour
         
         -- Clean expired blacklist entries
         for i = #securityData.blacklist, 1, -1 do

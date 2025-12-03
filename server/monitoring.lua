@@ -276,7 +276,7 @@ function Monitoring.Initialize()
     end
     
     -- Start monitoring loop (with error protection to prevent server hangs)
-    Citizen.CreateThread(function()
+    CreateThread(function()
         -- Wait for server to be fully ready before starting monitoring
         Wait(5000)
         
@@ -309,7 +309,7 @@ function Monitoring.Initialize()
             end
             
             -- Wait 30 seconds before next update
-            Citizen.Wait(config.updateInterval)
+            Wait(config.updateInterval)
         end
     end)
     

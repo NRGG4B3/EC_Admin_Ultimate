@@ -65,22 +65,20 @@ local function IsOwner(identifiers)
     return false
 end
 
--- Get framework bridge
-local Framework = nil
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(1000)
 
     if GetResourceState('qbx_core') == 'started' then
         Framework = exports.qbx_core
-        Logger.Info("API Router: Detected QBX framework")
+        Logger.Info("API Router: Detected QBX framework", "🔗")
     elseif GetResourceState('qb-core') == 'started' then
         Framework = exports['qb-core']:GetCoreObject()
-        Logger.Info("API Router: Detected QBCore framework")
+        Logger.Info("API Router: Detected QBCore framework", "🔗")
     elseif GetResourceState('es_extended') == 'started' then
         Framework = exports['es_extended']:getSharedObject()
-        Logger.Info("API Router: Detected ESX framework")
+        Logger.Info("API Router: Detected ESX framework", "🔗")
     else
-        Logger.Info("API Router: No framework detected, using standalone mode")
+        Logger.Info("API Router: No framework detected, using standalone mode", "🔗")
     end
 end)
 
@@ -639,13 +637,13 @@ end)
 -- Initialize
 _G.ECAdminStartTime = os.time()
 
-Logger.Info("API Router: Initialized")
-print("  HTTP endpoints: /api/*")
-print("  NUI callbacks: " .. #nuiEndpoints .. " endpoints")
-print("  Security: " .. (Config.Security and Config.Security.RequireAuth and "Enabled" or "Disabled"))
+Logger.Info("API Router: Initialized", "🔗")
+Logger.Info("HTTP endpoints: /api/*", "🔗")
+Logger.Info("NUI callbacks: " .. #nuiEndpoints .. " endpoints", "🔗")
+Logger.Info("Security: " .. (Config.Security and Config.Security.RequireAuth and "Enabled" or "Disabled"), "🔗")
 -- CORS check - safely handle if CORS config doesn't exist
 local corsStatus = "Disabled"
 if Config.Security and Config.Security.CORS and Config.Security.CORS.enabled then
     corsStatus = "Enabled"
 end
-print("  CORS: " .. corsStatus)
+Logger.Info("CORS: " .. corsStatus, "🔗")

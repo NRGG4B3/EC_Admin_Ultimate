@@ -88,9 +88,13 @@ RegisterNUICallback('logFetchError', function(data, cb)
     
     cb({ received = true })
 end)
-    
+
+-- Check if Debug mode should override log level
+CreateThread(function()
+    Wait(500)
     if Config and Config.Debug then
         currentLevel = LogLevel.DEBUG
+        Logger.Debug('🐛 Debug mode enabled')
     end
 end)
 

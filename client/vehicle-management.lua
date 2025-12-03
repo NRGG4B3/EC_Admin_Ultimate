@@ -178,4 +178,4 @@ function FindVehicleByPlate(plate)
     return nil
 end
 
-print('^2[EC Admin Ultimate]^7 Vehicle management client handlers loaded')
+Logger.Success('✅ Vehicle management client handlers loaded')

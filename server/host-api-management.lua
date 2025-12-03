@@ -234,7 +234,7 @@ function StartAPIService(apiKey, adminSource)
     
     -- In production, this would trigger actual service start via system commands
     -- For now, we'll simulate it
-    print(string.format('[Host API Management] Starting %s on port %d', api.name, api.port))
+    Logger.Info(string.format('🚀 Starting %s on port %d', api.name, api.port))
     
     -- Simulate async start
     SetTimeout(2000, function()
@@ -248,7 +248,7 @@ function StartAPIService(apiKey, adminSource)
             VALUES (?, 0, '1.0.0', UNIX_TIMESTAMP())
         ]], {apiKey})
         
-        print(string.format('[Host API Management] %s started successfully', api.name))
+        Logger.Success(string.format('✅ %s started successfully', api.name))
     end)
     
     return true, 'API start initiated'
@@ -272,7 +272,7 @@ function StopAPIService(apiKey, adminSource)
         'stopping', apiKey
     })
     
-    print(string.format('[Host API Management] Stopping %s', api.name))
+    Logger.Info(string.format('⏹️ Stopping %s', api.name))
     
     -- Simulate async stop
     SetTimeout(1000, function()
@@ -280,7 +280,7 @@ function StopAPIService(apiKey, adminSource)
             'offline', apiKey
         })
         
-        print(string.format('[Host API Management] %s stopped successfully', api.name))
+        Logger.Success(string.format('✅ %s stopped successfully', api.name))
     end)
     
     return true, 'API stop initiated'
@@ -304,7 +304,7 @@ function RestartAPIService(apiKey, adminSource)
         'stopping', apiKey
     })
     
-    print(string.format('[Host API Management] Restarting %s', api.name))
+    Logger.Info(string.format('🔄 Restarting %s', api.name))
     
     -- Then start after delay
     SetTimeout(2000, function()
@@ -322,7 +322,7 @@ function RestartAPIService(apiKey, adminSource)
                 UPDATE ec_host_api_metrics SET last_restart = UNIX_TIMESTAMP() WHERE api_key = ?
             ]], {apiKey})
             
-            print(string.format('[Host API Management] %s restarted successfully', api.name))
+            Logger.Success(string.format('✅ %s restarted successfully', api.name))
         end)
     end)
     

@@ -521,9 +521,9 @@ function Performance.ExportReport(source)
 end
 
 -- Monitor thread
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(performanceData.settings.updateInterval)
+        Wait(performanceData.settings.updateInterval)
         
         if performanceData.settings.monitoringEnabled then
             local metrics = GetSystemMetrics()
@@ -533,7 +533,7 @@ Citizen.CreateThread(function()
             if performanceData.settings.autoOptimize then
                 if metrics.memory.percentage > Config.optimizationThresholds.memory then
                     collectgarbage('collect')
-                    Logger.Info('⚡ Auto-optimization: Memory cleared')
+                    Logger.Info('⚡ Auto-optimization: Memory cleared', '⚡')
                 end
             end
         end
@@ -541,9 +541,9 @@ Citizen.CreateThread(function()
 end)
 
 -- Cleanup thread
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(Config.cleanupInterval)
+        Wait(Config.cleanupInterval)
         
         -- Clean old history
         performanceData.history = {}

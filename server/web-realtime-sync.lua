@@ -16,13 +16,13 @@ local QBCore = nil
 local ESX = nil
 
 -- Detect framework
-Citizen.CreateThread(function()
+CreateThread(function()
     if GetResourceState('qb-core') == 'started' then
         QBCore = exports['qb-core']:GetCoreObject()
-        print('^2[EC Web Sync] QBCore detected^0')
+        Logger.Info('🎯 QBCore detected')
     elseif GetResourceState('es_extended') == 'started' then
         ESX = exports['es_extended']:getSharedObject()
-        print('^2[EC Web Sync] ESX detected^0')
+        Logger.Info('🎯 ESX detected')
     end
 end)
 
@@ -32,7 +32,7 @@ lib.callback.register('ec_admin:webAction', function(source, data)
     local payload = data.payload
     local adminId = data.adminId or 'web-admin'
     
-    print(string.format('^3[EC Web Sync] Action from web: %s^0', action))
+    Logger.Info(string.format('🌐 Action from web: %s', action))
     
     -- Verify permission (you can add ACE checks here)
     -- For now, we assume web access is authenticated
@@ -138,7 +138,7 @@ function HandleWebBan(payload)
                 source = 'web'
             })
             
-            print(string.format('^1[EC Web Sync] %s banned %s (%s)^0', adminName, GetPlayerName(target), reason))
+            Logger.Error(string.format('🔴 %s banned %s (%s)', adminName, GetPlayerName(target), reason))
         end
     end)
     
@@ -176,7 +176,7 @@ function HandleWebKick(payload)
         source = 'web'
     })
     
-    print(string.format('^3[EC Web Sync] %s kicked %s (%s)^0', adminName, playerName, reason))
+    Logger.Warn(string.format('⚠️  %s kicked %s (%s)', adminName, playerName, reason))
     
     return true, {
         message = 'Player kicked successfully',
@@ -237,7 +237,7 @@ function HandleWebWarn(payload)
         source = 'web'
     })
     
-    print(string.format('^3[EC Web Sync] %s warned %s (%s)^0', adminName, GetPlayerName(target), reason))
+    Logger.Warn(string.format('⚠️  %s warned %s (%s)', adminName, GetPlayerName(target), reason))
     
     return true, {
         message = 'Player warned successfully',
@@ -285,7 +285,7 @@ function HandleWebGiveItem(payload)
         source = 'web'
     })
     
-    print(string.format('^2[EC Web Sync] %s gave %s x%d %s^0', adminName, GetPlayerName(target), amount, itemName))
+    Logger.Success(string.format('✅ %s gave %s x%d %s', adminName, GetPlayerName(target), amount, itemName))
     
     return true, {
         message = 'Item given successfully',
@@ -333,7 +333,7 @@ function HandleWebSetJob(payload)
         source = 'web'
     })
     
-    print(string.format('^2[EC Web Sync] %s set %s job to %s (grade %d)^0', adminName, GetPlayerName(target), jobName, grade))
+    Logger.Success(string.format('✅ %s set %s job to %s (grade %d)', adminName, GetPlayerName(target), jobName, grade))
     
     return true, {
         message = 'Job set successfully',
@@ -369,7 +369,7 @@ function HandleWebTeleport(payload)
         source = 'web'
     })
     
-    print(string.format('^2[EC Web Sync] %s teleported %s^0', adminName, GetPlayerName(target)))
+    Logger.Success(string.format('✅ %s teleported %s', adminName, GetPlayerName(target)))
     
     return true, {
         message = 'Player teleported successfully',
@@ -408,7 +408,7 @@ function HandleWebHeal(payload)
         source = 'web'
     })
     
-    print(string.format('^2[EC Web Sync] %s healed %s^0', adminName, GetPlayerName(target)))
+    Logger.Success(string.format('✅ %s healed %s', adminName, GetPlayerName(target)))
     
     return true, {
         message = 'Player healed successfully',
@@ -441,7 +441,7 @@ function HandleWebFreeze(payload)
         source = 'web'
     })
     
-    print(string.format('^2[EC Web Sync] %s %s %s^0', adminName, freeze and 'froze' or 'unfroze', GetPlayerName(target)))
+    Logger.Success(string.format('✅ %s %s %s', adminName, freeze and 'froze' or 'unfroze', GetPlayerName(target)))
     
     return true, {
         message = freeze and 'Player frozen successfully' or 'Player unfrozen successfully',
@@ -478,7 +478,7 @@ function HandleWebGiveVehicle(payload)
         source = 'web'
     })
     
-    print(string.format('^2[EC Web Sync] %s gave %s a %s^0', adminName, GetPlayerName(target), vehicleModel))
+    Logger.Success(string.format('✅ %s gave %s a %s', adminName, GetPlayerName(target), vehicleModel))
     
     return true, {
         message = 'Vehicle spawned successfully',

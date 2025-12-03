@@ -319,8 +319,8 @@ AddEventHandler('playerJoining', function()
 end)
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
-    Citizen.Wait(3000)  -- Wait for config and database
+CreateThread(function()
+    Wait(3000)  -- Wait for config and database
     AdminTeam.Init()
 end)
 

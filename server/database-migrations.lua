@@ -17,7 +17,7 @@ local Migrations = {
 -- Schema version table (must exist first)
 local function CreateVersionTable()
     if not MySQL then
-        print("^1[Migrations] MySQL not available^7")
+        Logger.Error('MySQL not available')
         return false
     end
     
@@ -363,13 +363,13 @@ local MigrationList = {
             for _, query in ipairs(queries) do
                 local success = MySQL.query.await(query, {})
                 if not success then
-                    print('^1[Migration 8] Failed to create table^0')
+                    Logger.Error('Failed to create table')
                     return false
                 end
                 Wait(100) -- Prevent overwhelming DB
             end
             
-            print('^2[Migration 8] ✅ Created 3 metrics/analytics tables^0')
+            Logger.Success('✅ Created 3 metrics/analytics tables')
             return true
         end
     }
@@ -379,7 +379,7 @@ local MigrationList = {
 local function RunMigrations()
     -- Create version table first
     if not CreateVersionTable() then
-        print("^1[Migrations] Failed to initialize version tracking^7")
+        Logger.Error("❌ Failed to initialize version tracking")
         return false
     end
     
@@ -399,51 +399,51 @@ local function RunMigrations()
     -- Run pending migrations
     for _, migration in ipairs(MigrationList) do
         if migration.version > currentVersion then
-            print(string.format("^3[Migrations] Running migration %d: %s^7", migration.version, migration.description))
+            Logger.Info(string.format("▶️ Running migration %d: %s", migration.version, migration.description))
             
             local success, err = pcall(migration.up)
             
             if success and err ~= false then
                 RecordMigration(migration.version, migration.description, true)
-                print(string.format("^2[Migrations] ✓ Migration %d completed^7", migration.version))
+                Logger.Success(string.format("✅ Migration %d completed", migration.version))
                 Wait(200)
             else
                 RecordMigration(migration.version, migration.description, false)
-                print(string.format("^1[Migrations] ✗ Migration %d failed: %s^7", migration.version, tostring(err)))
+                Logger.Error(string.format("❌ Migration %d failed: %s", migration.version, tostring(err)))
                 return false
             end
         end
     end
     
-    print("^2[Migrations] All migrations completed successfully^7")
+    Logger.Success("✅ All migrations completed successfully")
     return true
 end
 
 -- Auto-run migrations on resource start
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(2000) -- Wait for MySQL to be ready
     
     if MySQL and MySQL.ready then
         RunMigrations()
     else
-        print("^1[Migrations] MySQL not ready, skipping migrations^7")
+        Logger.Warn('⚠️ MySQL not ready, skipping migrations')
     end
 end)
 
 -- Export for manual runs
 RegisterCommand('ec_migrate', function(source, args)
     if source ~= 0 then
-        print("This command can only be run from the server console")
+        Logger.Warn("⚠️ This command can only be run from the server console")
         return
     end
     
-    print("^3[Migrations] Running migrations manually...^7")
+    Logger.Info("▶️ Running migrations manually...")
     RunMigrations()
 end, false)
 
 RegisterCommand('ec_schema_version', function(source, args)
     if source ~= 0 then
-        print("This command can only be run from the server console")
+        Logger.Warn("⚠️ This command can only be run from the server console")
         return
     end
     

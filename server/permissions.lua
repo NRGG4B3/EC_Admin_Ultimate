@@ -39,41 +39,41 @@ local dbPermissions = {}
 
 -- Initialize permission system
 function EC_Perms.Init()
-    print('^2[EC Perms] Initializing permission system...^0')
+    Logger.Info('🔐 Permission system initializing...')
     
     -- Determine permission mode
     local permMode = Config and Config.Permissions and Config.Permissions.system or 'both'
     
     if permMode == 'both' then
-        print('^2[EC Perms] Using BOTH ACE + Database permissions^0')
+        Logger.Info('🔐 Mode: ACE + Database permissions')
         if Config and Config.Database and Config.Database.enabled then
             EC_Perms.LoadFromDB()
         else
-            print('^3[EC Perms] Database disabled, using ACE only^0')
+            Logger.Warn('⚠️ Database disabled, using ACE only')
         end
     elseif permMode == 'ace' then
-        print('^2[EC Perms] Using ACE permissions only^0')
+        Logger.Info('🔐 Mode: ACE permissions only')
     elseif permMode == 'database' then
-        print('^2[EC Perms] Using Database permissions only^0')
+        Logger.Info('🔐 Mode: Database permissions only')
         if Config and Config.Database and Config.Database.enabled then
             EC_Perms.LoadFromDB()
         end
     end
     
-    print('^2[EC Perms] Permission system ready (Mode: ' .. permMode .. ')^0')
+    Logger.Success('✅ Permission system ready')
 end
 
 -- Load permissions from database
 function EC_Perms.LoadFromDB()
     if not MySQL then
-        print('^3[EC Perms] MySQL not available, skipping database permissions^0')
+        Logger.Warn('⚠️ MySQL not available, skipping database permissions')
         return
     end
     
     -- Try to load permissions from database
     MySQL.query('SELECT * FROM ec_admin_permissions LIMIT 1', {}, function(result)
         if result then
-            print('^2[EC Perms] Database permissions available^0')
+            Logger.Info('📋 Database permissions available')
             -- Load all permissions
             MySQL.query('SELECT * FROM ec_admin_permissions', {}, function(perms)
                 if perms then
@@ -81,11 +81,11 @@ function EC_Perms.LoadFromDB()
                         dbPermissions[perm.identifier] = dbPermissions[perm.identifier] or {}
                         table.insert(dbPermissions[perm.identifier], perm.permission)
                     end
-                    print('^2[EC Perms] Loaded ' .. #perms .. ' database permissions^0')
+                    Logger.Success('✅ Loaded ' .. #perms .. ' database permissions')
                 end
             end)
         else
-            print('^3[EC Perms] Database permissions table not found, using ACE only^0')
+            Logger.Warn('⚠️ Database permissions table not found, using ACE only')
         end
     end)
 end
@@ -178,7 +178,7 @@ end
 local function logDenied(action, source, target, reason)
     local sourceName = GetPlayerName(source) or ('Unknown (' .. tostring(source) .. ')')
     local targetName = target and (GetPlayerName(target) or ('Unknown (' .. tostring(target) .. ')')) or 'N/A'
-    Logger.Info(string.format('', action or 'unknown', sourceName, targetName, reason or 'No permission'))
+    Logger.Warn(string.format('[Permission Denied] Action: %s | Admin: %s | Target: %s | Reason: %s', action or 'unknown', sourceName, targetName, reason or 'No permission'))
 end
 
 local function isOwnerIdentifier(identifier)
@@ -343,7 +343,7 @@ end)
 _G.HasAdminAccess = HasAdminAccess
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(1000) -- Wait for config and database
     EC_Perms.Init()
 end)

@@ -310,7 +310,7 @@ function AIDetection.AddDetection(source, type, category, confidence, details)
     
     -- Execute auto action
     if config.autoActions and autoAction ~= 'none' and autoAction ~= 'warn' then
-        Citizen.SetTimeout(5000, function() -- 5 second delay for analysis
+        SetTimeout(5000, function() -- 5 second delay for analysis
             detection.status = 'confirmed'
             
             if autoAction == 'ban' then

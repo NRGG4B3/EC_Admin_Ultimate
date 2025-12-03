@@ -152,7 +152,7 @@ Logger.Success('[EC Admin Web] Commands registered: /webadmin, /ecweb')
 -- STARTUP INFO
 -- ==========================================
 
-Citizen.CreateThread(function()
+CreateThread(function()
     -- Wait for resource to fully load
     Wait(3000)
     

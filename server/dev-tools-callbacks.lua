@@ -192,7 +192,7 @@ MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = ?', {
     identifier
 }, function(result)
     if result[1] then
-        print('User found:', json.encode(result[1]))
+        Logger.Info('User found:', json.encode(result[1]))
     end
 end)]]
         },
@@ -209,7 +209,7 @@ TriggerServerEvent('myResource:serverEvent', data)
 RegisterNetEvent('myResource:serverEvent')
 AddEventHandler('myResource:serverEvent', function(data)
     local source = source
-    print('Received from client:', data)
+    Logger.Info('Received from client:', data)
 end)]]
         }
     }

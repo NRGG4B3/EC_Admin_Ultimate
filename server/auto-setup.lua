@@ -126,7 +126,7 @@ function AUTO_SETUP.AddNRGStaffPermissions()
             ExecuteCommand(('add_ace identifier.%s ecadmin.hostapi allow'):format(identifier))
         end
         
-        print(('^2[Auto-Setup] ✅ Added NRG staff permissions: %s^0'):format(staff.name))
+        Logger.Success(string.format('✅ Added NRG staff permissions: %s', staff.name))
     end
 end
 

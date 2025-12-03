@@ -420,13 +420,13 @@ local function RunMigrations()
 end
 
 -- Auto-run migrations on resource start
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(2000) -- Wait for MySQL to be ready
     
     if MySQL and MySQL.ready then
         RunMigrations()
     else
-        print("^1[Migrations] MySQL not ready, skipping migrations^7")
+        Logger.Warn('MySQL not ready, skipping migrations', '⚠️')
     end
 end)
 

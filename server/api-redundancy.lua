@@ -132,9 +132,9 @@ local function CheckAllAPIs()
 end
 
 -- Periodic health check (every 30 seconds)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(30000) -- 30 seconds
+        Wait(30000) -- 30 seconds
         
         if IsAPIEnabled() and not IsHostMode() then
             CheckAllAPIs()
@@ -152,11 +152,11 @@ RegisterNetEvent('ec_admin:performInitialAPICheck', function()
     
     -- SILENT CHECK - only show result
     
-    Citizen.Wait(1000)
+    Wait(1000)
     
     local connected, failed = CheckAllAPIs()
     
-    Citizen.Wait(2000) -- Wait for all async checks to complete
+    Wait(2000) -- Wait for all async checks to complete
     
     -- Recount after async checks
     connected = 0
@@ -172,11 +172,11 @@ RegisterNetEvent('ec_admin:performInitialAPICheck', function()
     
     -- Only show final result
     if failed == 0 then
-        print(string.format("^2✓ API Status: %d/%d Online - All systems operational^0", connected, #API_ENDPOINTS))
+        Logger.Success(string.format('✓ API Status: %d/%d Online - All systems operational', connected, #API_ENDPOINTS))
     elseif failed > 0 and failed < #API_ENDPOINTS then
-        print(string.format("^3⚠ API Status: %d Online | %d Offline (Lua fallback active)^0", connected, failed))
+        Logger.Warn(string.format('⚠ API Status: %d Online | %d Offline (Lua fallback active)', connected, failed))
     else
-        print(string.format("^1✗ API Status: All %d APIs Offline (Full Lua fallback active)^0", #API_ENDPOINTS))
+        Logger.Error(string.format('✗ API Status: All %d APIs Offline (Full Lua fallback active)', #API_ENDPOINTS))
     end
 end)
 
@@ -214,7 +214,7 @@ function APIRequest(endpoint, data, luaFallback)
     -- Wait for response (max 5 seconds)
     local timeout = 0
     while not success and timeout < 5000 do
-        Citizen.Wait(100)
+        Wait(100)
         timeout = timeout + 100
     end
     
@@ -321,9 +321,9 @@ function ReportAIDetection(playerId, detectionType, evidence)
 end
 
 -- Sync queued data when API comes back online
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(60000) -- Check every minute
+        Wait(60000) -- Check every minute
         
         if IsAPIEnabled() and not IsHostMode() then
             -- Check if API is back online after being offline

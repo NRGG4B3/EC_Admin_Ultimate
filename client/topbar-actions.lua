@@ -345,4 +345,4 @@ RegisterNetEvent('ec_admin:client:notify', function(data)
     EndTextCommandThefeedPostTicker(false, true)
 end)
 
-print('^2[EC Admin Ultimate]^7 Topbar client actions loaded successfully')
+Logger.Success('✅ Topbar client actions loaded successfully')

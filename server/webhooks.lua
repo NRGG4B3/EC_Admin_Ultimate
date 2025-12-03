@@ -173,7 +173,7 @@ function Webhooks.SendMessage(title, description, color, fields)
         embeds = { embed }
     }
     
-    Citizen.CreateThread(function()
+    CreateThread(function()
         SafeHttpRequest(webhookConfig.webhookUrl, payload, function(success, message)
             if not success then
                 Logger.Error('Failed to send webhook: ' .. message, '❌')
@@ -341,9 +341,9 @@ end
 -- Note: playerDropped handler also removed
 
 -- Send server start notification
-Citizen.CreateThread(function()
+CreateThread(function()
     -- Wait for server to fully start
-    Citizen.Wait(10000)
+    Wait(10000)
     
     if webhookConfig.enabled then
         Webhooks.SendServerStart()
@@ -418,7 +418,7 @@ function Webhooks.SendApplicationNotification(application, webhookUrl)
         }
     }
     
-    Citizen.CreateThread(function()
+    CreateThread(function()
         SafeHttpRequest(webhookUrl, payload, function(success, message)
             if success then
                 Logger.Debug(string.format('Application notification sent to Discord (ID: %s)', application.id), '📨')
@@ -456,7 +456,7 @@ function Webhooks.SendLog(logType, data, customWebhook)
         content = data.content or nil
     }
     
-    Citizen.CreateThread(function()
+    CreateThread(function()
         SafeHttpRequest(url, payload, function(success, message)
             if not success then
                 Logger.Error('Failed to send ' .. logType .. ' log: ' .. message, '❌')

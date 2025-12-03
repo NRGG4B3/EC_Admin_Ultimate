@@ -4,7 +4,7 @@
     NO overlay on spawn, proper focus management
 ]]
 
-print('^2[EC Admin NUI] Initializing NUI bridge...^0')
+Logger.Success('🌐 Initializing NUI bridge')
 
 local menuOpen = false
 local hasPermission = false
@@ -12,7 +12,7 @@ local isHost = false
 local devMode = GetConvar('ec_dev_mode', 'false') == 'true'
 
 if devMode then
-    print('^3[EC Admin NUI] DEV MODE ENABLED - Extra logging active^0')
+    Logger.Debug('🔧 DEV MODE ENABLED - Extra logging active')
 end
 
 -- Detect if this is a host installation
@@ -25,7 +25,7 @@ end
 RegisterNetEvent('ec_admin:setHostStatus')
 AddEventHandler('ec_admin:setHostStatus', function(hostStatus)
     isHost = hostStatus
-    print(string.format('^2[EC Admin NUI] Host status: %s^0', tostring(hostStatus)))
+    Logger.Info(string.format('📊 Host status: %s', tostring(hostStatus)))
     
     -- Forward to NUI so React can detect host mode
     SendNUIMessage({
@@ -38,21 +38,21 @@ end)
 RegisterNetEvent('ec_admin:permissionResult')
 AddEventHandler('ec_admin:permissionResult', function(allowed)
     hasPermission = allowed
-    print(string.format('^2[EC Admin NUI] Permission set to: %s^0', tostring(allowed)))
+    Logger.Info(string.format('🔐 Permission set to: %s', tostring(allowed)))
 end)
 
 -- Also listen for old event name (backwards compatibility)
 RegisterNetEvent('ec_admin:setPermission')
 AddEventHandler('ec_admin:setPermission', function(allowed)
     hasPermission = allowed
-    print(string.format('^2[EC Admin NUI] Permission set to: %s^0', tostring(allowed)))
+    Logger.Info(string.format('🔐 Permission set to: %s', tostring(allowed)))
 end)
 
 -- Request permission on resource start
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(2000) -- Wait for server to fully initialize
     TriggerServerEvent('ec_admin:checkPermission')
-    print('^3[EC Admin NUI] Requesting permission from server...^0')
+    Logger.Info('🌐 Requesting permission from server')
 end)
 
 -- ==========================================
@@ -65,7 +65,7 @@ end)
 -- ESC key handler to prevent freeze
 local function CloseMenu()
     if menuOpen then
-        print('^3[EC Admin NUI] CloseMenu() called - Closing menu...^0')
+        Logger.Warn('❌ CloseMenu() called - Closing menu')
         menuOpen = false
         
         -- CRITICAL: Disable NUI focus FIRST - FORCE IT MULTIPLE TIMES
@@ -86,28 +86,28 @@ local function CloseMenu()
         -- Force clear cursor just in case
         SetCursorLocation(0.5, 0.5)
         
-        print('^2[EC Admin NUI] ✅ Menu closed - NUI focus removed^0')
+        Logger.Success('✅ Menu closed - NUI focus removed')
     else
-        print('^3[EC Admin NUI] CloseMenu() called but menu was already closed^0')
+        Logger.Warn('⚠ CloseMenu() called but menu was already closed')
     end
 end
 
 -- NUI Callback for when React closes the panel (X button)
 RegisterNUICallback('closePanel', function(data, cb)
-    print('[EC Admin NUI] closePanel callback received from React')
+    Logger.Info('📋 closePanel callback received from React')
     CloseMenu()
     cb('ok')
 end)
 
 -- Also handle alternative close event names
 RegisterNUICallback('close', function(data, cb)
-    print('[EC Admin NUI] close callback received from React')
+    Logger.Info('📋 close callback received from React')
     CloseMenu()
     cb('ok')
 end)
 
 RegisterNUICallback('hideUI', function(data, cb)
-    print('[EC Admin NUI] hideUI callback received from React')
+    Logger.Info('📋 hideUI callback received from React')
     CloseMenu()
     cb('ok')
 end)
@@ -117,7 +117,7 @@ local quickActionsOpen = false
 
 local function CloseQuickActions()
     if quickActionsOpen then
-        print('^3[EC Admin NUI] CloseQuickActions() called - Closing Quick Actions...^0')
+        Logger.Warn('⏹️ CloseQuickActions() called - Closing Quick Actions')
         quickActionsOpen = false
         
         -- Force disable NUI focus
@@ -130,23 +130,23 @@ local function CloseQuickActions()
             type = 'EC_CLOSE_QUICK_ACTIONS_STANDALONE'
         })
         
-        print('^2[EC Admin NUI] ✅ Quick Actions closed - NUI focus removed^0')
+        Logger.Success('✅ Quick Actions closed - NUI focus removed')
     else
-        print('^3[EC Admin NUI] CloseQuickActions() called but Quick Actions was already closed^0')
+        Logger.Warn('⚠ CloseQuickActions() called but Quick Actions was already closed')
     end
 end
 
 -- Event to close menu from Quick Actions (configurable)
 RegisterNetEvent('ec_admin:forceCloseMenu')
 AddEventHandler('ec_admin:forceCloseMenu', function()
-    print('^3[EC Admin NUI] Menu closed via Quick Action^0')
+    Logger.Warn('⏹️ Menu closed via Quick Action')
     CloseMenu()
 end)
 
 -- ESC key detection - ONLY FOR CLOSING
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Wait(0)
         
         -- CRITICAL: Check if Quick Actions is open in standalone mode OR full menu is open
         if menuOpen or quickActionsOpen then
@@ -163,7 +163,7 @@ Citizen.CreateThread(function()
             
             -- Method 1: Control 322 (ESC/Cancel) - MOST RELIABLE
             if IsControlJustPressed(0, 322) then
-                Logger.Info('')
+                Logger.Info('🔑 ESC pressed - closing menu')
                 if menuOpen then
                     CloseMenu()
                 elseif quickActionsOpen then
@@ -173,7 +173,7 @@ Citizen.CreateThread(function()
             
             -- Method 2: Control 177 (Phone Cancel) - Backup for some frameworks
             if IsControlJustPressed(0, 177) then
-                Logger.Info('')
+                Logger.Info('🔑 Phone cancel pressed - closing menu')
                 if menuOpen then
                     CloseMenu()
                 elseif quickActionsOpen then
@@ -183,7 +183,7 @@ Citizen.CreateThread(function()
             
             -- Method 3: Control 202 (ESC/Pause Menu) - Secondary backup
             if IsControlJustPressed(0, 202) then
-                Logger.Info('')
+                Logger.Info('🔑 Pause menu pressed - closing menu')
                 if menuOpen then
                     CloseMenu()
                 elseif quickActionsOpen then
@@ -193,7 +193,7 @@ Citizen.CreateThread(function()
             
             -- Method 4: If pause menu opened while admin menu is open, close admin menu
             if IsPauseMenuActive() then
-                Logger.Info('')
+                Logger.Info('🔑 Pause menu active - closing menu')
                 if menuOpen then
                     CloseMenu()
                 elseif quickActionsOpen then
@@ -202,24 +202,24 @@ Citizen.CreateThread(function()
             end
         else
             -- If not open, don't loop every frame
-            Citizen.Wait(500)
+            Wait(500)
         end
     end
 end)
 
 -- PRIMARY COMMAND: /hud (Admin Menu)
 RegisterCommand('hud', function()
-    print('^3[EC Admin NUI] /hud command triggered - checking permission...^0')
+    Logger.Warn('⌨️ /hud command triggered - checking permission')
     
     -- Check menu gating (host can disable panel)
     if not exports[GetCurrentResourceName()]:CanOpenAdminMenu() then
-        print('^1[EC Admin NUI] ❌ Admin menu is disabled by host^0')
+        Logger.Error('❌ Admin menu is disabled by host')
         return
     end
     
     -- Check if player has permission from server
     if not hasPermission then
-        print('^1[EC Admin NUI] ❌ No permission - requesting from server...^0')
+        Logger.Error('❌ No permission - requesting from server')
         
         -- Notify player (with fallback for all frameworks)
         if lib and lib.notify then
@@ -260,9 +260,9 @@ RegisterCommand('hud', function()
         
         -- Request initial data
         TriggerServerEvent('ec_admin:requestInitialData')
-        print('^2[EC Admin NUI] Menu opened via /hud - focus set^0')
+        Logger.Info('🔓 Menu opened via /hud - focus set')
     else
-        print('^3[EC Admin NUI] Menu already open - use ESC or X to close^0')
+        Logger.Info('⚠️  Menu already open - use ESC or X to close')
     end
 end, false)
 
@@ -271,13 +271,13 @@ RegisterKeyMapping('hud', 'Open Admin Menu (F2)', 'keyboard', 'F2')
 
 -- F3 KEYBIND: Opens Quick Actions menu directly (NO BACKGROUND PANEL)
 RegisterCommand('quickactions', function()
-    print('^3[EC Admin NUI] /quickactions command triggered - checking permission...^0')
+    Logger.Info('🎯 /quickactions command triggered - checking permission...')
     
     -- Check if player has permission (reuse server-provided flag)
     local allowed = hasPermission
 
     if not allowed then
-        print('^1[EC Admin NUI] ❌ No permission for Quick Actions - requesting from server^0')
+        Logger.Warn('❌ No permission for Quick Actions - requesting from server')
 
         -- Notify player with best available method
         if lib and lib.notify then
@@ -312,11 +312,11 @@ RegisterCommand('quickactions', function()
             type = 'EC_OPEN_QUICK_ACTIONS_ONLY'  -- New message type for standalone Quick Actions
         })
         
-        print('^2[EC Admin NUI] Quick Actions opened (standalone mode - no background panel)^0')
-        print('^3[EC Admin NUI] DEBUG: Sent EC_OPEN_QUICK_ACTIONS_ONLY message to React^0')
-        print('^3[EC Admin NUI] DEBUG: NUI Focus set to true^0')
+        Logger.Info('✅ Quick Actions opened (standalone mode - no background panel)')
+        Logger.Info('🔧 DEBUG: Sent EC_OPEN_QUICK_ACTIONS_ONLY message to React')
+        Logger.Info('🔧 DEBUG: NUI Focus set to true')
     else
-        print('^3[EC Admin NUI] Quick Actions already open - use ESC to close^0')
+        Logger.Info('⚠️  Quick Actions already open - use ESC to close')
     end
 end, false)
 
@@ -334,7 +334,7 @@ end, false)
 
 -- DEBUG COMMAND: Force close admin menu (for when it's stuck)
 RegisterCommand('forceclose', function()
-    print('^1[EC Admin NUI] FORCE CLOSING ALL MENUS^0')
+    Logger.Error('🚨 FORCE CLOSING ALL MENUS')
     menuOpen = false
     quickActionsOpen = false
     
@@ -355,12 +355,12 @@ RegisterCommand('forceclose', function()
         type = 'EC_CLOSE_QUICK_ACTIONS_STANDALONE'
     })
     
-    print('^2[EC Admin NUI] ✅ Force close complete - if still stuck, restart resource^0')
+    Logger.Success('✅ Force close complete - if still stuck, restart resource')
 end, false)
 
 -- EMERGENCY: Force close menu and unlock screen
 RegisterCommand('ec_unlock', function()
-    Logger.Info('')
+    Logger.Info('🔓 Unlocking emergency screen...')
     menuOpen = false
     SetNuiFocus(false, false)
     
@@ -386,7 +386,7 @@ TriggerEvent('chat:addSuggestion', '/ec_unlock', 'Force unlock screen if frozen 
 -- Works in QBX, QB-Core, ESX, and Standalone
 -- ==========================================
 local function UniversalCloseMenu()
-    Logger.Info('')
+    Logger.Info('🔒 Closing menu and restoring input...')
     
     -- Clear states
     menuOpen = false
@@ -397,8 +397,8 @@ local function UniversalCloseMenu()
     SetNuiFocusKeepInput(false)
     
     -- Double-check focus is cleared (standalone compatibility)
-    Citizen.CreateThread(function()
-        Citizen.Wait(50)
+    CreateThread(function()
+        Wait(50)
         SetNuiFocus(false, false)
         SetNuiFocusKeepInput(false)
     end)
@@ -416,7 +416,7 @@ local function UniversalCloseMenu()
         action = 'closeMenu'
     })
     
-    Logger.Info('')
+    Logger.Success('✅ Menu closed successfully')
 end
 
 -- Close menu (NUI callback) - UNIVERSAL
@@ -433,7 +433,7 @@ end)
 
 -- NUI Callback: Close Quick Actions (standalone mode)
 RegisterNUICallback('closeQuickActions', function(data, cb)
-    print('^3[EC Admin NUI] Received closeQuickActions callback (standalone mode)^0')
+    Logger.Info('🔧 Received closeQuickActions callback (standalone mode)')
     
     -- CRITICAL: Force clear NUI focus multiple times (standalone fix)
     quickActionsOpen = false
@@ -441,13 +441,13 @@ RegisterNUICallback('closeQuickActions', function(data, cb)
     SetNuiFocus(false, false)  -- Call twice for standalone mode
     
     -- Ensure cursor is hidden with delay
-    Citizen.CreateThread(function()
-        Citizen.Wait(50)
+    CreateThread(function()
+        Wait(50)
         SetNuiFocus(false, false)
     end)
     
     cb({ ok = true })
-    print('^2[EC Admin NUI] Quick Actions closed - focus cleared^0')
+    Logger.Success('✅ Quick Actions closed - focus cleared')
 end)
 
 -- ==========================================
@@ -455,17 +455,17 @@ end)
 -- ==========================================
 -- Check if player has access to host features
 RegisterNUICallback('checkHostAccess', function(data, cb)
-    print('[EC Admin NUI] Checking host access...')
+    Logger.Info('🔍 Checking host access...')
     
     -- Request host status from server
     local result = lib.callback.await('ec_admin:checkHostAccess', false)
     
     if result then
-        print(string.format('[EC Admin NUI] Host access check result: hostMode=%s, isNRGStaff=%s', 
+        Logger.Info(string.format('📊 Host access check result: hostMode=%s, isNRGStaff=%s', 
             tostring(result.hostMode), tostring(result.isNRGStaff)))
         cb(result)
     else
-        print('[EC Admin NUI] Host access check failed - defaulting to customer mode')
+        Logger.Warn('⚠️  Host access check failed - defaulting to customer mode')
         cb({ hostMode = false, isNRGStaff = false })
     end
 end)
@@ -485,7 +485,7 @@ end)
 
 -- NUI Callback: Execute action
 RegisterNUICallback('executeAction', function(data, cb)
-    print('^3[EC Admin NUI] Received executeAction callback^0')
+    Logger.Info('⚡ Received executeAction callback')
     
     -- Handle the action based on data.action
     if data.action == 'kickPlayer' then
@@ -573,7 +573,7 @@ RegisterNUICallback('executeAction', function(data, cb)
         TriggerServerEvent('ec_admin:removeWhitelist', data)
         cb({ ok = true, success = true })
     else
-        print('^1[EC Admin NUI] Unknown action received: ' .. data.action ^0)
+        Logger.Error('🚨 Unknown action received: ' .. data.action)
         cb({ ok = false, error = 'Unknown action' })
     end
 end)
@@ -585,15 +585,15 @@ end)
 -- Detect when game loses focus (alt-tab, monitor switch)
 local isFocused = true
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(100) -- Check every 100ms
+        Wait(100) -- Check every 100ms
         
         -- CRITICAL: Only care about focus if menu is actually open
         if not menuOpen then
             -- Reset focus state when menu is closed
             isFocused = true
-            Citizen.Wait(500)
+            Wait(500)
         else
             -- Menu is open, monitor focus changes
             local currentFocus = IsPauseMenuActive() == false and IsPlayerPlaying(PlayerId())
@@ -604,7 +604,7 @@ Citizen.CreateThread(function()
                 
                 -- If menu is open, ensure NUI focus is properly set
                 if menuOpen then
-                    Logger.Info('')
+                    Logger.Info('⏸️  Menu paused due to focus loss')
                     -- Don't auto-close, but ensure states are safe
                     TriggerEvent('ec_admin:pauseActiveStates')
                 end
@@ -616,7 +616,7 @@ Citizen.CreateThread(function()
                 
                 -- CRITICAL: Double-check menuOpen is STILL true before restoring focus
                 if menuOpen then
-                    Logger.Info('')
+                    Logger.Info('▶️  Menu resumed - focus regained')
                     -- Restore NUI focus if menu is still open
                     SetNuiFocus(true, true)
                     TriggerEvent('ec_admin:resumeActiveStates')
@@ -630,7 +630,7 @@ end)
 AddEventHandler('onResourceStop', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
     
-    Logger.Info('')
+    Logger.Info('🛑 Resource stopped - cleaning up menu states')
     
     -- Close menu
     menuOpen = false
@@ -926,9 +926,8 @@ exports('closeMenu', function()
     UniversalCloseMenu()
 end)
 
-print('^2[EC Admin NUI] ✅ Client bridge loaded successfully^0')
-
-RegisterNUICallback('getAIInsights', function(data, cb)
+Logger.Success('✅ NUI bridge initialized successfully')
+Logger.Info('🎮 Press F2 to open admin menu')
     local result = lib.callback.await('ec_admin:getAIAnalytics', false, data)
     cb(result or { success = false, error = 'No response from server' })
 end)
@@ -1060,5 +1059,5 @@ RegisterNUICallback('whitelist/remove', function(data, cb)
     cb({ ok = true, success = true })
 end)
 
-print('^2[EC Admin NUI] NUI bridge initialized successfully^0')
-print('^2[EC Admin NUI] Press F2 to open admin menu^0')
+Logger.Success('✅ EC Admin NUI bridge fully initialized')
+Logger.Info('🎮 Press F2 to open admin menu | F3 for quick actions')

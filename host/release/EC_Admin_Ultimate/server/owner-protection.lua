@@ -409,8 +409,8 @@ function ShouldWhitelistFromAC(source)
 end
 
 -- Initialize on startup
-Citizen.CreateThread(function()
-    Citizen.Wait(2000)
+CreateThread(function()
+    Wait(2000)
     InitializeOwners()
 end)
 

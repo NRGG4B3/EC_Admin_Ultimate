@@ -9,7 +9,7 @@ AddEventHandler('ec_admin:adminMenuToggled', function(data)
     adminMenuEnabled = data.enabled
     
     if adminMenuEnabled then
-        print('^2[Admin Menu] Admin panel has been enabled by host^0')
+        Logger.Success('✅ Admin panel enabled by host')
         -- Show notification
         SendNUIMessage({
             type = 'notification',
@@ -19,7 +19,7 @@ AddEventHandler('ec_admin:adminMenuToggled', function(data)
             }
         })
     else
-        print('^3[Admin Menu] Admin panel has been disabled by host^0')
+        Logger.Warn('⚠ Admin panel disabled by host')
         -- Show notification
         SendNUIMessage({
             type = 'notification',
@@ -47,7 +47,7 @@ end)
 RegisterNetEvent('ec_admin:client:adminMenuState')
 AddEventHandler('ec_admin:client:adminMenuState', function(data)
     adminMenuEnabled = data.enabled
-    print(string.format('^3[Admin Menu] State: %s^0', adminMenuEnabled and 'ENABLED' or 'DISABLED'))
+    Logger.Info(string.format('📋 Admin Menu State: %s', adminMenuEnabled and 'ENABLED' or 'DISABLED'))
 end)
 
 -- Gate the F2 menu opening
@@ -74,4 +74,4 @@ end
 -- Export for use in main.lua
 exports('CanOpenAdminMenu', CanOpenAdminMenu)
 
-print('^2[Admin Menu Gating] Client handler loaded^0')
+Logger.Info('✅ Admin Menu Gating loaded')

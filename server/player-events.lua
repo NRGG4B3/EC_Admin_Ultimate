@@ -30,7 +30,7 @@ function PlayerEvents.InitializePlayer(source)
     if not source or source == 0 then return end
     
     -- Use async thread to prevent blocking
-    Citizen.CreateThread(function()
+    CreateThread(function()
         -- Small delay to ensure player is fully connected
         Wait(1500)
         
@@ -120,7 +120,7 @@ function PlayerEvents.InitializePlayer(source)
         -- Webhook Notification
         if _G.ECWebhooks then
             SafeCall('Webhooks', function()
-                Citizen.SetTimeout(1000, function()
+                SetTimeout(1000, function()
                     local playerCount = 0
                     for i = 0, GetNumPlayerIndices() - 1 do
                         if GetPlayerFromIndex(i) then
@@ -142,10 +142,10 @@ function PlayerEvents.CleanupPlayer(source, reason)
     if not source or source == 0 then return end
     
     local playerName = GetPlayerName(source) or 'Unknown'
-    Logger.Info(string.format('', playerName, source, reason or 'Unknown'))
+    Logger.Info(string.format('👋 Cleanup player: %s [%d] - Reason: %s', playerName, source, reason or 'Unknown'))
     
     -- Use async thread to prevent blocking
-    Citizen.CreateThread(function()
+    CreateThread(function()
         -- Time Monitoring cleanup
         if _G.ECTimeMonitoring and initializedSystems.timeMonitoring then
             SafeCall('TimeMonitoring.EndSession', function()

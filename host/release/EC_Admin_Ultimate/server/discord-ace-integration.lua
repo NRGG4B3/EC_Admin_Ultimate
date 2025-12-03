@@ -305,13 +305,13 @@ RegisterCommand('refreshdiscordace', function(source, args, rawCommand)
 end, false)
 
 -- Initialize on resource start
-Citizen.CreateThread(function()
-    Citizen.Wait(3000)  -- Wait for config and database
+CreateThread(function()
+    Wait(3000)  -- Wait for config and database
     DiscordACE.Init()
     
     -- Process all currently connected players
     if DiscordACE.initialized then
-        Citizen.Wait(5000)
+        Wait(5000)
         local players = GetPlayers()
         for _, playerId in ipairs(players) do
             DiscordACE.ProcessPlayer(tonumber(playerId))
@@ -320,9 +320,9 @@ Citizen.CreateThread(function()
 end)
 
 -- Periodic cache cleanup (every 10 minutes)
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(600000)  -- 10 minutes
+        Wait(600000)  -- 10 minutes
         
         local now = os.time()
         local cleaned = 0

@@ -236,9 +236,9 @@ end)
 -- RESET PEAK PLAYERS DAILY
 -- ============================================================================
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(3600000) -- Check every hour
+        Wait(3600000) -- Check every hour
         
         local currentHour = tonumber(os.date('%H'))
         if currentHour == 0 then -- Reset at midnight

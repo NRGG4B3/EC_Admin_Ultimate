@@ -337,7 +337,7 @@ RegisterCommand('ecadmin:diag', function()
 end, true)
 
 -- Auto-run on startup (delayed)
-Citizen.CreateThread(function()
+CreateThread(function()
     Wait(5000) -- Wait 5 seconds after resource start
     RunDiagnostics()
 end)

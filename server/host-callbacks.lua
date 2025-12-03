@@ -17,7 +17,7 @@ local function safeLog(level, msg)
     if Logger and Logger[level] then
         Logger[level](msg)
     else
-        print(msg)
+        Logger.Info(msg, '📝')
     end
 end
 
