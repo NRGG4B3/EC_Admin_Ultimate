@@ -95,7 +95,73 @@ Config.LogIcons = false  -- Emojis make logs easier to scan (recommended for 'de
 Config.LogNUIErrors = true  -- PRODUCTION: true (catch React errors, fetch failures, etc.)
 
 -- ============================================================================
---  🚗 VEHICLE SCANNING (Auto-detect all vehicle packs)
+--  � WEBHOOKS & DISCORD LOGGING (Visible in UI > Webhook Settings)
+-- ============================================================================
+-- This section mirrors the Webhook Settings page in the admin menu so you can
+-- see and edit everything from config as well. The UI reads and writes these.
+
+Config.Webhooks = {
+    enabled = true,                   -- Master switch: enable/disable all webhooks
+    provider = 'discord',             -- 'discord' (current) | future: 'web', 'slack'
+    defaultWebhookUrl = 'https://discord.com/api/webhooks/1436109648272035950/R1bZZJs5Tu9ERSmxSMAY845MhO_25b9iICphwDnM0QyL62MulkVAbBL0v-ac4SWK5mQk',           -- Fallback URL if a category-specific URL is missing
+
+    -- Embed appearance (Discord)
+    embed = {
+        username = 'EC Admin Logger', -- Bot name shown in Discord
+        avatar = 'https://i.imgur.com/5cOmJ9y.png', -- Bot avatar URL
+        footer = 'EC Admin Ultimate', -- Footer text
+        showTimestamps = true,        -- Add timestamps to embeds
+        color = {
+            menuClick    = 3447003,   -- Blue
+            menuOpen     = 3066993,   -- Green
+            menuClose    = 3066993,   -- Green
+            pageChange   = 3447003,   -- Blue
+            playerSelect = 16776960,  -- Yellow
+            adminAction  = 15158332,  -- Red
+            configChange = 10181046   -- Purple
+        }
+    },
+
+    -- Per-category toggles (UI: Webhook Settings > Toggle Logging)
+    toggles = {
+        menuClicks       = true,
+        menuOpens        = true,
+        pageChanges      = true,
+        playerSelection  = true,
+        configChanges    = true,
+        adminActions     = true,   -- master for all admin actions below
+        teleports        = true,
+        spectate         = true,
+        noclip           = true,
+        godMode          = true,
+        freeze           = true,
+        revive           = true,
+        weaponGive       = true,
+        itemGive         = true,
+        moneyGive        = true,
+        jobChange        = true,
+        bans             = true,
+        kicks            = true,
+        warns            = true
+    },
+
+    -- Per-category webhook URLs (UI: Webhook Settings > URLs)
+    -- Named channels (replace with your actual webhook URLs)
+    -- These map to the menu's Webhook Settings channels
+    urls = {
+        adminMain       = 'https://discord.com/api/webhooks/1436109648272035950/R1bZZJs5Tu9ERSmxSMAY845MhO_25b9iICphwDnM0QyL62MulkVAbBL0v-ac4SWK5mQk',  -- "admin main" channel
+        adminActions    = 'https://discord.com/api/webhooks/1444399117705941126/sKwNWESRPYOCF80BgwQrbg6iHotcIJTKGCLEWnWNrGo9HpIHftVvEn7Q0mVPtBl7vPso',  -- "admin actions" channel
+        adminBans       = 'https://discord.com/api/webhooks/1444399345938989108/hJMDKrWAgJOY9_zXBK8476oCGY3baFLdFWEykBp2YAmSdQX1C2YZ0324LcSfXhfQftmU',  -- "admin bans" channel
+        adminReports    = 'https://discord.com/api/webhooks/1444399619428716604/Cy_ihdmlj5ruZoQtJt91avHeyeF9_1w4euRmLZ-fy5y5MaFUWIXEftXyTDoQ5PyJyYAo',  -- "admin reports" channel
+        adminEconomy    = 'https://discord.com/api/webhooks/1444399871648993472/FQn0yTMJJHSnKYVMPJ4iD-DI8Tq8hKpaTyJ4-r7voSWjwBEan3ghHTdefCZgP_l08v9r',  -- "admin economy" channel
+        adminAntiCheat  = 'https://discord.com/api/webhooks/1444400029086257253/LQEkNOcfez9y4clH6pVmlRo429IaYROm3GGVeBVXp8dp23wfALcySiODdDEPKzeskk01',  -- "admin anti cheat" channel
+        adminAIDetection= 'https://discord.com/api/webhooks/1444400228248719413/f215IFEpNejmMkWiT6mM4mr_CfHeUFvonF9L8kAV5Nw0vbX5Tiyl5LnxndjEfOGoUwHJ',  -- "admin ai detection" channel
+        adminWhitelist  = 'https://discord.com/api/webhooks/1444400367029719170/0mXZjZck5Q_gQKQaD3OwhMGw43VO7t2F5Lmj2pnbNHdUVdbaU83IVwh7CjkdBHa7oBCc'   -- "admin whitelist" channel
+    }
+}
+
+-- ============================================================================
+--  �🚗 VEHICLE SCANNING (Auto-detect all vehicle packs)
 -- ============================================================================
 -- Automatically scans ALL loaded vehicles from resource meta files
 -- Supports: FiveM vehicle packs, custom addon vehicles, DLC vehicles
