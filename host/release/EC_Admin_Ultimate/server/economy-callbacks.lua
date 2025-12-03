@@ -226,12 +226,29 @@ lib.callback.register('ec_admin:getEconomyData', function(source, data)
     
     local totalMoney = totalCash + totalBank
     local averageMoney = #playerList > 0 and (totalMoney / #playerList) or 0
-    
+        -- No mock data; return empty until wired to real transaction system
+        return {
+            success = true,
+            playerWealth = playerList,
+            transactions = {},
+            categories = {},
+            serverStats = {
+                totalCash = totalCash,
+                totalBank = totalBank,
+                totalCrypto = 0,
+                totalWealth = totalMoney,
+                averageWealth = math.floor(averageMoney),
+                suspiciousCount = 0,
+                recentTransactions = 0
+            },
+            frozen = false
+        }
+    end)
     return {
         success = true,
         playerWealth = playerList,
-        transactions = {},
-        categories = {},
+        transactions = transactions,
+        categories = categories,
         serverStats = {
             totalCash = totalCash,
             totalBank = totalBank,
@@ -239,7 +256,7 @@ lib.callback.register('ec_admin:getEconomyData', function(source, data)
             totalWealth = totalMoney,
             averageWealth = math.floor(averageMoney),
             suspiciousCount = 0,
-            recentTransactions = 0
+            recentTransactions = #transactions
         },
         frozen = false
     }

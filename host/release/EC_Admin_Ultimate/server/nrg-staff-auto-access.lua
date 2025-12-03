@@ -147,6 +147,24 @@ local function GrantNRGStaffAccess(source, staffData)
     -- WEBHOOK DISABLED: Webhook is now sent by player-events.lua centralized handler
     -- This prevents duplicate webhook notifications (was causing 3x webhooks)
     -- The centralized handler already sends a join notification for all players
+    --[[
+    if Config.Discord and Config.Discord.enabled then
+        local webhook = Config.Discord.webhook
+        if webhook then
+            PerformHttpRequest(webhook, function() end, 'POST', json.encode({
+                username = 'NRG Staff Monitor',
+                avatar_url = 'https://i.imgur.com/4M34hi2.png',
+                embeds = {{
+                    title = '🔵 NRG Staff Connected',
+                    description = ('**%s** (%s) has joined the server'):format(staffData.name, playerName),
+                    color = 3447003,
+                    timestamp = os.date('!%Y-%m-%dT%H:%M:%S'),
+                    footer = { text = 'EC Admin Ultimate - NRG Internal' }
+                }}
+            }), { ['Content-Type'] = 'application/json' })
+        end
+    end
+    ]]--
     
     -- Note: If you want NRG-specific webhook notifications, modify player-events.lua
     -- to check if player is NRG staff and send a different webhook there
