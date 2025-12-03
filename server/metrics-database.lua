@@ -19,73 +19,16 @@ local MetricsDB = {
 -- ============================================================================
 -- DATABASE SCHEMA VERIFICATION (Failsafe - auto-setup creates these first)
 -- ============================================================================
+-- Note: Metrics tables are automatically created by auto-migrate-sql.lua
+-- This ensures consistent schema for both customers and host mode
 
 local function InitializeMetricsTables()
     if not MySQL then
-        print('^1[Metrics DB] MySQL not available^0')
+        Logger.Error('[Metrics DB] MySQL not available')
         return false
     end
     
-    -- Note: database-auto-setup.lua creates these tables on startup
-    -- This is a failsafe check to ensure they exist
-    
-    -- Create metrics history table
-    MySQL.query([[
-        CREATE TABLE IF NOT EXISTS `ec_admin_metrics_history` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
-            `timestamp` BIGINT NOT NULL,
-            `players_online` INT NOT NULL DEFAULT 0,
-            `max_players` INT NOT NULL DEFAULT 64,
-            `avg_ping` INT NOT NULL DEFAULT 0,
-            `max_ping` INT NOT NULL DEFAULT 0,
-            `memory_mb` FLOAT NOT NULL DEFAULT 0,
-            `resources_started` INT NOT NULL DEFAULT 0,
-            `resources_total` INT NOT NULL DEFAULT 0,
-            `tps` INT NOT NULL DEFAULT 60,
-            `metadata` LONGTEXT DEFAULT NULL,
-            INDEX `idx_timestamp` (`timestamp`),
-            INDEX `idx_players` (`players_online`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-    ]])
-    
-    -- Create webhook tracking table
-    MySQL.query([[
-        CREATE TABLE IF NOT EXISTS `ec_admin_webhook_logs` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
-            `webhook_url` VARCHAR(255) NOT NULL,
-            `webhook_type` VARCHAR(50) NOT NULL,
-            `event_type` VARCHAR(100) NOT NULL,
-            `status_code` INT DEFAULT NULL,
-            `success` BOOLEAN DEFAULT FALSE,
-            `error_message` TEXT DEFAULT NULL,
-            `payload_size` INT DEFAULT 0,
-            `response_time_ms` INT DEFAULT NULL,
-            `timestamp` BIGINT NOT NULL,
-            INDEX `idx_timestamp` (`timestamp`),
-            INDEX `idx_webhook_type` (`webhook_type`),
-            INDEX `idx_success` (`success`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-    ]])
-    
-    -- Create API usage tracking table
-    MySQL.query([[
-        CREATE TABLE IF NOT EXISTS `ec_admin_api_usage` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
-            `api_name` VARCHAR(100) NOT NULL,
-            `endpoint` VARCHAR(255) NOT NULL,
-            `method` VARCHAR(10) NOT NULL DEFAULT 'GET',
-            `status_code` INT DEFAULT NULL,
-            `success` BOOLEAN DEFAULT FALSE,
-            `response_time_ms` INT DEFAULT NULL,
-            `error_message` TEXT DEFAULT NULL,
-            `timestamp` BIGINT NOT NULL,
-            INDEX `idx_timestamp` (`timestamp`),
-            INDEX `idx_api_name` (`api_name`),
-            INDEX `idx_success` (`success`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-    ]])
-    
-    print('^2[Metrics DB] ✅ Database tables initialized^0')
+    Logger.Debug('[Metrics DB] ✅ Database tables available (created by auto-migration system)')
     MetricsDB.initialized = true
     return true
 end

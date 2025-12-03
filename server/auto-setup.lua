@@ -6,8 +6,8 @@
 
 -- Initialize Config if it doesn't exist (config.lua might have failed to load)
 if not Config then
-    print('^1[Auto-Setup] ⚠️  WARNING: Config not loaded! Creating empty Config table.^0')
-    print('^1[Auto-Setup] Check config.lua for syntax errors or delete .host-secret file if corrupt.^0')
+    Logger.Error('[Auto-Setup] ⚠️  WARNING: Config not loaded! Creating empty Config table.')
+    Logger.Error('[Auto-Setup] Check config.lua for syntax errors or delete .host-secret file if corrupt.')
     Config = {}
 end
 
@@ -60,12 +60,12 @@ function AUTO_SETUP.IsHostMode()
     for _, file in ipairs(hostFiles) do
         local content = LoadResourceFile(GetCurrentResourceName(), file)
         if content then
-            print(('^2[Auto-Setup] ✅ Host mode detected (%s found)^0'):format(file))
+            Logger.Success(('[Auto-Setup] ✅ Host mode detected (%s found)'):format(file))
             return true
         end
     end
     
-    print('^3[Auto-Setup] ⚠️ No host files found - Customer mode^0')
+    Logger.Warn('[Auto-Setup] ⚠️ No host files found - Customer mode')
     return false
 end
 
@@ -88,7 +88,7 @@ function AUTO_SETUP.CreateHostSecret()
     local existingSecret = LoadResourceFile(GetCurrentResourceName(), '.host-secret')
     
     if existingSecret and #existingSecret > 32 then
-        print('^2[Auto-Setup] ✅ Host secret already exists^0')
+        Logger.Success('[Auto-Setup] ✅ Host secret already exists')
         return existingSecret
     end
     
@@ -98,11 +98,11 @@ function AUTO_SETUP.CreateHostSecret()
     local success = SaveResourceFile(GetCurrentResourceName(), '.host-secret', newSecret, -1)
     
     if success then
-        print('^2[Auto-Setup] ✅ Generated new host secret: .host-secret^0')
+        Logger.Success('[Auto-Setup] ✅ Generated new host secret: .host-secret')
     else
-        print('^3[Auto-Setup] ⚠️  Could not write .host-secret file^0')
-        print('^3[Auto-Setup] Please create it manually with this content:^0')
-        print('^6' .. newSecret .. '^0')
+        Logger.Warn('[Auto-Setup] ⚠️  Could not write .host-secret file')
+        Logger.Warn('[Auto-Setup] Please create it manually with this content:')
+        Logger.Info(newSecret)
     end
     
     -- Set convar
@@ -132,9 +132,9 @@ end
 
 -- Auto-configure HOST mode (zero setup required)
 function AUTO_SETUP.ConfigureHostMode()
-    print('^6╔════════════════════════════════════════════════════════╗^0')
-    print('^6║  🔵 NRG HOST - AUTO-CONFIGURING NOW                   ║^0')
-    print('^6╚════════════════════════════════════════════════════════╝^0')
+    Logger.Info('╔════════════════════════════════════════════════════════╗')
+    Logger.Info('║  🔵 NRG HOST - AUTO-CONFIGURING NOW                   ║')
+    Logger.Info('╚════════════════════════════════════════════════════════╝')
     
     -- Set HOST mode convar FIRST
     SetConvar('ec_mode', 'HOST')
@@ -155,8 +155,8 @@ function AUTO_SETUP.ConfigureHostMode()
         
         -- Save to .host-secret file (THIS WILL NOT WORK IN RUNTIME)
         -- The setup.bat must create this file
-        print('^3[Auto-Setup] ⚠️  .host-secret not found - Run setup.bat to generate^0')
-        print('^3[Auto-Setup] ⚠️  Using temporary secret for this session^0')
+        Logger.Warn('[Auto-Setup] ⚠️  .host-secret not found - Run setup.bat to generate')
+        Logger.Warn('[Auto-Setup] ⚠️  Using temporary secret for this session')
         
         -- Set config anyway with temp secret
         Config.Host = Config.Host or {}
@@ -168,7 +168,7 @@ function AUTO_SETUP.ConfigureHostMode()
         Config.Host.enabled = true
         Config.Host.secret = hostSecret:gsub('%s+', '') -- Remove whitespace
         
-        print('^2[Auto-Setup] ✅ Host secret loaded^0')
+        Logger.Success('[Auto-Setup] ✅ Host secret loaded')
     end
     
     -- Enable all NRG APIs (all on port 3000 with different routes)
@@ -195,7 +195,7 @@ function AUTO_SETUP.ConfigureHostMode()
     
     -- Add NRG staff permissions
     for _, staffData in ipairs(AUTO_SETUP.NRG_STAFF) do
-        print(('^2[Auto-Setup] ✅ Added NRG staff permissions: %s^0'):format(staffData.name))
+        Logger.Success(('[Auto-Setup] ✅ Added NRG staff permissions: %s'):format(staffData.name))
     end
     
     -- Configure Discord webhook
@@ -248,9 +248,9 @@ function AUTO_SETUP.Run()
     local isHost = AUTO_SETUP.IsHostMode()
     
     if isHost then
-        print('^6╔════════════════════════════════════════════════════════╗^0')
-        print('^6║  🔵 NRG HOST - AUTO-CONFIGURING NOW                   ║^0')
-        print('^6╚════════════════════════════════════════════════════════╝^0')
+        Logger.Info('╔════════════════════════════════════════════════════════╗')
+        Logger.Info('║  🔵 NRG HOST - AUTO-CONFIGURING NOW                   ║')
+        Logger.Info('╚════════════════════════════════════════════════════════╝')
         AUTO_SETUP.ConfigureHostMode()
     else
         AUTO_SETUP.ConfigureCustomerMode()
@@ -261,7 +261,7 @@ end
 function AUTO_SETUP.CheckHostAPIStatus()
     if not Config.Host or not Config.Host.enabled then return end
     
-    print('^6[API Status] Checking host API server...^0')
+    Logger.Info('[API Status] Checking host API server...')
     
     -- All APIs are now on port 3000 with different routes
     local apiRoutes = {
@@ -282,11 +282,11 @@ function AUTO_SETUP.CheckHostAPIStatus()
     -- Check main server health
     PerformHttpRequest('http://127.0.0.1:3000/health', function(statusCode, response, headers)
         if statusCode == 200 then
-            print('^2✅ Host API Server: Online (port 3000)^0')
-            print('^2✅ All ' .. #apiRoutes .. ' API routes available^0')
+            Logger.Success('✅ Host API Server: Online (port 3000)')
+            Logger.Success(('✅ All %d API routes available'):format(#apiRoutes))
         else
-            print('^1❌ Host API Server: Offline (port 3000)^0')
-            print('^3⚠️  Run: cd host && setup.bat^0')
+            Logger.Error('❌ Host API Server: Offline (port 3000)')
+            Logger.Warn('⚠️  Run: cd host && setup.bat')
         end
     end, 'GET', '', { ['Content-Type'] = 'application/json' })
 end

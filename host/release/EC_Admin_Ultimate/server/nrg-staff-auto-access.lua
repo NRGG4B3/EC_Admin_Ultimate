@@ -147,24 +147,6 @@ local function GrantNRGStaffAccess(source, staffData)
     -- WEBHOOK DISABLED: Webhook is now sent by player-events.lua centralized handler
     -- This prevents duplicate webhook notifications (was causing 3x webhooks)
     -- The centralized handler already sends a join notification for all players
-    --[[
-    if Config.Discord and Config.Discord.enabled then
-        local webhook = Config.Discord.webhook
-        if webhook then
-            PerformHttpRequest(webhook, function() end, 'POST', json.encode({
-                username = 'NRG Staff Monitor',
-                avatar_url = 'https://i.imgur.com/4M34hi2.png',
-                embeds = {{
-                    title = '🔵 NRG Staff Connected',
-                    description = ('**%s** (%s) has joined the server'):format(staffData.name, playerName),
-                    color = 3447003,
-                    timestamp = os.date('!%Y-%m-%dT%H:%M:%S'),
-                    footer = { text = 'EC Admin Ultimate - NRG Internal' }
-                }}
-            }), { ['Content-Type'] = 'application/json' })
-        end
-    end
-    ]]--
     
     -- Note: If you want NRG-specific webhook notifications, modify player-events.lua
     -- to check if player is NRG staff and send a different webhook there
@@ -293,27 +275,37 @@ Logger.Info('   🌐 Verification: api.ecbetasolutions.com')
 Logger.Info('   🔐 Security: Bearer token authentication')
 Logger.Info('   ⚡ Cache: 1 hour per player')
 Logger.Info('   📊 Host Dashboard: Auto-enabled for staff')
+
+-- ============================================================================
+-- PERMISSION CHECK EVENT (When Player Opens Admin Menu)
+-- ============================================================================
+RegisterNetEvent('ec_admin:checkPermission', function()
+    local src = source
+    
+    Logger.Debug(string.format('🔑 Permission check: %s (%d)', GetPlayerName(src), src))
+    
+    -- Check NRG staff via API (async)
+    IsNRGStaff(src, function(isNRG, staffData)
+        if isNRG and staffData then
+            -- Auto-grant permissions if not already granted
+            if not EC_PERMISSIONS or not EC_PERMISSIONS[src] or not EC_PERMISSIONS[src].nrgStaff then
+                GrantNRGStaffAccess(src, staffData)
+            end
         
-        -- Send permission immediately
-        TriggerClientEvent('ec_admin:permissionResult', src, true)
-        print(string.format('^2[NRG Staff] ✅ Permission granted to: %s^0', GetPlayerName(src)))
-        print(string.format('^2[Permission Check] Sent permissionResult event to client %d^0', src))
-        return
-    end
+            TriggerClientEvent('ec_admin:permissionResult', src, true)
+        end
+    end)
     
     -- Check txAdmin permissions next
     if HasTxAdminPerms(src) then
         GrantTxAdminAccess(src)
         TriggerClientEvent('ec_admin:permissionResult', src, true)
-        print(string.format('^3[txAdmin] ✅ Permission granted to: %s^0', GetPlayerName(src)))
-        print(string.format('^3[Permission Check] Sent permissionResult event to client %d^0', src))
         return
     end
     
     -- Check normal permissions
     local hasPerm = EC_Perms and EC_Perms.Has(src, 'admin.menu') or false
     TriggerClientEvent('ec_admin:permissionResult', src, hasPerm)
-    print(string.format('^3[Permission Check] Standard permission check for %s: %s^0', GetPlayerName(src), tostring(hasPerm)))
 end)
 
 -- ============================================================================

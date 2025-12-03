@@ -136,6 +136,7 @@ server_scripts {
     
     -- DATABASE & MIGRATIONS (after permissions, before features)
     'server/database.lua',               -- DB abstraction layer
+    'server/database-init.lua',          -- Ensure critical tables exist
     'server/database-migrations.lua',    -- Schema versioning & migrations
     'server/database/auto-migrate.lua',  -- Auto-migration on startup
     'server/database/auto-setup.lua',    -- Database initialization

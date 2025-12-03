@@ -28,68 +28,11 @@ CreateThread(function()
     Logger.Info('Anticheat System Initialized: ' .. Framework)
 end)
 
--- Create anticheat tables
+-- Anticheat tables are automatically created by auto-migrate-sql.lua
+-- This ensures consistent schema for both customers and host mode
 CreateThread(function()
     Wait(2000)
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_anticheat_detections (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            player_id VARCHAR(50) NOT NULL,
-            player_name VARCHAR(100) NOT NULL,
-            detection_type VARCHAR(50) NOT NULL,
-            severity ENUM('low', 'medium', 'high', 'critical') DEFAULT 'medium',
-            details TEXT NULL,
-            evidence TEXT NULL,
-            auto_action VARCHAR(50) NULL,
-            admin_reviewed BOOLEAN DEFAULT 0,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_player (player_id),
-            INDEX idx_type (detection_type),
-            INDEX idx_severity (severity)
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_anticheat_flags (
-            player_id VARCHAR(50) PRIMARY KEY,
-            player_name VARCHAR(100) NOT NULL,
-            risk_score INT DEFAULT 0,
-            total_detections INT DEFAULT 0,
-            last_detection TIMESTAMP NULL,
-            banned BOOLEAN DEFAULT 0,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            INDEX idx_risk (risk_score),
-            INDEX idx_banned (banned)
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_anticheat_bans (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            player_id VARCHAR(50) NOT NULL,
-            player_name VARCHAR(100) NOT NULL,
-            reason TEXT NOT NULL,
-            evidence TEXT NULL,
-            ban_type ENUM('temporary', 'permanent') DEFAULT 'permanent',
-            expires_at TIMESTAMP NULL,
-            banned_by VARCHAR(100) DEFAULT 'SYSTEM',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_player (player_id)
-        )
-    ]], {})
-    
-    MySQL.Sync.execute([[
-        CREATE TABLE IF NOT EXISTS ec_anticheat_whitelist (
-            player_id VARCHAR(50) PRIMARY KEY,
-            player_name VARCHAR(100) NOT NULL,
-            reason TEXT NULL,
-            added_by VARCHAR(100) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ]], {})
-    
-    Logger.Info('Anticheat tables initialized')
+    Logger.Debug('Anticheat system ready - tables created by auto-migration system')
 end)
 
 -- ============================================================================

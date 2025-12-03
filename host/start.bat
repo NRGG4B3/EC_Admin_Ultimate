@@ -6,7 +6,7 @@
 :: Starts the Host API server (Node.js Express)
 :: ============================================================================
 
-setlocal
+setlocal enabledelayedexpansion
 
 title EC Admin Ultimate - Host API Server
 
@@ -17,40 +17,45 @@ set "RED=[91m"
 set "CYAN=[96m"
 set "RESET=[0m"
 
+:: Get the directory where this script is located
+set "SCRIPT_DIR=%~dp0"
+set "HOST_SERVER_DIR=!SCRIPT_DIR!node-server"
+
 echo.
-echo %CYAN%========================================%RESET%
-echo %CYAN%  EC ADMIN ULTIMATE - HOST API%RESET%
-echo %CYAN%  Starting Server...%RESET%
-echo %CYAN%========================================%RESET%
+echo !CYAN!========================================!RESET!
+echo !CYAN!  EC ADMIN ULTIMATE - HOST API!RESET!
+echo !CYAN!  Starting Server...!RESET!
+echo !CYAN!========================================!RESET!
 echo.
 
 :: Verify Node.js
 where node >nul 2>nul
 if errorlevel 1 (
-    echo %RED%ERROR: Node.js is not installed!%RESET%
+    echo !RED!ERROR: Node.js is not installed!!RESET!
     pause
     exit /b 1
 )
 
 :: Check if node-server exists
-if not exist "host\node-server\index.js" (
-    echo %RED%ERROR: Host API server not found!%RESET%
+if not exist "!HOST_SERVER_DIR!\index.js" (
+    echo !RED!ERROR: Host API server not found at:!RESET!
+    echo !HOST_SERVER_DIR!\index.js
     echo Run setup.bat first to install dependencies.
     pause
     exit /b 1
 )
 
 :: Check if dependencies are installed
-if not exist "host\node-server\node_modules" (
-    echo %RED%ERROR: Node modules not found!%RESET%
+if not exist "!HOST_SERVER_DIR!\node_modules" (
+    echo !RED!ERROR: Node modules not found!!RESET!
     echo Run setup.bat first to install dependencies.
     pause
     exit /b 1
 )
 
 :: Check if .env exists
-if not exist "host\node-server\.env" (
-    echo %YELLOW%WARNING: .env file not found!%RESET%
+if not exist "!HOST_SERVER_DIR!\.env" (
+    echo !YELLOW!WARNING: .env file not found!!RESET!
     echo Creating default .env file...
     (
     echo PORT=30121
@@ -63,35 +68,34 @@ if not exist "host\node-server\.env" (
     echo JWT_SECRET=CHANGE_THIS_NOW
     echo API_KEY=CHANGE_THIS_NOW
     echo NODE_ENV=production
-    ) > "host\node-server\.env"
-    echo %YELLOW%Please edit host/node-server/.env before continuing!%RESET%
+    ) > "!HOST_SERVER_DIR!\.env"
+    echo !YELLOW!Please edit !HOST_SERVER_DIR!\.env before continuing!!RESET!
     pause
 )
 
 :: Check if server is already running
 tasklist /FI "IMAGENAME eq node.exe" 2>NUL | find /I /N "node.exe">NUL
 if not errorlevel 1 (
-    echo %YELLOW%WARNING: Node.js is already running!%RESET%
-    echo %YELLOW%If Host API is already started, close it first with stop.bat%RESET%
+    echo !YELLOW!WARNING: Node.js is already running!!RESET!
+    echo !YELLOW!If Host API is already started, close it first with stop.bat!RESET!
     choice /C YN /M "Continue anyway"
     if errorlevel 2 exit /b 0
 )
 
 :: Navigate to server directory
-cd host\node-server
+cd /d "!HOST_SERVER_DIR!"
 
-echo %GREEN%Starting Host API server...%RESET%
+echo !GREEN!Starting Host API Multi-Port Server...!RESET!
 echo.
-echo %CYAN%Server will run on:%RESET% http://localhost:30121
-echo %CYAN%Health Check:%RESET% http://localhost:30121/health
-echo %CYAN%Press Ctrl+C to stop%RESET%
+echo !CYAN!All 20 APIs will start on ports 3000-3019!RESET!
+echo !CYAN!Health Check:!RESET! http://localhost:3000/health
+echo !CYAN!Press Ctrl+C to stop!RESET!
 echo.
 
-:: Start the server
-node index.js
+:: Start the multi-port server (all 20 APIs)
+node multi-port-server.js
 
 :: If server exits, show message
 echo.
-echo %YELLOW%Host API server stopped.%RESET%
-cd ..\..
+echo !YELLOW!Host API server stopped.!RESET!
 pause

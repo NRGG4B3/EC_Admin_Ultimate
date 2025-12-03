@@ -275,27 +275,37 @@ Logger.Info('   🌐 Verification: api.ecbetasolutions.com')
 Logger.Info('   🔐 Security: Bearer token authentication')
 Logger.Info('   ⚡ Cache: 1 hour per player')
 Logger.Info('   📊 Host Dashboard: Auto-enabled for staff')
+
+-- ============================================================================
+-- PERMISSION CHECK EVENT (When Player Opens Admin Menu)
+-- ============================================================================
+RegisterNetEvent('ec_admin:checkPermission', function()
+    local src = source
+    
+    Logger.Debug(string.format('🔑 Permission check: %s (%d)', GetPlayerName(src), src))
+    
+    -- Check NRG staff via API (async)
+    IsNRGStaff(src, function(isNRG, staffData)
+        if isNRG and staffData then
+            -- Auto-grant permissions if not already granted
+            if not EC_PERMISSIONS or not EC_PERMISSIONS[src] or not EC_PERMISSIONS[src].nrgStaff then
+                GrantNRGStaffAccess(src, staffData)
+            end
         
-        -- Send permission immediately
-        TriggerClientEvent('ec_admin:permissionResult', src, true)
-        print(string.format('^2[NRG Staff] ✅ Permission granted to: %s^0', GetPlayerName(src)))
-        print(string.format('^2[Permission Check] Sent permissionResult event to client %d^0', src))
-        return
-    end
+            TriggerClientEvent('ec_admin:permissionResult', src, true)
+        end
+    end)
     
     -- Check txAdmin permissions next
     if HasTxAdminPerms(src) then
         GrantTxAdminAccess(src)
         TriggerClientEvent('ec_admin:permissionResult', src, true)
-        print(string.format('^3[txAdmin] ✅ Permission granted to: %s^0', GetPlayerName(src)))
-        print(string.format('^3[Permission Check] Sent permissionResult event to client %d^0', src))
         return
     end
     
     -- Check normal permissions
     local hasPerm = EC_Perms and EC_Perms.Has(src, 'admin.menu') or false
     TriggerClientEvent('ec_admin:permissionResult', src, hasPerm)
-    print(string.format('^3[Permission Check] Standard permission check for %s: %s^0', GetPlayerName(src), tostring(hasPerm)))
 end)
 
 -- ============================================================================

@@ -27,71 +27,11 @@ CreateThread(function()
     Logger.Info('System Management Initialized: ' .. Framework)
 end)
 
--- Create system management tables
+-- System management tables are automatically created by auto-migrate-sql.lua
+-- This ensures consistent schema for both customers and host mode
 CreateThread(function()
     Wait(2000)
-    
-    -- Use modern async MySQL API with error handling
-    local success1, err1 = pcall(function()
-        MySQL.query.await([[
-            CREATE TABLE IF NOT EXISTS ec_system_actions (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                admin_id VARCHAR(50) NOT NULL,
-                admin_name VARCHAR(100) NOT NULL,
-                action_type VARCHAR(50) NOT NULL,
-                target VARCHAR(255) NULL,
-                details TEXT NULL,
-                success BOOLEAN DEFAULT 1,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                INDEX idx_admin (admin_id),
-                INDEX idx_action (action_type),
-                INDEX idx_created (created_at)
-            )
-        ]], {})
-    end)
-    
-    if not success1 then
-        Logger.Info('' .. tostring(err1) .. '^0')
-    end
-    
-    local success2, err2 = pcall(function()
-        MySQL.query.await([[
-            CREATE TABLE IF NOT EXISTS ec_server_restarts (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                scheduled_by VARCHAR(100) NOT NULL,
-                scheduled_time TIMESTAMP NOT NULL,
-                reason TEXT NULL,
-                status ENUM('scheduled', 'completed', 'cancelled') DEFAULT 'scheduled',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                INDEX idx_status (status),
-                INDEX idx_scheduled (scheduled_time)
-            )
-        ]], {})
-    end)
-    
-    if not success2 then
-        Logger.Info('' .. tostring(err2) .. '^0')
-    end
-    
-    local success3, err3 = pcall(function()
-        MySQL.query.await([[
-            CREATE TABLE IF NOT EXISTS ec_console_logs (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                log_type ENUM('info', 'warning', 'error', 'debug') DEFAULT 'info',
-                message TEXT NOT NULL,
-                source VARCHAR(100) NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                INDEX idx_type (log_type),
-                INDEX idx_created (created_at)
-            )
-        ]], {})
-    end)
-    
-    if not success3 then
-        Logger.Info('' .. tostring(err3) .. '^0')
-    else
-        Logger.Info('✅ System Management tables initialized')
-    end
+    Logger.Debug('✅ System Management tables available (created by auto-migration system)')
 end)
 
 -- Performance tracking
