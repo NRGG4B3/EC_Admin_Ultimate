@@ -73,6 +73,7 @@ server_scripts {
     -- CORE SERVER FILES (Load First)
     -- ==========================================
     'server/logger.lua',               -- ⚠️ CRITICAL: Load logger FIRST (before ANY file that uses Logger)
+    'server/database/sql-auto-apply-immediate.lua',  -- ⚠️ CRITICAL: SQL migrations IMMEDIATELY after logger
     'server/host-validation.lua',      -- Host mode validation
     'server/environment.lua',          -- Environment detection (prod/dev/host) - NOW uses Logger
     'server/validation-helpers.lua',   -- Input validation (load first)
