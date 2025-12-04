@@ -142,6 +142,7 @@ server_scripts {
     'server/database/auto-setup.lua',    -- Database initialization
     'server/database-migration-ai.lua',  -- AI Detection tables migration
     'server/auto-migrate-sql.lua',       -- Automatic SQL migration system (runs all SQL files)
+    'server/database/sql-auto-migration.lua', -- SQL schema auto-import (creates all tables)
     'server/config-management.lua',      -- Live config updates from UI
     'server/action-logger.lua',          -- Centralized action logger (console + webhook + DB)
     

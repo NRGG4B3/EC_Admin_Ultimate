@@ -30,7 +30,6 @@ end)
 
 -- Tables are now automatically created by auto-migrate-sql.lua from sql/ec_admin_ultimate.sql
 -- No need to create them here - this ensures consistent schema for both customers and host
-end)
 
 -- Helper: Get player identifier
 local function GetPlayerIdentifier(src)

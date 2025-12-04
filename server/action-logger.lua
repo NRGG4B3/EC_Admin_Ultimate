@@ -22,6 +22,20 @@ ActionLogger.Categories = {
     SYSTEM = 'System'
 }
 
+-- Webhook Rate Limiting (prevent Discord 429 spam)
+local webhookLastSent = 0
+local webhookCooldown = 1000  -- 1 second minimum between webhook sends
+local webhookQueue = {}
+
+local function CanSendWebhook()
+    local now = GetGameTimer()
+    if now - webhookLastSent >= webhookCooldown then
+        webhookLastSent = now
+        return true
+    end
+    return false
+end
+
 -- Webhook Colors
 local WEBHOOK_COLORS = {
     MENU_CLICK = 3447003,  -- Blue
@@ -92,6 +106,11 @@ end
 -- ============================================================================
 function ActionLogger.LogToWebhook(adminSource, category, action, details)
     if not Config.Discord or not Config.Discord.enabled or not Config.Discord.webhook or Config.Discord.webhook == '' then
+        return
+    end
+    
+    -- Rate limit webhook sends to prevent Discord 429 errors
+    if not CanSendWebhook() then
         return
     end
     

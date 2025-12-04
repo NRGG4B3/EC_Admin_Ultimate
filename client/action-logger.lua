@@ -133,7 +133,7 @@ CreateThread(function()
     while true do
         Wait(500)  -- Check every 500ms
         
-        local isMenuOpen = GetNuiFocus()
+        local isMenuOpen = IsNuiFocused() or false
         
         if isMenuOpen and not wasMenuOpen then
             ClientLogger.LogMenuOpen()
