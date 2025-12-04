@@ -6,6 +6,37 @@
 Logger.Info('✅ Dashboard NUI callbacks registered (CLIENT)')
 
 -- ============================================================================
+-- REAL-TIME DASHBOARD ENGINE
+-- ============================================================================
+
+local DashboardEngine = {
+    liveMetrics = {
+        playersOnline = 0,
+        playersIdle = 0,
+        activePlayers = 0,
+        vehiclesActive = 0,
+        serverHealth = 100,
+        networkHealth = 100,
+        cpuUsage = 0,
+        memoryUsage = 0,
+        serverTPS = 60,
+        scriptCount = 0,
+        resourceCount = 0
+    },
+    alerts = {},
+    chartData = {
+        playerTrends = {},
+        performanceTrends = {},
+        activityTrends = {}
+    },
+    refreshIntervals = {
+        metrics = 5000,      -- 5 seconds
+        charts = 30000,      -- 30 seconds
+        alerts = 10000       -- 10 seconds
+    }
+}
+
+-- ============================================================================
 -- METRICS HISTORY FOR PERCENTAGE CALCULATIONS
 -- ============================================================================
 
@@ -220,3 +251,174 @@ RegisterNUICallback('getMetricsHistory', function(data, cb)
 end)
 
 Logger.Info('✅ Dashboard callbacks initialized - All metrics ready')
+
+-- ============================================================================
+-- LIVE METRICS COLLECTION
+-- ============================================================================
+
+-- Update live metrics from server systems
+local function UpdateLiveMetrics()
+    TriggerServerEvent('ec_admin_ultimate:server:getLiveMetrics', function(metrics)
+        if metrics then
+            DashboardEngine.liveMetrics = metrics
+            
+            -- Add to chart history
+            table.insert(DashboardEngine.chartData.playerTrends, {
+                time = os.time(),
+                value = metrics.playersOnline
+            })
+            table.insert(DashboardEngine.chartData.performanceTrends, {
+                time = os.time(),
+                value = metrics.serverTPS
+            })
+            table.insert(DashboardEngine.chartData.activityTrends, {
+                time = os.time(),
+                value = metrics.activePlayers
+            })
+            
+            -- Keep only last 60 entries
+            if #DashboardEngine.chartData.playerTrends > 60 then
+                table.remove(DashboardEngine.chartData.playerTrends, 1)
+            end
+            if #DashboardEngine.chartData.performanceTrends > 60 then
+                table.remove(DashboardEngine.chartData.performanceTrends, 1)
+            end
+            if #DashboardEngine.chartData.activityTrends > 60 then
+                table.remove(DashboardEngine.chartData.activityTrends, 1)
+            end
+        end
+    end)
+end
+
+-- Fetch and process alerts from all systems
+local function UpdateAlerts()
+    TriggerServerEvent('ec_admin_ultimate:server:getDashboardAlerts', function(alerts)
+        if alerts then
+            DashboardEngine.alerts = alerts
+        end
+    end)
+end
+
+-- Get real-time data from AI Analytics
+local function GetAIAnalyticsData()
+    local success, result = pcall(function()
+        return lib.callback.await('ec_admin:getAIAnalyticsOverview', false)
+    end)
+    
+    if success and result then
+        return result
+    end
+    return {}
+end
+
+-- Get performance data
+local function GetPerformanceData()
+    local success, result = pcall(function()
+        return lib.callback.await('ec_admin:getPerformanceOverview', false)
+    end)
+    
+    if success and result then
+        return result
+    end
+    return {}
+end
+
+-- Get anticheat data
+local function GetAnticheatData()
+    local success, result = pcall(function()
+        return lib.callback.await('ec_admin:getAnticheatOverview', false)
+    end)
+    
+    if success and result then
+        return result
+    end
+    return {}
+end
+
+-- Compile comprehensive dashboard status
+local function CompileDashboardStatus()
+    return {
+        timestamp = os.time(),
+        metrics = DashboardEngine.liveMetrics,
+        alerts = DashboardEngine.alerts,
+        aiAnalytics = GetAIAnalyticsData(),
+        performance = GetPerformanceData(),
+        anticheat = GetAnticheatData(),
+        chartData = DashboardEngine.chartData
+    }
+end
+
+-- Generate alerts based on thresholds
+local function GenerateDashboardAlerts()
+    local alerts = {}
+    
+    -- Server TPS alert
+    if DashboardEngine.liveMetrics.serverTPS < 40 then
+        table.insert(alerts, {
+            id = 'low_tps',
+            type = 'warning',
+            title = 'Low Server TPS',
+            message = 'Server TPS dropped to ' .. DashboardEngine.liveMetrics.serverTPS,
+            severity = DashboardEngine.liveMetrics.serverTPS < 20 and 'critical' or 'warning',
+            timestamp = os.time()
+        })
+    end
+    
+    -- Memory usage alert
+    if DashboardEngine.liveMetrics.memoryUsage > 80 then
+        table.insert(alerts, {
+            id = 'high_memory',
+            type = 'warning',
+            title = 'High Memory Usage',
+            message = 'Server memory at ' .. DashboardEngine.liveMetrics.memoryUsage .. '%',
+            severity = 'warning',
+            timestamp = os.time()
+        })
+    end
+    
+    -- CPU usage alert
+    if DashboardEngine.liveMetrics.cpuUsage > 75 then
+        table.insert(alerts, {
+            id = 'high_cpu',
+            type = 'warning',
+            title = 'High CPU Usage',
+            message = 'CPU usage at ' .. DashboardEngine.liveMetrics.cpuUsage .. '%',
+            severity = 'warning',
+            timestamp = os.time()
+        })
+    end
+    
+    -- Network health alert
+    if DashboardEngine.liveMetrics.networkHealth < 60 then
+        table.insert(alerts, {
+            id = 'network_health',
+            type = 'error',
+            title = 'Network Issues Detected',
+            message = 'Network health: ' .. DashboardEngine.liveMetrics.networkHealth .. '%',
+            severity = 'critical',
+            timestamp = os.time()
+        })
+    end
+    
+    return alerts
+end
+
+-- ============================================================================
+-- BACKGROUND UPDATE THREADS
+-- ============================================================================
+
+-- Refresh metrics every 5 seconds
+CreateThread(function()
+    while true do
+        Wait(DashboardEngine.refreshIntervals.metrics)
+        UpdateLiveMetrics()
+    end
+end)
+
+-- Refresh alerts every 10 seconds
+CreateThread(function()
+    while true do
+        Wait(DashboardEngine.refreshIntervals.alerts)
+        DashboardEngine.alerts = GenerateDashboardAlerts()
+    end
+end)

@@ -534,4 +534,250 @@ RegisterNetEvent('ec_admin_ultimate:server:setPropertyPrice', function(data)
     })
 end)
 
+-- =============================================================================
+-- HOUSING MARKET SYSTEM - ENHANCED
+-- =============================================================================
+
+Logger.Info('🏠 Initializing Housing Market Engine')
+
+local HousingMarket = {
+    properties = {},
+    prices = {},
+    marketTrends = {},
+    rentalData = {},
+    config = {
+        basePrice = 50000,
+        priceMultiplier = 1.0,
+        rentPercentage = 0.02,
+        demandFactor = 1.0,
+        supplyFactor = 1.0,
+        volatility = 0.05
+    }
+}
+
+-- Calculate property value
+local function CalculatePropertyValue(property)
+    local baseValue = property.basePrice or HousingMarket.config.basePrice
+    local locationMultiplier = 1.0
+    
+    if property.location == 'downtown' then locationMultiplier = 1.5
+    elseif property.location == 'suburbs' then locationMultiplier = 1.0
+    elseif property.location == 'rural' then locationMultiplier = 0.7
+    elseif property.location == 'beachfront' then locationMultiplier = 2.0 end
+    
+    local conditionMultiplier = 1.0
+    if property.condition == 'excellent' then conditionMultiplier = 1.3
+    elseif property.condition == 'good' then conditionMultiplier = 1.1
+    elseif property.condition == 'fair' then conditionMultiplier = 0.9
+    elseif property.condition == 'poor' then conditionMultiplier = 0.7 end
+    
+    local marketFactor = HousingMarket.config.demandFactor / HousingMarket.config.supplyFactor
+    
+    local ageDepreciation = 1.0
+    if property.age and property.age > 0 then
+        ageDepreciation = math.max(0.5, 1.0 - (property.age * 0.005))
+    end
+    
+    local finalValue = baseValue * locationMultiplier * conditionMultiplier * marketFactor * ageDepreciation
+    local volatility = math.random(-HousingMarket.config.volatility * 100, HousingMarket.config.volatility * 100) / 100
+    finalValue = finalValue * (1.0 + volatility)
+    
+    return math.floor(finalValue)
+end
+
+-- Calculate monthly rent
+local function CalculateMonthlyRent(propertyValue)
+    return math.floor(propertyValue * HousingMarket.config.rentPercentage)
+end
+
+-- Update market trends
+local function UpdateMarketTrends()
+    local allProperties = MySQL.Sync.fetchAll([[
+        SELECT * FROM ec_housing_properties
+    ]], {})
+    
+    if allProperties and #allProperties > 0 then
+        local totalPrice = 0
+        local availableCount = 0
+        
+        for _, prop in ipairs(allProperties) do
+            totalPrice = totalPrice + (prop.current_price or 0)
+            if prop.is_available == 1 then availableCount = availableCount + 1 end
+        end
+        
+        local occupancyRate = 1.0 - (availableCount / #allProperties)
+        
+        if occupancyRate > 0.9 then
+            HousingMarket.config.demandFactor = 1.3
+        elseif occupancyRate > 0.75 then
+            HousingMarket.config.demandFactor = 1.15
+        elseif occupancyRate > 0.5 then
+            HousingMarket.config.demandFactor = 1.0
+        elseif occupancyRate > 0.25 then
+            HousingMarket.config.demandFactor = 0.85
+        else
+            HousingMarket.config.demandFactor = 0.7
+        end
+    end
+end
+
+-- Get market status
+RegisterNetEvent('ec_admin_ultimate:server:getHousingMarketStatus', function()
+    local src = source
+    UpdateMarketTrends()
+    
+    local stats = MySQL.Sync.fetchAll([[
+        SELECT 
+            COUNT(*) as total_properties,
+            SUM(CASE WHEN is_available = 1 THEN 1 ELSE 0 END) as available,
+            AVG(current_price) as avg_price,
+            MIN(current_price) as min_price,
+            MAX(current_price) as max_price
+        FROM ec_housing_properties
+    ]], {})[1] or {}
+    
+    TriggerClientEvent('ec_admin_ultimate:client:housingMarketStatus', src, {
+        trends = HousingMarket.marketTrends,
+        statistics = stats,
+        demandFactor = HousingMarket.config.demandFactor
+    })
+end)
+
+-- Get property list
+RegisterNetEvent('ec_admin_ultimate:server:getPropertyList', function(filters)
+    local src = source
+    
+    local query = 'SELECT * FROM ec_housing_properties WHERE 1=1'
+    local params = {}
+    
+    if filters.location then
+        query = query .. ' AND location = ?'
+        table.insert(params, filters.location)
+    end
+    
+    if filters.priceMin then
+        query = query .. ' AND current_price >= ?'
+        table.insert(params, filters.priceMin)
+    end
+    
+    if filters.priceMax then
+        query = query .. ' AND current_price <= ?'
+        table.insert(params, filters.priceMax)
+    end
+    
+    if filters.availableOnly then
+        query = query .. ' AND is_available = 1'
+    end
+    
+    query = query .. ' ORDER BY current_price ASC LIMIT 50'
+    
+    local properties = MySQL.Sync.fetchAll(query, params)
+    TriggerClientEvent('ec_admin_ultimate:client:propertyListUpdate', src, properties or {})
+end)
+
+-- Purchase property
+RegisterNetEvent('ec_admin_ultimate:server:purchaseProperty', function(propertyId)
+    local src = source
+    
+    local property = MySQL.Sync.fetchAll([[
+        SELECT * FROM ec_housing_properties WHERE id = ?
+    ]], { propertyId })[1]
+    
+    if not property or property.is_available == 0 then
+        TriggerClientEvent('ec_admin_ultimate:client:purchaseResponse', src, {
+            success = false,
+            message = 'Property not available'
+        })
+        return
+    end
+    
+    MySQL.Async.execute([[
+        UPDATE ec_housing_properties SET 
+        owner_id = ?, is_available = 0, owner_name = ?, purchase_date = NOW()
+        WHERE id = ?
+    ]], { src, GetPlayerName(src), propertyId })
+    
+    TriggerClientEvent('ec_admin_ultimate:client:purchaseResponse', src, {
+        success = true,
+        message = 'Property purchased!',
+        property = property
+    })
+end)
+
+-- Rent property
+RegisterNetEvent('ec_admin_ultimate:server:rentProperty', function(propertyId, months)
+    local src = source
+    
+    local property = MySQL.Sync.fetchAll([[
+        SELECT * FROM ec_housing_properties WHERE id = ?
+    ]], { propertyId })[1]
+    
+    if not property then
+        TriggerClientEvent('ec_admin_ultimate:client:rentalResponse', src, {
+            success = false,
+            message = 'Property not found'
+        })
+        return
+    end
+    
+    local monthlyRent = CalculateMonthlyRent(property.current_price)
+    local totalRent = monthlyRent * months
+    
+    MySQL.Async.execute([[
+        INSERT INTO ec_housing_rentals 
+        (player_id, property_id, monthly_rent, total_rent, start_date, months, status)
+        VALUES (?, ?, ?, ?, NOW(), ?, 'active')
+    ]], { src, propertyId, monthlyRent, totalRent, months })
+    
+    TriggerClientEvent('ec_admin_ultimate:client:rentalResponse', src, {
+        success = true,
+        message = 'Rental agreement created',
+        monthlyRent = monthlyRent,
+        totalRent = totalRent
+    })
+end)
+
+-- Update property condition (admin)
+RegisterNetEvent('ec_admin_ultimate:server:updatePropertyCondition', function(propertyId, newCondition)
+    local src = source
+    
+    MySQL.Async.execute([[
+        UPDATE ec_housing_properties SET condition = ? WHERE id = ?
+    ]], { newCondition, propertyId })
+    
+    local property = MySQL.Sync.fetchAll([[
+        SELECT * FROM ec_housing_properties WHERE id = ?
+    ]], { propertyId })[1]
+    
+    if property then
+        local newPrice = CalculatePropertyValue(property)
+        MySQL.Async.execute([[
+            UPDATE ec_housing_properties SET current_price = ? WHERE id = ?
+        ]], { newPrice, propertyId })
+    end
+end)
+
+-- Update market every hour
+CreateThread(function()
+    while true do
+        Wait(60 * 60 * 1000)
+        UpdateMarketTrends()
+        
+        local properties = MySQL.Sync.fetchAll([[
+            SELECT * FROM ec_housing_properties
+        ]], {})
+        
+        if properties then
+            for _, property in ipairs(properties) do
+                local newPrice = CalculatePropertyValue(property)
+                MySQL.Async.execute([[
+                    UPDATE ec_housing_properties SET current_price = ? WHERE id = ?
+                ]], { newPrice, property.id })
+            end
+        end
+    end
+end)
+
+Logger.Success('✅ Housing Market System Enhanced')
+Logger.Info('Features: Dynamic pricing | Rental system | Market simulation')
 Logger.Info('Housing callbacks loaded')

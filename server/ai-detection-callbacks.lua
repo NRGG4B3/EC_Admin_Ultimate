@@ -491,6 +491,363 @@ RegisterNetEvent('ec_admin_ultimate:server:clearBotFlag', function(data)
     })
 end)
 
+-- =============================================================================
+-- PREDICTION ENGINE - NEW
+-- =============================================================================
+
+local PredictionEngine = {
+    historicalData = {},
+    modelCache = {},
+    patterns = {},
+    anomalyScores = {}
+}
+
+-- Calculate trend prediction (machine learning inspired)
+local function PredictBotProbability(playerId, historicalScores)
+    if not historicalScores or #historicalScores < 3 then
+        return 0.0  -- Not enough data
+    end
+    
+    -- Linear regression on scores
+    local n = #historicalScores
+    local sumX = n * (n + 1) / 2
+    local sumY = 0
+    local sumXY = 0
+    local sumX2 = n * (n + 1) * (2 * n + 1) / 6
+    
+    for i, score in ipairs(historicalScores) do
+        sumY = sumY + score
+        sumXY = sumXY + (i * score)
+    end
+    
+    local slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)
+    local intercept = (sumY - slope * sumX) / n
+    
+    -- Predict next 3 points
+    local predictions = {}
+    for i = 1, 3 do
+        local predicted = intercept + slope * (n + i)
+        table.insert(predictions, math.max(0, math.min(1, predicted)))
+    end
+    
+    -- Average prediction with confidence based on trend strength
+    local avgPrediction = (predictions[1] + predictions[2] + predictions[3]) / 3
+    local trendStrength = math.abs(slope)
+    
+    -- If trend is strong and increasing, confidence is high
+    local confidence = math.min(1.0, trendStrength * 2)
+    
+    return avgPrediction, confidence, predictions
+end
+
+-- Pattern learning algorithm
+local function LearnPattern(playerId, behaviors)
+    if not behaviors or #behaviors < 5 then
+        return nil
+    end
+    
+    local pattern = {
+        playerId = playerId,
+        behaviors = behaviors,
+        learningScore = 0.0,
+        patternType = 'unknown'
+    }
+    
+    -- Analyze behavior sequence
+    local actionTypes = {}
+    for _, behavior in ipairs(behaviors) do
+        actionTypes[behavior.type] = (actionTypes[behavior.type] or 0) + 1
+    end
+    
+    -- Find dominant pattern
+    local maxCount = 0
+    local dominantType = nil
+    for actionType, count in pairs(actionTypes) do
+        if count > maxCount then
+            maxCount = count
+            dominantType = actionType
+        end
+    end
+    
+    -- Calculate pattern consistency
+    pattern.consistency = maxCount / #behaviors
+    
+    -- Identify pattern type
+    if pattern.consistency > 0.8 then
+        if dominantType == 'movement' then
+            pattern.patternType = 'repetitive_movement'
+        elseif dominantType == 'action' then
+            pattern.patternType = 'repetitive_action'
+        elseif dominantType == 'chat' then
+            pattern.patternType = 'spam_pattern'
+        end
+    end
+    
+    -- Learning score (consistency = how well the pattern matches)
+    pattern.learningScore = pattern.consistency
+    
+    PredictionEngine.patterns[playerId] = pattern
+    return pattern
+end
+
+-- Anomaly detection using Z-score
+local function DetectAnomaly(playerId, currentScore, historicalScores)
+    if not historicalScores or #historicalScores < 5 then
+        return 0.0  -- Not enough data
+    end
+    
+    -- Calculate mean
+    local sum = 0
+    for _, score in ipairs(historicalScores) do
+        sum = sum + score
+    end
+    local mean = sum / #historicalScores
+    
+    -- Calculate standard deviation
+    local variance = 0
+    for _, score in ipairs(historicalScores) do
+        variance = variance + (score - mean) ^ 2
+    end
+    variance = variance / #historicalScores
+    local stdDev = math.sqrt(variance)
+    
+    -- Handle edge case where std dev is 0
+    if stdDev == 0 then
+        return 0.0
+    end
+    
+    -- Calculate Z-score
+    local zScore = math.abs((currentScore - mean) / stdDev)
+    
+    -- Convert to anomaly score (0-1)
+    local anomalyScore = math.min(1.0, zScore / 3)
+    
+    PredictionEngine.anomalyScores[playerId] = anomalyScore
+    return anomalyScore
+end
+
+-- Advanced confidence scoring
+local function CalculateConfidenceScore(analysis, predictions, anomalyScore)
+    local baseConfidence = analysis.botProbability
+    
+    -- Factor in prediction strength
+    local predictionConfidence = 0.0
+    if predictions then
+        local avgPred = (predictions[1] + predictions[2] + predictions[3]) / 3
+        predictionConfidence = math.abs(predictions[3] - predictions[1]) / 2
+    end
+    
+    -- Factor in anomaly score
+    local anomalyConfidence = anomalyScore or 0.0
+    
+    -- Weighted combination
+    local finalConfidence = (baseConfidence * 0.5) + (predictionConfidence * 0.3) + (anomalyConfidence * 0.2)
+    
+    return math.min(1.0, finalConfidence)
+end
+
+-- Advanced reporting for predictions
+local function GenerateAdvancedReport(playerId, analysis, predictions, anomaly)
+    local report = {
+        playerId = playerId,
+        timestamp = os.time(),
+        baseScore = analysis.botProbability,
+        predictions = predictions or {},
+        anomalyScore = anomaly or 0.0,
+        confidence = CalculateConfidenceScore(analysis, predictions, anomaly),
+        recommendation = 'Monitor',
+        factors = {}
+    }
+    
+    -- Generate recommendations
+    if report.baseScore >= 0.9 then
+        report.recommendation = 'High Confidence Bot - KICK/BAN'
+        table.insert(report.factors, '🚨 Very high bot probability')
+    elseif report.baseScore >= 0.75 then
+        report.recommendation = 'Likely Bot - Monitor closely'
+        table.insert(report.factors, '⚠️ High bot probability')
+    elseif report.baseScore >= 0.5 then
+        report.recommendation = 'Suspicious - Investigate'
+        table.insert(report.factors, '⚡ Moderate bot probability')
+    else
+        report.recommendation = 'Normal - Continue monitoring'
+        table.insert(report.factors, '✅ Low bot probability')
+    end
+    
+    -- Add prediction factors
+    if predictions and #predictions > 0 then
+        if predictions[3] > 0.8 then
+            table.insert(report.factors, '📈 Trend indicates increasing bot probability')
+        elseif predictions[3] < 0.3 then
+            table.insert(report.factors, '📉 Trend indicates decreasing bot probability')
+        end
+    end
+    
+    -- Add anomaly factors
+    if report.anomalyScore > 0.7 then
+        table.insert(report.factors, '🔍 Unusual behavior detected')
+    end
+    
+    return report
+end
+
+-- =============================================================================
+-- ENHANCED CLIENT EVENTS
+-- =============================================================================
+
+-- Get advanced detection analysis with predictions
+RegisterNetEvent('ec_admin_ultimate:server:getAdvancedAnalysis', function(playerId)
+    local src = source
+    local targetIdentifier = GetPlayerIdentifier(tonumber(playerId))
+    
+    if not targetIdentifier then
+        TriggerClientEvent('ec_admin_ultimate:client:advancedAnalysisResponse', src, {
+            success = false,
+            message = 'Player not found'
+        })
+        return
+    end
+    
+    local analysis = AnalyzePlayerBehavior(targetIdentifier, GetPlayerName(tonumber(playerId)))
+    
+    if not analysis then
+        TriggerClientEvent('ec_admin_ultimate:client:advancedAnalysisResponse', src, {
+            success = false,
+            message = 'Insufficient data'
+        })
+        return
+    end
+    
+    -- Get historical scores
+    local historical = MySQL.Sync.fetchAll([[
+        SELECT bot_probability FROM ec_ai_detections 
+        WHERE player_id = ? 
+        ORDER BY created_at DESC 
+        LIMIT 20
+    ]], { playerId })
+    
+    local historicalScores = {}
+    if historical then
+        for _, record in ipairs(historical) do
+            table.insert(historicalScores, record.bot_probability)
+        end
+    end
+    
+    -- Generate predictions
+    local predictions, confidence, trendPredictions = nil, 0.0, {}
+    if #historicalScores > 2 then
+        predictions, confidence, trendPredictions = PredictBotProbability(playerId, historicalScores)
+    end
+    
+    -- Detect anomalies
+    local anomalyScore = DetectAnomaly(playerId, analysis.botProbability, historicalScores)
+    
+    -- Learn pattern
+    LearnPattern(playerId, analysis.actions or {})
+    
+    -- Generate report
+    local report = GenerateAdvancedReport(playerId, analysis, trendPredictions, anomalyScore)
+    
+    -- Get pattern info
+    local pattern = PredictionEngine.patterns[playerId]
+    
+    TriggerClientEvent('ec_admin_ultimate:client:advancedAnalysisResponse', src, {
+        success = true,
+        analysis = analysis,
+        predictions = {
+            nextScore = predictions,
+            confidence = confidence,
+            trendPredictions = trendPredictions,
+            anomalyScore = anomalyScore
+        },
+        report = report,
+        pattern = pattern,
+        historical = historicalScores
+    })
+end)
+
+-- Get trend predictions for multiple players
+RegisterNetEvent('ec_admin_ultimate:server:getTrendPredictions', function()
+    local src = source
+    
+    local predictions = {}
+    
+    for _, playerId in ipairs(GetPlayers()) do
+        local identifier = GetPlayerIdentifier(tonumber(playerId))
+        if identifier then
+            local historical = MySQL.Sync.fetchAll([[
+                SELECT bot_probability FROM ec_ai_detections 
+                WHERE player_id = ? 
+                ORDER BY created_at DESC 
+                LIMIT 20
+            ]], { tonumber(playerId) })
+            
+            if historical and #historical > 2 then
+                local scores = {}
+                for _, record in ipairs(historical) do
+                    table.insert(scores, record.bot_probability)
+                end
+                
+                local prediction, confidence = PredictBotProbability(tonumber(playerId), scores)
+                
+                table.insert(predictions, {
+                    playerId = tonumber(playerId),
+                    playerName = GetPlayerName(tonumber(playerId)),
+                    prediction = prediction,
+                    confidence = confidence
+                })
+            end
+        end
+    end
+    
+    -- Sort by prediction
+    table.sort(predictions, function(a, b)
+        return a.prediction > b.prediction
+    end)
+    
+    TriggerClientEvent('ec_admin_ultimate:client:trendPredictionsUpdate', src, predictions)
+end)
+
+-- Get pattern learning data
+RegisterNetEvent('ec_admin_ultimate:server:getPatternAnalysis', function()
+    local src = source
+    
+    local patterns = {}
+    for playerId, pattern in pairs(PredictionEngine.patterns) do
+        table.insert(patterns, pattern)
+    end
+    
+    -- Sort by learning score
+    table.sort(patterns, function(a, b)
+        return a.learningScore > b.learningScore
+    end)
+    
+    TriggerClientEvent('ec_admin_ultimate:client:patternAnalysisUpdate', src, patterns)
+end)
+
+-- Get anomaly detections
+RegisterNetEvent('ec_admin_ultimate:server:getAnomalyDetections', function()
+    local src = source
+    
+    local anomalies = {}
+    for playerId, score in pairs(PredictionEngine.anomalyScores) do
+        if score > 0.5 then
+            table.insert(anomalies, {
+                playerId = playerId,
+                playerName = GetPlayerName(tonumber(playerId)),
+                anomalyScore = score
+            })
+        end
+    end
+    
+    -- Sort by anomaly score
+    table.sort(anomalies, function(a, b)
+        return a.anomalyScore > b.anomalyScore
+    end)
+    
+    TriggerClientEvent('ec_admin_ultimate:client:anomalyDetectionsUpdate', src, anomalies)
+end)
+
 -- Auto-analyze active players every 5 minutes
 CreateThread(function()
     while true do
@@ -516,4 +873,6 @@ CreateThread(function()
     end
 end)
 
-Logger.Info('AI Detection callbacks loaded')
+Logger.Success('✅ AI Detection System Enhanced with Predictions')
+Logger.Info('Features: Prediction engine | Pattern learning | Anomaly detection | Advanced scoring')
+Logger.Info('🤖 Advanced AI detection ready for deployment')

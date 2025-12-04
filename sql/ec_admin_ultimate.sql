@@ -383,15 +383,6 @@ CREATE TABLE IF NOT EXISTS `ec_admin_settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Configuration storage (for UI preferences, etc.)
-CREATE TABLE IF NOT EXISTS `ec_admin_config` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `config_key` VARCHAR(100) NOT NULL,
-  `config_value` LONGTEXT NOT NULL,
-  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `config_key` (`config_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 -- =====================================================
 -- DEV TOOLS
 -- =====================================================

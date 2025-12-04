@@ -63,6 +63,57 @@ function AutoMigrate.ScanAndRunMigrations()
         'sql/ec_admin_ultimate.sql',  -- ALL tables in one file (REQUIRED)
     }
     
+    -- Scan migrations directory
+    local migrationDir = 'sql/migrations/'
+    local migrationFiles = {}
+    
+    -- Helper function to load migration files from directory
+    local function ScanMigrationDirectory()
+        -- Try to load numbered migration files
+        for i = 1, 100 do  -- Support up to 100 migrations
+            local migrationPath = string.format('%s%03d_*.sql', migrationDir, i)
+            -- Since we can't directly scan directories, we'll check common patterns
+            for attempt = 1, 50 do
+                local testPath = string.format('%s%03d_%s.sql', migrationDir, i, tostring(attempt))
+                local content = LoadResourceFile(GetCurrentResourceName(), testPath)
+                if content and content ~= '' then
+                    table.insert(migrationFiles, testPath)
+                    break
+                end
+            end
+        end
+        
+        -- Also try direct migration files if they exist
+        local standardMigrations = {
+            'sql/migrations/001_add_category_to_action_logs.sql',
+            'sql/migrations/002_add_admin_abuse_columns.sql',
+            'sql/migrations/003_add_ai_analytics_tables.sql',
+        }
+        
+        for _, migration in ipairs(standardMigrations) do
+            local content = LoadResourceFile(GetCurrentResourceName(), migration)
+            if content and content ~= '' then
+                local alreadyAdded = false
+                for _, added in ipairs(migrationFiles) do
+                    if added == migration then
+                        alreadyAdded = true
+                        break
+                    end
+                end
+                if not alreadyAdded then
+                    table.insert(migrationFiles, migration)
+                end
+            end
+        end
+        
+        return migrationFiles
+    end
+    
+    -- Add scanned migration files
+    for _, migrationFile in ipairs(ScanMigrationDirectory()) do
+        table.insert(sqlFiles, migrationFile)
+    end
+    
     local pendingMigrations = {}
     
     -- Check which files haven't been run yet

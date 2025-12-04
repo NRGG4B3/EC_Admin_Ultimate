@@ -90,14 +90,17 @@ local function LogAction(adminSource, actionType, targetSource, details)
     local targetName = targetSource and GetPlayerName(targetSource) or "N/A"
     
     if MySQL then
-        MySQL.insert('INSERT INTO ec_admin_action_logs (admin_name, admin_identifier, action_type, target_name, target_identifier, details, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)', {
-            adminName,
+        MySQL.insert('INSERT INTO ec_admin_action_logs (admin_identifier, admin_name, action, category, target_identifier, target_name, details, metadata, timestamp, action_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
             GetPlayerIdentifier(adminSource, 0),
+            adminName,
             actionType,
+            'quick_action',
+            targetSource and GetPlayerIdentifier(targetSource, 0) or nil,
             targetName,
-            targetSource and GetPlayerIdentifier(targetSource, 0) or "N/A",
             details,
-            os.time() * 1000
+            json.encode({ details = details }),
+            os.time(),
+            actionType
         })
     end
 end

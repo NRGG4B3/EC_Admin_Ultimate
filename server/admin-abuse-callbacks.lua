@@ -114,15 +114,17 @@ function LogAdminAction(adminSource, actionType, targetIdentifier, targetName, d
     
     -- Store in database
     if MySQL then
-        MySQL.insert('INSERT INTO ec_admin_action_logs (admin_name, admin_identifier, action_type, target_name, target_identifier, details, timestamp, suspicious) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
-            adminName,
+        MySQL.insert('INSERT INTO ec_admin_action_logs (admin_identifier, admin_name, action, category, target_identifier, target_name, details, metadata, timestamp, action_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
             adminIdentifier,
+            adminName,
             actionType,
-            targetName,
+            'admin_abuse',
             targetIdentifier,
+            targetName,
             details,
+            json.encode({ suspicious = suspicious and true or false }),
             os.time(),
-            suspicious and 1 or 0
+            actionType
         })
     end
     

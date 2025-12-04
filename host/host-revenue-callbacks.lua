@@ -401,4 +401,226 @@ RegisterNetEvent('host:processPurchase', function(data)
     end
 end)
 
-Logger.Success('[NRG Host Revenue] Revenue calculation system loaded', '💰')
+    
+    -- Log action
+    MySQL.insert([[
+        INSERT INTO nrg_host_action_logs 
+        (action_type, admin_id, admin_name, details, timestamp)
+        VALUES (?, ?, ?, ?, ?)
+    ]], {
+        'purchase_processed',
+        'system',
+        'Automatic',
+        json.encode({
+            customer_id = data.customerId,
+            product_name = data.productName,
+            amount = data.amount,
+            product_type = data.productType
+        }),
+        os.time()
+    })
+    
+    if src then
+        TriggerClientEvent('QBCore:Notify', src, 'Purchase processed successfully', 'success')
+    end
+end)
+
+-- =============================================================================
+-- ADVANCED HOST MANAGEMENT BILLING (ENHANCED)
+-- =============================================================================
+
+local BillingEngine = {
+    invoices = {},
+    subscriptions = {},
+    paymentMethods = {},
+    stats = {
+        totalRevenue = 0,
+        totalCustomers = 0,
+        activeSubscriptions = 0
+    }
+}
+
+-- Create invoice
+local function CreateInvoice(customerId, amount, items, dueDate)
+    local invoiceId = 'INV_' .. os.time() .. '_' .. math.random(10000, 99999)
+    
+    local invoice = {
+        id = invoiceId,
+        customerId = customerId,
+        amount = amount,
+        items = items,
+        createdAt = os.time(),
+        dueDate = dueDate,
+        status = 'pending',  -- 'pending', 'paid', 'overdue', 'cancelled'
+        paidAt = nil,
+        amountPaid = 0
+    }
+    
+    BillingEngine.invoices[invoiceId] = invoice
+    
+    MySQL.Async.execute([[
+        INSERT INTO ec_billing_invoices 
+        (invoice_id, customer_id, amount, status, due_date, created_at)
+        VALUES (?, ?, ?, ?, FROM_UNIXTIME(?), FROM_UNIXTIME(?))
+    ]], {invoiceId, customerId, amount, 'pending', dueDate, os.time()})
+    
+    return invoice
+end
+
+-- Process payment
+local function ProcessPayment(invoiceId, amount, paymentMethod)
+    local invoice = BillingEngine.invoices[invoiceId]
+    if not invoice then return false end
+    
+    invoice.amountPaid = invoice.amountPaid + amount
+    
+    if invoice.amountPaid >= invoice.amount then
+        invoice.status = 'paid'
+        invoice.paidAt = os.time()
+    end
+    
+    MySQL.Async.execute([[
+        INSERT INTO ec_billing_payments 
+        (invoice_id, amount, payment_method, paid_at)
+        VALUES (?, ?, ?, FROM_UNIXTIME(?))
+    ]], {invoiceId, amount, paymentMethod, os.time()})
+    
+    return true
+end
+
+-- Create subscription plan
+local function CreateSubscriptionPlan(customerId, planName, monthlyAmount, billingCycle)
+    local subscriptionId = 'SUB_' .. os.time() .. '_' .. math.random(10000, 99999)
+    
+    local subscription = {
+        id = subscriptionId,
+        customerId = customerId,
+        planName = planName,
+        monthlyAmount = monthlyAmount,
+        billingCycle = billingCycle,  -- 'monthly', 'annual', 'quarterly'
+        status = 'active',
+        startDate = os.time(),
+        renewalDate = os.time() + (30 * 24 * 3600),
+        nextBillingDate = os.time() + (30 * 24 * 3600)
+    }
+    
+    BillingEngine.subscriptions[subscriptionId] = subscription
+    
+    MySQL.Async.execute([[
+        INSERT INTO ec_billing_subscriptions 
+        (subscription_id, customer_id, plan_name, monthly_amount, billing_cycle, status, start_date)
+        VALUES (?, ?, ?, ?, ?, 'active', FROM_UNIXTIME(?))
+    ]], {subscriptionId, customerId, planName, monthlyAmount, billingCycle, os.time()})
+    
+    return subscription
+end
+
+-- Calculate MRR with advanced metrics
+local function GetAdvancedMRR()
+    local result = MySQL.query.await([[
+        SELECT 
+            SUM(monthly_amount) as mrr,
+            COUNT(*) as subscription_count
+        FROM ec_billing_subscriptions
+        WHERE status = 'active'
+    ]])
+    
+    if result and result[1] then
+        BillingEngine.stats.activeSubscriptions = result[1].subscription_count or 0
+        return result[1].mrr or 0
+    end
+    return 0
+end
+
+-- Calculate churn rate
+local function CalculateChurnRate()
+    local thirtyDaysAgo = os.time() - (30 * 24 * 3600)
+    
+    local result = MySQL.query.await([[
+        SELECT COUNT(*) as cancelled_count
+        FROM ec_billing_subscriptions
+        WHERE status = 'cancelled'
+        AND DATE(updated_at) > DATE(FROM_UNIXTIME(?))
+    ]], {thirtyDaysAgo})
+    
+    if not result or not result[1] then return 0 end
+    
+    local cancelledCount = result[1].cancelled_count or 0
+    local activeCount = BillingEngine.stats.activeSubscriptions
+    
+    if activeCount == 0 then return 0 end
+    return (cancelledCount / activeCount) * 100
+end
+
+-- Generate billing report
+lib.callback.register('ec_admin:generateBillingReport', function(source, period)
+    local startTime = os.time()
+    if period == '30d' then startTime = startTime - (30 * 24 * 3600)
+    elseif period == '90d' then startTime = startTime - (90 * 24 * 3600)
+    elseif period == '1y' then startTime = startTime - (365 * 24 * 3600)
+    end
+    
+    local revenue = MySQL.query.await([[
+        SELECT SUM(amount) as total_revenue, COUNT(*) as payment_count
+        FROM ec_billing_payments
+        WHERE paid_at > FROM_UNIXTIME(?)
+    ]], {startTime})
+    
+    local mrr = GetAdvancedMRR()
+    local churnRate = CalculateChurnRate()
+    
+    return {
+        success = true,
+        period = period,
+        revenue = revenue[1] or { total_revenue = 0, payment_count = 0 },
+        mrr = mrr,
+        arr = mrr * 12,
+        activeSubscriptions = BillingEngine.stats.activeSubscriptions,
+        churnRate = string.format("%.2f", churnRate) .. '%'
+    }
+end)
+
+-- Get invoice details
+lib.callback.register('ec_admin:getInvoiceDetails', function(source, invoiceId)
+    local invoice = BillingEngine.invoices[invoiceId]
+    if invoice then
+        return invoice
+    end
+    
+    local result = MySQL.query.await([[
+        SELECT * FROM ec_billing_invoices WHERE invoice_id = ?
+    ]], {invoiceId})
+    
+    return result[1] or nil
+end)
+
+-- Process subscription renewal
+CreateThread(function()
+    while true do
+        Wait(24 * 60 * 60 * 1000)  -- Run daily
+        
+        for subscriptionId, subscription in pairs(BillingEngine.subscriptions) do
+            if subscription.status == 'active' and os.time() >= subscription.nextBillingDate then
+                -- Create renewal invoice
+                local renewalAmount = subscription.monthlyAmount
+                local invoiceId = CreateInvoice(
+                    subscription.customerId,
+                    renewalAmount,
+                    {{name = subscription.planName, amount = renewalAmount}},
+                    os.time() + (30 * 24 * 3600)
+                )
+                
+                -- Update subscription next billing date
+                subscription.nextBillingDate = os.time() + (30 * 24 * 3600)
+                
+                MySQL.Async.execute([[
+                    UPDATE ec_billing_subscriptions 
+                    SET next_billing_date = FROM_UNIXTIME(?)
+                    WHERE subscription_id = ?
+                ]], {subscription.nextBillingDate, subscriptionId})
+            end
+        end
+    end
+end)
+
+Logger.Success('[NRG Host Revenue] Revenue calculation system loaded + Advanced Billing Engine', '💰')

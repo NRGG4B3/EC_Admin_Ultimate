@@ -899,7 +899,200 @@ end)
 -- CALLBACK: BULK DELETE REPORTS
 -- ============================================================================
 
-lib.callback.register('ec_admin:bulkDelete', function(source, data)
+-- ============================================================================
+-- ADVANCED ANALYTICS ENGINE (ENHANCED)
+-- ============================================================================
+
+-- Statistical functions for report analysis
+local function CalculateMean(dataset)
+    if #dataset == 0 then return 0 end
+    local sum = 0
+    for _, value in ipairs(dataset) do
+        sum = sum + value
+    end
+    return sum / #dataset
+end
+
+local function CalculateMedian(dataset)
+    if #dataset == 0 then return 0 end
+    table.sort(dataset)
+    local len = #dataset
+    if len % 2 == 0 then
+        return (dataset[len/2] + dataset[len/2 + 1]) / 2
+    else
+        return dataset[math.ceil(len/2)]
+    end
+end
+
+local function CalculateStdDev(dataset, mean)
+    if #dataset <= 1 then return 0 end
+    mean = mean or CalculateMean(dataset)
+    local sumSquares = 0
+    for _, value in ipairs(dataset) do
+        sumSquares = sumSquares + (value - mean)^2
+    end
+    return math.sqrt(sumSquares / (#dataset - 1))
+end
+
+local function CalculatePercentile(dataset, percentile)
+    if #dataset == 0 then return 0 end
+    table.sort(dataset)
+    local position = (percentile / 100) * (#dataset - 1)
+    local lower = math.floor(position)
+    local upper = math.ceil(position)
+    if lower == upper then
+        return dataset[lower + 1] or 0
+    else
+        return (dataset[lower + 1] or 0) + ((dataset[upper + 1] or 0) - (dataset[lower + 1] or 0)) * (position - lower)
+    end
+end
+
+local function CalculateTrend(dataset)
+    if #dataset < 2 then return 0 end
+    local n = #dataset
+    local sumX, sumY, sumXY, sumX2 = 0, 0, 0, 0
+    for i, value in ipairs(dataset) do
+        sumX = sumX + i
+        sumY = sumY + value
+        sumXY = sumXY + (i * value)
+        sumX2 = sumX2 + (i * i)
+    end
+    local denominator = (n * sumX2) - (sumX * sumX)
+    if denominator == 0 then return 0 end
+    return ((n * sumXY) - (sumX * sumY)) / denominator
+end
+
+-- Generate performance report with statistical analysis
+lib.callback.register('ec_admin:generatePerformanceReport', function(source, period)
+    local startTime = os.time()
+    if period == '24h' then startTime = startTime - (24 * 3600)
+    elseif period == '7d' then startTime = startTime - (7 * 24 * 3600)
+    elseif period == '30d' then startTime = startTime - (30 * 24 * 3600)
+    end
+    
+    local results = MySQL.query.await([[
+        SELECT tps, cpu_usage, memory_usage, network_latency
+        FROM ec_performance_metrics
+        WHERE recorded_at > FROM_UNIXTIME(?)
+        ORDER BY recorded_at ASC
+    ]], {startTime})
+    
+    if not results or #results == 0 then
+        return { success = false, message = 'No data available' }
+    end
+    
+    local tpsData, cpuData, memoryData, latencyData = {}, {}, {}, {}
+    for _, row in ipairs(results) do
+        table.insert(tpsData, row.tps or 0)
+        table.insert(cpuData, row.cpu_usage or 0)
+        table.insert(memoryData, row.memory_usage or 0)
+        table.insert(latencyData, row.network_latency or 0)
+    end
+    
+    return {
+        success = true,
+        period = period,
+        generatedAt = os.time(),
+        type = 'server_performance',
+        data = {
+            tps = {
+                average = string.format("%.2f", CalculateMean(tpsData)),
+                median = string.format("%.2f", CalculateMedian(tpsData)),
+                stdDev = string.format("%.2f", CalculateStdDev(tpsData)),
+                p95 = string.format("%.2f", CalculatePercentile(tpsData, 95)),
+                p99 = string.format("%.2f", CalculatePercentile(tpsData, 99)),
+                trend = string.format("%.4f", CalculateTrend(tpsData))
+            },
+            cpu = {
+                average = string.format("%.2f", CalculateMean(cpuData)),
+                median = string.format("%.2f", CalculateMedian(cpuData)),
+                stdDev = string.format("%.2f", CalculateStdDev(cpuData)),
+                p95 = string.format("%.2f", CalculatePercentile(cpuData, 95)),
+                p99 = string.format("%.2f", CalculatePercentile(cpuData, 99)),
+                trend = string.format("%.4f", CalculateTrend(cpuData))
+            },
+            memory = {
+                average = string.format("%.2f", CalculateMean(memoryData)),
+                median = string.format("%.2f", CalculateMedian(memoryData)),
+                stdDev = string.format("%.2f", CalculateStdDev(memoryData)),
+                p95 = string.format("%.2f", CalculatePercentile(memoryData, 95)),
+                p99 = string.format("%.2f", CalculatePercentile(memoryData, 99)),
+                trend = string.format("%.4f", CalculateTrend(memoryData))
+            },
+            latency = {
+                average = string.format("%.2f", CalculateMean(latencyData)),
+                median = string.format("%.2f", CalculateMedian(latencyData)),
+                stdDev = string.format("%.2f", CalculateStdDev(latencyData)),
+                p95 = string.format("%.2f", CalculatePercentile(latencyData, 95)),
+                p99 = string.format("%.2f", CalculatePercentile(latencyData, 99)),
+                trend = string.format("%.4f", CalculateTrend(latencyData))
+            }
+        }
+    }
+end)
+
+-- Generate player activity report with trends
+lib.callback.register('ec_admin:generatePlayerActivityReport', function(source, playerId, period)
+    local startTime = os.time()
+    if period == '24h' then startTime = startTime - (24 * 3600)
+    elseif period == '7d' then startTime = startTime - (7 * 24 * 3600)
+    elseif period == '30d' then startTime = startTime - (30 * 24 * 3600)
+    end
+    
+    local result = MySQL.query.await([[
+        SELECT 
+            SUM(CASE WHEN action_type = 'login' THEN 1 ELSE 0 END) as login_count,
+            SUM(CASE WHEN action_type = 'logout' THEN 1 ELSE 0 END) as logout_count,
+            SUM(CASE WHEN action_type = 'vehicle_spawn' THEN 1 ELSE 0 END) as vehicles_spawned,
+            AVG(CASE WHEN action_type = 'session_duration' THEN data_value ELSE NULL END) as avg_session,
+            COUNT(*) as total_actions
+        FROM ec_action_logs
+        WHERE player_id = ? AND recorded_at > FROM_UNIXTIME(?)
+    ]], {tonumber(playerId), startTime})
+    
+    return {
+        success = true,
+        playerId = playerId,
+        period = period,
+        generatedAt = os.time(),
+        type = 'player_activity',
+        data = result[1] or {
+            login_count = 0,
+            logout_count = 0,
+            vehicles_spawned = 0,
+            avg_session = 0,
+            total_actions = 0
+        }
+    }
+end)
+
+-- Generate moderation analytics report
+lib.callback.register('ec_admin:generateModerationReport', function(source, period)
+    local startTime = os.time()
+    if period == '24h' then startTime = startTime - (24 * 3600)
+    elseif period == '7d' then startTime = startTime - (7 * 24 * 3600)
+    elseif period == '30d' then startTime = startTime - (30 * 24 * 3600)
+    end
+    
+    local results = MySQL.query.await([[
+        SELECT action_type, COUNT(*) as count, COUNT(DISTINCT player_id) as unique_players
+        FROM ec_moderation_logs
+        WHERE recorded_at > FROM_UNIXTIME(?)
+        GROUP BY action_type
+    ]], {startTime})
+    
+    return {
+        success = true,
+        period = period,
+        generatedAt = os.time(),
+        type = 'moderation',
+        data = {
+            byType = results or {}
+        }
+    }
+end)
+
+Logger.Info('Reports & logs callbacks loaded (45+ actions + Advanced Analytics)', '✅')
     local reportIds = data.reportIds or {}
     
     if #reportIds == 0 then

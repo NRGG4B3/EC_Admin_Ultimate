@@ -646,4 +646,111 @@ end
 -- Export function
 exports('UpdateLeaderboard', UpdateLeaderboard)
 
-Logger.Info('Community callbacks loaded')
+-- =============================================================================
+-- ADVANCED ENGAGEMENT TRACKING (ENHANCED)
+-- =============================================================================
+
+local EngagementEngine = {
+    members = {},
+    leaderboards = {}
+}
+
+-- Track member engagement
+local function TrackMemberEngagement(playerId, action, points)
+    if not EngagementEngine.members[playerId] then
+        EngagementEngine.members[playerId] = {
+            totalEngagement = 0,
+            joinDate = os.time(),
+            lastActive = os.time()
+        }
+    end
+    
+    local member = EngagementEngine.members[playerId]
+    member.totalEngagement = member.totalEngagement + (points or 10)
+    member.lastActive = os.time()
+    
+    MySQL.Async.execute([[
+        INSERT INTO ec_community_engagement (player_id, action, points)
+        VALUES (?, ?, ?)
+    ]], {tonumber(playerId), action, points or 10})
+end
+
+-- Calculate engagement score
+local function CalculateEngagementScore(playerId)
+    local member = EngagementEngine.members[playerId]
+    if not member then return 0 end
+    
+    local daysSinceJoin = (os.time() - member.joinDate) / 86400
+    local engagementRate = member.totalEngagement / math.max(1, daysSinceJoin)
+    return math.floor(engagementRate * 10)
+end
+
+-- Update community leaderboards
+local function UpdateCommunityLeaderboards()
+    EngagementEngine.leaderboards.engagement = {}
+    
+    local scores = {}
+    for playerId, member in pairs(EngagementEngine.members) do
+        local score = CalculateEngagementScore(tonumber(playerId))
+        table.insert(scores, {
+            playerId = tonumber(playerId),
+            score = score
+        })
+    end
+    
+    table.sort(scores, function(a, b) return a.score > b.score end)
+    
+    for rank, entry in ipairs(scores) do
+        if rank <= 100 then
+            table.insert(EngagementEngine.leaderboards.engagement, {
+                rank = rank,
+                playerId = entry.playerId,
+                score = entry.score
+            })
+        end
+    end
+end
+
+-- Get member engagement profile
+lib.callback.register('ec_admin:getMemberEngagementProfile', function(source, playerId)
+    local member = EngagementEngine.members[tonumber(playerId)]
+    if not member then
+        return { success = false }
+    end
+    
+    local score = CalculateEngagementScore(tonumber(playerId))
+    return {
+        success = true,
+        playerId = tonumber(playerId),
+        totalEngagement = member.totalEngagement,
+        engagementScore = score,
+        joinedDaysAgo = math.floor((os.time() - member.joinDate) / 86400),
+        lastActive = member.lastActive
+    }
+end)
+
+-- Get community leaderboard
+lib.callback.register('ec_admin:getCommunityLeaderboard', function(source, limit)
+    limit = limit or 50
+    local result = {}
+    for i = 1, math.min(limit, #EngagementEngine.leaderboards.engagement) do
+        table.insert(result, EngagementEngine.leaderboards.engagement[i])
+    end
+    return result
+end)
+
+-- Track event participation
+lib.callback.register('ec_admin:trackEventParticipation', function(source, eventId, playerId, points)
+    TrackMemberEngagement(tonumber(playerId), 'event_participation', points or 100)
+    return { success = true }
+end)
+
+-- Update leaderboards every 30 minutes
+CreateThread(function()
+    while true do
+        Wait(30 * 60 * 1000)
+        UpdateCommunityLeaderboards()
+    end
+end)
+
+Logger.Info('Community callbacks loaded + Advanced Engagement Tracking')
