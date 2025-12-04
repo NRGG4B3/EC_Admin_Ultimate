@@ -214,6 +214,18 @@ RegisterNetEvent('ec_admin_ultimate:server:getSettings', function()
         end
     end
     
+    -- Load config.lua webhook URLs as defaults if not in database
+    if Config.Webhooks and Config.Webhooks.urls then
+        webhooks.adminMain = webhooks.adminMain or Config.Webhooks.urls.adminMain
+        webhooks.adminActions = webhooks.adminActions or Config.Webhooks.urls.adminActions
+        webhooks.adminBans = webhooks.adminBans or Config.Webhooks.urls.adminBans
+        webhooks.adminReports = webhooks.adminReports or Config.Webhooks.urls.adminReports
+        webhooks.adminEconomy = webhooks.adminEconomy or Config.Webhooks.urls.adminEconomy
+        webhooks.adminAntiCheat = webhooks.adminAntiCheat or Config.Webhooks.urls.adminAntiCheat
+        webhooks.adminAIDetection = webhooks.adminAIDetection or Config.Webhooks.urls.adminAIDetection
+        webhooks.adminWhitelist = webhooks.adminWhitelist or Config.Webhooks.urls.adminWhitelist
+    end
+    
     -- Get server info
     local serverInfo = {
         hostname = GetConvar('sv_hostname', 'Unknown Server'),

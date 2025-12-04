@@ -79,8 +79,8 @@ end
 local OriginalRegisterNUICallback = RegisterNUICallback
 RegisterNUICallback = function(callbackName, callback)
     OriginalRegisterNUICallback(callbackName, function(data, cb)
-        -- Log the NUI callback
-        if Config.Discord and Config.Discord.consoleLogging and Config.Discord.consoleLogging.logMenuClicks then
+        -- Log the NUI callback ONLY if menu is open
+        if ClientLogger.menuOpen and Config.Discord and Config.Discord.consoleLogging and Config.Discord.consoleLogging.logMenuClicks then
             ClientLogger.LogClick(callbackName, 'NUI Callback')
         end
         

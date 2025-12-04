@@ -28,7 +28,7 @@ end
 -- HELPER: GET PLAYER IDENTIFIERS
 -- ============================================================================
 
-local function GetPlayerIdentifiers(playerId)
+local function GetPlayerIdentsData(playerId)
     local identifiers = {
         steam = nil,
         license = nil,
@@ -99,7 +99,7 @@ lib.callback.register('adminProfile:getData', function(source, data)
     
     -- Get basic player info
     local playerName = GetPlayerName(playerId)
-    local identifiers = GetPlayerIdentifiers(playerId)
+    local identifiers = GetPlayerIdentsData(playerId)
     local permissions = GetAdminPermissions(playerId)
     
     -- Determine role based on permissions

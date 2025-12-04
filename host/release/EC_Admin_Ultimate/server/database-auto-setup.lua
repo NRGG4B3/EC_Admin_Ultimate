@@ -58,13 +58,19 @@ DB_AUTO.TABLES = {
                 `id` INT AUTO_INCREMENT PRIMARY KEY,
                 `admin_identifier` VARCHAR(100) NOT NULL,
                 `admin_name` VARCHAR(100) NOT NULL,
-                `action_type` VARCHAR(50) NOT NULL,
+                `action` VARCHAR(255) NOT NULL,
+                `category` VARCHAR(50) DEFAULT 'general',
+                `action_type` VARCHAR(50) NULL,
                 `target_identifier` VARCHAR(100) NULL,
                 `target_name` VARCHAR(100) NULL,
                 `details` TEXT NULL,
+                `metadata` JSON NULL,
+                `timestamp` BIGINT(20) NULL,
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX `idx_admin` (`admin_identifier`),
-                INDEX `idx_action_type` (`action_type`),
+                INDEX `idx_action` (`action`),
+                INDEX `idx_category` (`category`),
+                INDEX `idx_timestamp` (`timestamp`),
                 INDEX `idx_created_at` (`created_at`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         ]]

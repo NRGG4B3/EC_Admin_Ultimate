@@ -1093,31 +1093,5 @@ lib.callback.register('ec_admin:generateModerationReport', function(source, peri
 end)
 
 Logger.Info('Reports & logs callbacks loaded (45+ actions + Advanced Analytics)', '✅')
-    local reportIds = data.reportIds or {}
-    
-    if #reportIds == 0 then
-        return {success = false, message = 'No reports selected'}
-    end
-    
-    if MySQL and MySQL.Sync and MySQL.Sync.execute then
-        local deletedCount = 0
-        for _, reportId in ipairs(reportIds) do
-            MySQL.Sync.execute('DELETE FROM player_reports WHERE id = @id OR report_id = @id', {
-                ['@id'] = reportId
-            })
-            deletedCount = deletedCount + 1
-        end
-        
-        return {
-            success = true,
-            message = string.format('Deleted %d reports', deletedCount),
-            deletedCount = deletedCount
-        }
-    else
-        return {success = false, message = 'Database not available'}
-    end
-end)
-
-Logger.Info('Reports & logs callbacks loaded (45+ actions)', '✅')
 Logger.Info('Real-time logging integration active', '📝')
 Logger.Debug('Framework detected: ' .. FrameworkType)
