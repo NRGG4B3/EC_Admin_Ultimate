@@ -23,11 +23,11 @@ local function ApplyAllSQLNow()
         -- FIX 1: Add missing 'category' column to action logs
         {
             name = 'Add category column to ec_admin_action_logs',
-            sql = 'ALTER TABLE IF EXISTS `ec_admin_action_logs` ADD COLUMN IF NOT EXISTS `category` VARCHAR(50) DEFAULT \'general\' AFTER `action`'
+            sql = 'ALTER TABLE `ec_admin_action_logs` ADD COLUMN IF NOT EXISTS `category` VARCHAR(50) DEFAULT \'general\' AFTER `action`'
         },
         {
             name = 'Add index on category column',
-            sql = 'ALTER TABLE IF EXISTS `ec_admin_action_logs` ADD INDEX IF NOT EXISTS `idx_category` (`category`)'
+            sql = 'ALTER TABLE `ec_admin_action_logs` ADD INDEX IF NOT EXISTS `idx_category` (`category`)'
         },
         -- FIX 2: Ensure migration tracking table exists
         {

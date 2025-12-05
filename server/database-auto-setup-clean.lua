@@ -22,22 +22,6 @@ DB_AUTO.SQL_FILES = {
     -- host = 'host/ec_admin_host.sql'   -- Uncomment if this is a host installation
 }
 
--- Auto-migrate missing columns for action logs
-function DB_AUTO.MigrateActionLogsTable()
-    local checkColumn = MySQL.query.await([[SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ec_admin_action_logs' AND COLUMN_NAME = 'metadata']], {})
-    if not checkColumn or not checkColumn[1] then
-        Logger.System('🔄 Migrating ec_admin_action_logs: Adding missing metadata column...')
-        local success, err = pcall(function()
-            MySQL.query.await([[ALTER TABLE ec_admin_action_logs ADD COLUMN metadata TEXT DEFAULT NULL]], {})
-        end)
-        if success then
-            Logger.Success('✅ metadata column added to ec_admin_action_logs')
-        else
-            Logger.Error('❌ Failed to add metadata column: ' .. tostring(err))
-        end
-    end
-end
-
 -- Load SQL file content
 function DB_AUTO.LoadSQLFile(filename)
     local resourceName = GetCurrentResourceName()
@@ -213,9 +197,6 @@ CreateThread(function()
             Logger.Error(string.format('   ✅ Success: %d | ❌ Failed: %d', success, failed))
         end
     end
-
-    -- Always run migration for missing columns
-    DB_AUTO.MigrateActionLogsTable()
     
     Logger.System('')
     Logger.System('🚀 EC Admin Ultimate ready!')

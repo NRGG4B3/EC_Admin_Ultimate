@@ -1,1 +1,1 @@
-{"playerFlags":[],"settings":{"category":"permissions","values":{"enableWhitelist":true,"enableAIDetection":true}},"transactions":[],"webhooks":[],"adminMembers":[],"anticheat":{"config":[],"modules":[]}}
+{"playerFlags":[],"anticheat":{"config":[],"modules":[]},"webhooks":[],"transactions":[],"settings":{"values":{"serverName":"NRG Development"},"category":"general"},"adminMembers":[]}

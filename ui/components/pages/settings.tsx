@@ -575,29 +575,30 @@ export function SettingsPage({ liveData }: SettingsPageProps) {
 
               <Separator />
 
-              {['adminActions', 'ban', 'report', 'economy', 'anticheat', 'aiDetection', 'whitelist', 'system'].map((type) => (
-                <div key={type} className="space-y-2">
-                  <Label htmlFor={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1).replace(/([A-Z])/g, ' $1')} Webhook
-                  </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id={type}
-                      placeholder="https://discord.com/api/webhooks/..."
-                      value={settings.webhooks?.[type + 'Webhook'] || ''}
-                      onChange={(e) => updateFormData('webhooks', type + 'Webhook', e.target.value)}
-                      className="flex-1"
-                    />
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleTestWebhook(settings.webhooks?.[type + 'Webhook'] || '')}
-                    >
-                      <TestTube2 className="size-4" />
-                    </Button>
+                {/* Ensure all webhook categories from config are present and mapped safely */}
+                {(window?.Config?.Webhooks ? Object.keys(window.Config.Webhooks) : ['adminActions','bans','reports','economy','anticheat','aiDetection','whitelist','system']).map((type) => (
+                  <div key={type} className="space-y-2">
+                    <Label htmlFor={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1).replace(/([A-Z])/g, ' $1')} Webhook
+                    </Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id={type}
+                        placeholder="https://discord.com/api/webhooks/..."
+                        value={settings.webhooks?.[type + 'Webhook'] || settings.webhooks?.[type] || ''}
+                        onChange={(e) => updateFormData('webhooks', type + 'Webhook', e.target.value)}
+                        className="flex-1"
+                      />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleTestWebhook(settings.webhooks?.[type + 'Webhook'] || settings.webhooks?.[type] || '')}
+                      >
+                        <TestTube2 className="size-4" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
               <Separator />
 

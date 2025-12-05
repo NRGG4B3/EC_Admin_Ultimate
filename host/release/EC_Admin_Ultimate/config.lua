@@ -408,8 +408,8 @@ Config.Discord = {
     consoleLogging = {
         enabled = true,  -- Enable console logging
         logLevel = 'info',  -- debug, info, warn, error
-        logMenuClicks = true,  -- Log every UI click to console
-        logMenuNavigation = true,  -- Log page changes to console
+        logMenuClicks = false,  -- Log every UI click to console
+        logMenuNavigation = false,  -- Log page changes to console
         logPlayerActions = true,  -- Log player actions to console
         logAdminActions = true,  -- Log admin actions to console
         showTimestamps = true,  -- Show timestamps in console logs
@@ -503,194 +503,194 @@ Config.APIs = {
     -- Global Ban System (shared bans across all NRG servers)
     GlobalBans = {
         enabled = true,
-        endpoint = "/api/v1/bans",
-        bypassOwners = true,  -- Server owners NEVER get banned
-        bypassNRGStaff = true,  -- NRG staff bypass all bans
-        syncInterval = 60,  -- Check for new bans every 60 seconds
+        url = "https://api.ecbetasolutions.com:3001/api/global-bans",
+        bypassOwners = true,
+        bypassNRGStaff = true,
+        syncInterval = 60,
         cacheEnabled = true
     },
     
     -- AI Detection & Behavior Analytics
     AIDetection = {
         enabled = true,
-        endpoint = "/api/v1/ai/detection",
-        realtime = true,  -- Real-time AI analysis
-        confidenceThreshold = 75,  -- Minimum confidence to flag (%)
-        sendPlayerData = true,  -- Send player behavior data to AI
-        learningMode = true  -- AI learns from your server patterns
+        url = "https://api.ecbetasolutions.com:3002/api/ai-detection",
+        realtime = true,
+        confidenceThreshold = 75,
+        sendPlayerData = true,
+        learningMode = true
     },
     
     -- Admin Abuse Monitoring (prevents admin power abuse)
     AdminAbuse = {
         enabled = true,
-        endpoint = "/api/v1/admin/abuse",
-        trackActions = true,  -- Log all admin actions
-        flagSuspicious = true,  -- Flag suspicious admin behavior
-        alertOwners = true,  -- Alert server owners of abuse
-        thresholdScore = 80  -- Abuse confidence threshold (%)
+        url = "https://api.ecbetasolutions.com:3002/api/admin-abuse",
+        trackActions = true,
+        flagSuspicious = true,
+        alertOwners = true,
+        thresholdScore = 80
     },
     
     -- Server Analytics & Statistics
     Analytics = {
         enabled = true,
-        endpoint = "/api/v1/analytics",
-        trackPlayers = true,  -- Player count analytics
-        trackEconomy = true,  -- Economy statistics
-        trackPerformance = true,  -- Server performance metrics
-        updateInterval = 300  -- Update every 5 minutes
+        url = "https://api.ecbetasolutions.com:3003/api/player-analytics",
+        trackPlayers = true,
+        trackEconomy = true,
+        trackPerformance = true,
+        updateInterval = 300
     },
     
     -- Server Metrics & Health Monitoring
     ServerMetrics = {
         enabled = true,
-        endpoint = "/api/v1/metrics",
-        trackFPS = true,  -- Server FPS/TPS
-        trackMemory = true,  -- Memory usage
-        trackCPU = true,  -- CPU usage
-        trackNetwork = true,  -- Network stats
-        alertOnIssues = true,  -- Alert on performance issues
-        reportInterval = 60  -- Report every 60 seconds
+        url = "https://api.ecbetasolutions.com:3004/api/server-metrics",
+        trackFPS = true,
+        trackMemory = true,
+        trackCPU = true,
+        trackNetwork = true,
+        alertOnIssues = true,
+        reportInterval = 60
     },
     
     -- Player Reports System
     Reports = {
         enabled = true,
-        endpoint = "/api/v1/reports",
-        allowPlayerReports = true,  -- Players can submit reports
-        autoAssign = true,  -- Auto-assign reports to admins
-        notifyAdmins = true,  -- Real-time admin notifications
+        url = "https://api.ecbetasolutions.com:3005/api/reports",
+        allowPlayerReports = true,
+        autoAssign = true,
+        notifyAdmins = true,
         categories = { "Cheating", "Abuse", "RDM", "VDM", "Bug", "Other" }
     },
     
     -- Live Server Map (real-time player positions)
     LiveMap = {
         enabled = true,
-        endpoint = "/api/v1/livemap",
-        updateInterval = 5,  -- Update every 5 seconds
+        url = "https://api.ecbetasolutions.com:3010/api/livemap",
+        updateInterval = 5,
         showPlayers = true,
         showVehicles = true,
         showBlips = true,
-        allowSpectate = true  -- Click player on map to spectate
+        allowSpectate = true
     },
     
     -- Automated Backups
     Backups = {
         enabled = true,
-        endpoint = "/api/v1/backups",
-        autoBackup = true,  -- Automatic scheduled backups
-        backupInterval = 3600,  -- Backup every hour
+        url = "https://api.ecbetasolutions.com:3007/api/backups",
+        autoBackup = true,
+        backupInterval = 3600,
         backupTypes = { "database", "resources", "config" },
-        retention = 168  -- Keep backups for 7 days (hours)
+        retention = 168
     },
     
     -- Economy Management & Tracking
     Economy = {
         enabled = true,
-        endpoint = "/api/v1/economy",
-        trackTransactions = true,  -- Log all money transactions
-        detectExploits = true,  -- Detect money exploits
-        syncPlayerMoney = true,  -- Real-time money sync
-        alertThreshold = 1000000  -- Alert on large transactions
+        url = "https://api.ecbetasolutions.com:3009/api/economy",
+        trackTransactions = true,
+        detectExploits = true,
+        syncPlayerMoney = true,
+        alertThreshold = 1000000
     },
     
     -- Whitelist System
     Whitelist = {
         enabled = true,
-        endpoint = "/api/v1/whitelist",
-        enforceWhitelist = false,  -- Require whitelist to join (set true to enable)
-        autoSync = true,  -- Sync whitelist from API
-        allowApplications = true,  -- Allow players to apply for whitelist
-        notifyAdmins = true  -- Notify admins of new applications
+        url = "https://api.ecbetasolutions.com:3013/api/whitelist",
+        enforceWhitelist = false,
+        autoSync = true,
+        allowApplications = true,
+        notifyAdmins = true
     },
     
     -- Discord Integration & Sync
     DiscordSync = {
         enabled = true,
-        endpoint = "/api/v1/discord",
-        syncRoles = true,  -- Sync Discord roles to in-game permissions
-        syncNames = true,  -- Show Discord names in-game
-        logActions = true,  -- Log admin actions to Discord
-        webhooks = true  -- Use Discord webhooks for notifications
+        url = "https://api.ecbetasolutions.com:3000/api/discord",
+        syncRoles = true,
+        syncNames = true,
+        logActions = true,
+        webhooks = true
     },
     
     -- Vehicle Database & Management
     VehicleData = {
         enabled = true,
-        endpoint = "/api/v1/vehicles",
-        syncSpawned = true,  -- Track spawned vehicles
-        syncOwnership = true,  -- Track vehicle ownership
-        syncModifications = true,  -- Track vehicle mods
+        url = "https://api.ecbetasolutions.com:3000/api/vehicles",
+        syncSpawned = true,
+        syncOwnership = true,
+        syncModifications = true,
         cacheVehicleList = true
     },
     
     -- Housing System Integration
     Housing = {
         enabled = true,
-        endpoint = "/api/v1/housing",
-        syncOwnership = true,  -- Sync house ownership
-        syncInventories = true,  -- Sync house storage
-        allowRemoteManagement = true,  -- Manage houses from admin panel
+        url = "https://api.ecbetasolutions.com:3000/api/housing",
+        syncOwnership = true,
+        syncInventories = true,
+        allowRemoteManagement = true,
         trackActivity = true
     },
     
     -- Inventory System Integration
     Inventory = {
         enabled = true,
-        endpoint = "/api/v1/inventory",
+        url = "https://api.ecbetasolutions.com:3000/api/inventory",
         syncPlayerInventories = true,
         syncStashes = true,
-        trackItemFlow = true,  -- Track item creation/deletion
-        detectDuplication = true  -- Detect item duplication exploits
+        trackItemFlow = true,
+        detectDuplication = true
     },
     
     -- Jobs & Gangs Management
     Jobs = {
         enabled = true,
-        endpoint = "/api/v1/jobs",
+        url = "https://api.ecbetasolutions.com:3000/api/jobs",
         syncJobData = true,
         syncGangData = true,
         trackActivity = true,
-        allowRemoteManagement = true  -- Manage jobs/gangs from admin panel
+        allowRemoteManagement = true
     },
     
     -- Advanced Anti-Cheat System
     AntiCheat = {
         enabled = true,
-        endpoint = "/api/v1/anticheat",
-        cloudDetection = true,  -- Use cloud-based cheat signatures
-        shareDetections = true,  -- Share detections with other servers
-        autoUpdate = true,  -- Auto-update cheat signatures
+        url = "https://api.ecbetasolutions.com:3006/api/anticheat",
+        cloudDetection = true,
+        shareDetections = true,
+        autoUpdate = true,
         bannedResourcesCheck = true
     },
     
     -- System Monitoring & Alerts
     Monitoring = {
         enabled = true,
-        endpoint = "/api/v1/monitoring",
+        url = "https://api.ecbetasolutions.com:3016/api/monitoring",
         uptimeTracking = true,
-        errorTracking = true,  -- Track script errors
-        crashReporting = true,  -- Report server crashes
+        errorTracking = true,
+        crashReporting = true,
         performanceAlerts = true
     },
     
     -- Webhook Management
     Webhooks = {
         enabled = true,
-        endpoint = "/api/v1/webhooks",
-        allowCustomWebhooks = true,  -- Use custom Discord webhooks
-        rateLimit = true,  -- Prevent webhook spam
+        url = "https://api.ecbetasolutions.com:3009/api/webhooks",
+        allowCustomWebhooks = true,
+        rateLimit = true,
         retryFailed = true
     },
     
     -- Host Dashboard (NRG Staff Only - Auto-enabled when host/ folder detected)
     HostDashboard = {
-        enabled = false,  -- Auto-set to true if /host/ folder exists
-        endpoint = "/api/v1/host",
-        nrgStaffAutoAccess = true,  -- NRG staff get automatic access
-        requireApproval = false,  -- No approval needed for NRG staff
-        showRevenue = true,  -- Show revenue statistics
-        showServers = true,  -- Show all servers using EC Admin
-        showAnalytics = true  -- Show global analytics
+        enabled = true,
+        url = "https://api.ecbetasolutions.com:3019/api/host",
+        nrgStaffAutoAccess = true,
+        requireApproval = false,
+        showRevenue = true,
+        showServers = true,
+        showAnalytics = true
     }
 }
 

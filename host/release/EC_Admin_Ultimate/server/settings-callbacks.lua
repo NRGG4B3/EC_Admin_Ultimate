@@ -74,6 +74,59 @@ CreateThread(function()
             end
         end
     end
+
+    -- Sync missing webhook categories and URLs from config
+    if not Settings.webhooks then Settings.webhooks = {} end
+    local configWebhooks = Config.Webhooks or {}
+        -- Ensure all config webhook categories exist in Settings.webhooks
+        for k, v in pairs(configWebhooks) do
+            if not Settings.webhooks[k] or Settings.webhooks[k] == '' then
+                Settings.webhooks[k] = v
+                Logger.Info('Synced missing webhook: ' .. k)
+            end
+        end
+        -- Ensure all required settings categories exist in DB
+        local requiredCategories = { 'general', 'security', 'notifications', 'performance', 'webhooks' }
+        for _, cat in ipairs(requiredCategories) do
+            if not Settings[cat] then
+                Settings[cat] = {}
+                Logger.Info('Created missing settings category: ' .. cat)
+            end
+            -- Save to DB if missing
+            local exists = false
+            for _, row in ipairs(savedSettings or {}) do
+                if row.category == cat then exists = true break end
+            end
+            if not exists then
+                MySQL.query.await('INSERT INTO ec_admin_settings (category, settings_data, updated_by) VALUES (?, ?, ?)', {
+                    cat,
+                    json.encode(Settings[cat]),
+                    'system'
+                })
+                Logger.Info('Inserted missing settings category to DB: ' .. cat)
+            end
+        end
+    -- Sync toggles
+    if configWebhooks.toggles then
+        for k,v in pairs(configWebhooks.toggles) do
+            if Settings.webhooks[k] == nil then Settings.webhooks[k] = v end
+        end
+    end
+    -- Sync URLs
+    if configWebhooks.urls then
+        if not Settings.webhooks.urls then Settings.webhooks.urls = {} end
+        for k,v in pairs(configWebhooks.urls) do
+            if Settings.webhooks.urls[k] == nil then Settings.webhooks.urls[k] = v end
+        end
+    end
+    -- Sync defaultWebhookUrl
+    if configWebhooks.defaultWebhookUrl and not Settings.webhooks.defaultWebhookUrl then
+        Settings.webhooks.defaultWebhookUrl = configWebhooks.defaultWebhookUrl
+    end
+    -- Sync enabled
+    if configWebhooks.enabled ~= nil and Settings.webhooks.enabled == nil then
+        Settings.webhooks.enabled = configWebhooks.enabled
+    end
 end)
 
 -- ============================================================================
