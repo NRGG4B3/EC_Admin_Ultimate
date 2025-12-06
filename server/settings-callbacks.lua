@@ -98,12 +98,17 @@ CreateThread(function()
                 if row.category == cat then exists = true break end
             end
             if not exists then
-                MySQL.query.await('INSERT INTO ec_admin_settings (category, settings_data, updated_by) VALUES (?, ?, ?)', {
+                MySQL.query.await([[INSERT INTO ec_admin_settings (category, settings_data, updated_by)
+                    VALUES (?, ?, ?)
+                    ON DUPLICATE KEY UPDATE 
+                        settings_data = VALUES(settings_data),
+                        updated_by = VALUES(updated_by),
+                        updated_at = CURRENT_TIMESTAMP]], {
                     cat,
                     json.encode(Settings[cat]),
                     'system'
                 })
-                Logger.Info('Inserted missing settings category to DB: ' .. cat)
+                Logger.Info('Upserted missing settings category to DB: ' .. cat)
             end
         end
     -- Sync toggles

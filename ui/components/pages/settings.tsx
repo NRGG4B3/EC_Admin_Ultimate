@@ -1,4 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
+
+declare global {
+  interface Window {
+    Config?: any;
+  }
+}
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';

@@ -7,11 +7,28 @@
 
 local APIHealth = {
     status = {
-        playerData = { online = false, lastCheck = 0, url = nil },
-        globalBans = { online = false, lastCheck = 0, url = nil },
-        antiCheat = { online = false, lastCheck = 0, url = nil },
-        analytics = { online = false, lastCheck = 0, url = nil },
-        monitoring = { online = false, lastCheck = 0, url = nil }
+        GlobalBans = { online = false, lastCheck = 0, url = nil },
+        AIDetection = { online = false, lastCheck = 0, url = nil },
+        Analytics = { online = false, lastCheck = 0, url = nil },
+        ServerMetrics = { online = false, lastCheck = 0, url = nil },
+        Reports = { online = false, lastCheck = 0, url = nil },
+        AntiCheat = { online = false, lastCheck = 0, url = nil },
+        Backups = { online = false, lastCheck = 0, url = nil },
+        Inventory = { online = false, lastCheck = 0, url = nil },
+        Webhooks = { online = false, lastCheck = 0, url = nil },
+        Community = { online = false, lastCheck = 0, url = nil },
+        LiveMap = { online = false, lastCheck = 0, url = nil },
+        Economy = { online = false, lastCheck = 0, url = nil },
+        Whitelist = { online = false, lastCheck = 0, url = nil },
+        DiscordSync = { online = false, lastCheck = 0, url = nil },
+        VehicleData = { online = false, lastCheck = 0, url = nil },
+        Housing = { online = false, lastCheck = 0, url = nil },
+        Jobs = { online = false, lastCheck = 0, url = nil },
+        HostDashboard = { online = false, lastCheck = 0, url = nil },
+        SystemManagement = { online = false, lastCheck = 0, url = nil },
+        AIAnalytics = { online = false, lastCheck = 0, url = nil },
+        Moderation = { online = false, lastCheck = 0, url = nil },
+        VehicleManagement = { online = false, lastCheck = 0, url = nil }
     },
     checkInterval = 300000, -- 5 minutes in milliseconds
     isHostMode = false,
@@ -43,22 +60,27 @@ local function CheckAPI(apiName, url)
         return false
     end
     
-    -- Perform HTTP request with timeout
+    -- Perform HTTP request with timeout and X-Host-Secret header
     local success = false
-    
-    PerformHttpRequest(url .. '/health', function(statusCode, response, headers)
+    local hostSecret = nil
+    if Config and Config.HostApi and Config.HostApi.secret then
+        hostSecret = Config.HostApi.secret
+    end
+    local headers = { ['Content-Type'] = 'application/json' }
+    if hostSecret then
+        headers['X-Host-Secret'] = hostSecret
+    end
+    PerformHttpRequest(url .. '/health', function(statusCode, response, respHeaders)
         if statusCode == 200 then
             success = true
         end
-    end, 'GET', '', { ['Content-Type'] = 'application/json' })
-    
+    end, 'GET', '', headers)
     -- Wait for response (with timeout)
     local timeout = 0
     while success == false and timeout < 50 do
         Wait(100)
         timeout = timeout + 1
     end
-    
     return success
 end
 
@@ -72,11 +94,28 @@ function APIHealth.CheckAllAPIs()
     if APIHealth.isHostMode then
         -- Host mode - check localhost APIs (correct port mapping)
         local apis = {
-            { name = 'playerData', url = 'http://127.0.0.1:3011' },   -- Player Tracking API
-            { name = 'globalBans', url = 'http://127.0.0.1:3001' },   -- Global Ban System
-            { name = 'antiCheat', url = 'http://127.0.0.1:3006' },    -- Anticheat Sync
-            { name = 'analytics', url = 'http://127.0.0.1:3003' },    -- Player Analytics
-            { name = 'monitoring', url = 'http://127.0.0.1:3016' }    -- Performance Monitor
+            { name = 'GlobalBans', url = 'http://127.0.0.1:3001' },
+            { name = 'AIDetection', url = 'http://127.0.0.1:3002' },
+            { name = 'Analytics', url = 'http://127.0.0.1:3003' },
+            { name = 'ServerMetrics', url = 'http://127.0.0.1:3004' },
+            { name = 'Reports', url = 'http://127.0.0.1:3005' },
+            { name = 'AntiCheat', url = 'http://127.0.0.1:3006' },
+            { name = 'Backups', url = 'http://127.0.0.1:3007' },
+            { name = 'Inventory', url = 'http://127.0.0.1:3008' },
+            { name = 'Webhooks', url = 'http://127.0.0.1:3009' },
+            { name = 'Community', url = 'http://127.0.0.1:3010' },
+            { name = 'LiveMap', url = 'http://127.0.0.1:3012' },
+            { name = 'Economy', url = 'http://127.0.0.1:3013' },
+            { name = 'Whitelist', url = 'http://127.0.0.1:3014' },
+            { name = 'DiscordSync', url = 'http://127.0.0.1:3015' },
+            { name = 'VehicleData', url = 'http://127.0.0.1:3016' },
+            { name = 'Housing', url = 'http://127.0.0.1:3017' },
+            { name = 'Jobs', url = 'http://127.0.0.1:3009' },
+            { name = 'HostDashboard', url = 'http://127.0.0.1:3018' },
+            { name = 'SystemManagement', url = 'http://127.0.0.1:3019' },
+            { name = 'AIAnalytics', url = 'http://127.0.0.1:3003' },
+            { name = 'Moderation', url = 'http://127.0.0.1:3010' },
+            { name = 'VehicleManagement', url = 'http://127.0.0.1:3016' }
         }
         
         for _, api in ipairs(apis) do

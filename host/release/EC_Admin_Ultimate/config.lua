@@ -1,3 +1,16 @@
+Config = Config or {}
+-- Host API Secret (must match .env HOST_SECRET)
+Config.HostApi = {
+    enabled = true,
+    secret = "pER8jwAvs/K++anilkRWj74/9aZlIP3Sw1gSwx+0430="
+}
+local function getApiBaseUrl()
+    if GetConvar and (GetConvar('ec_mode', 'CUSTOMER') == 'HOST') then
+        return "http://127.0.0.1:3000"
+    else
+        return "https://api.ecbetasolutions.com"
+    end
+end
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
     ║                EC ADMIN ULTIMATE - Configuration              ║
@@ -472,11 +485,10 @@ Config.Discord = {
 
 Config.API = {
     -- Base API Configuration
-    baseUrl = "https://api.ecbetasolutions.com",  -- Production API endpoint
+    baseUrl = getApiBaseUrl(),
     timeout = 10000,  -- Request timeout (milliseconds)
     retryAttempts = 3,  -- Retry failed requests
     retryDelay = 1000,  -- Delay between retries (milliseconds)
-    
     -- API Authentication (auto-managed)
     authentication = {
         enabled = true,
@@ -484,7 +496,6 @@ Config.API = {
         autoRefresh = true,  -- Auto-refresh expired tokens
         tokenExpiry = 3600  -- Token validity (seconds)
     },
-    
     -- Rate Limiting (prevent API abuse)
     rateLimit = {
         enabled = true,
@@ -503,47 +514,43 @@ Config.APIs = {
     -- Global Ban System (shared bans across all NRG servers)
     GlobalBans = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3001/api/global-bans",
+        url = "http://127.0.0.1:3001/api/global-bans",
         bypassOwners = true,
         bypassNRGStaff = true,
         syncInterval = 60,
         cacheEnabled = true
     },
-    
     -- AI Detection & Behavior Analytics
     AIDetection = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3002/api/ai-detection",
+        url = "http://127.0.0.1:3002/api/ai-detection",
         realtime = true,
         confidenceThreshold = 75,
         sendPlayerData = true,
         learningMode = true
     },
-    
     -- Admin Abuse Monitoring (prevents admin power abuse)
     AdminAbuse = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3002/api/admin-abuse",
+        url = "http://127.0.0.1:3018/api/emergency",
         trackActions = true,
         flagSuspicious = true,
         alertOwners = true,
         thresholdScore = 80
     },
-    
     -- Server Analytics & Statistics
     Analytics = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3003/api/player-analytics",
+        url = "http://127.0.0.1:3003/api/analytics",
         trackPlayers = true,
         trackEconomy = true,
         trackPerformance = true,
         updateInterval = 300
     },
-    
     -- Server Metrics & Health Monitoring
     ServerMetrics = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3004/api/server-metrics",
+        url = "http://127.0.0.1:3004/api/metrics",
         trackFPS = true,
         trackMemory = true,
         trackCPU = true,
@@ -551,141 +558,127 @@ Config.APIs = {
         alertOnIssues = true,
         reportInterval = 60
     },
-    
     -- Player Reports System
     Reports = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3005/api/reports",
+        url = "http://127.0.0.1:3005/api/reports",
         allowPlayerReports = true,
         autoAssign = true,
         notifyAdmins = true,
         categories = { "Cheating", "Abuse", "RDM", "VDM", "Bug", "Other" }
     },
-    
     -- Live Server Map (real-time player positions)
     LiveMap = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3010/api/livemap",
+        url = "http://127.0.0.1:3012/api/servers",
         updateInterval = 5,
         showPlayers = true,
         showVehicles = true,
         showBlips = true,
         allowSpectate = true
     },
-    
     -- Automated Backups
     Backups = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3007/api/backups",
+        url = "http://127.0.0.1:3007/api/backups",
         autoBackup = true,
         backupInterval = 3600,
         backupTypes = { "database", "resources", "config" },
         retention = 168
     },
-    
     -- Economy Management & Tracking
     Economy = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3009/api/economy",
+        url = "http://127.0.0.1:3013/api/license",
         trackTransactions = true,
         detectExploits = true,
         syncPlayerMoney = true,
         alertThreshold = 1000000
     },
-    
     -- Whitelist System
     Whitelist = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3013/api/whitelist",
+        url = "http://127.0.0.1:3014/api/updates",
         enforceWhitelist = false,
         autoSync = true,
         allowApplications = true,
         notifyAdmins = true
     },
-    
     -- Discord Integration & Sync
     DiscordSync = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3000/api/discord",
+        url = "http://127.0.0.1:3015/api/audit",
         syncRoles = true,
         syncNames = true,
         logActions = true,
         webhooks = true
     },
-    
     -- Vehicle Database & Management
     VehicleData = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3000/api/vehicles",
+        url = "http://127.0.0.1:3016/api/performance",
         syncSpawned = true,
         syncOwnership = true,
         syncModifications = true,
         cacheVehicleList = true
     },
-    
     -- Housing System Integration
     Housing = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3000/api/housing",
+        url = "http://127.0.0.1:3017/api/resources",
         syncOwnership = true,
         syncInventories = true,
         allowRemoteManagement = true,
         trackActivity = true
     },
-    
     -- Inventory System Integration
     Inventory = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3000/api/inventory",
+        url = "http://127.0.0.1:3008/api/screenshots",
         syncPlayerInventories = true,
         syncStashes = true,
         trackItemFlow = true,
         detectDuplication = true
     },
-    
     -- Jobs & Gangs Management
     Jobs = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3000/api/jobs",
+        url = "http://127.0.0.1:3010/api/chat",
         syncJobData = true,
         syncGangData = true,
         trackActivity = true,
         allowRemoteManagement = true
     },
-    
     -- Advanced Anti-Cheat System
     AntiCheat = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3006/api/anticheat",
+        url = "http://127.0.0.1:3006/api/anticheat",
         cloudDetection = true,
         shareDetections = true,
         autoUpdate = true,
         bannedResourcesCheck = true
     },
-    
     -- System Monitoring & Alerts
     Monitoring = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3016/api/monitoring",
+        url = "http://127.0.0.1:3011/api/players",
         uptimeTracking = true,
         errorTracking = true,
         crashReporting = true,
         performanceAlerts = true
     },
-    
     -- Webhook Management
     Webhooks = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3009/api/webhooks",
+        url = "http://127.0.0.1:3009/api/webhooks",
         allowCustomWebhooks = true,
         rateLimit = true,
         retryFailed = true
     },
-    
     -- Host Dashboard (NRG Staff Only - Auto-enabled when host/ folder detected)
     HostDashboard = {
         enabled = true,
-        url = "https://api.ecbetasolutions.com:3019/api/host",
+        url = "http://127.0.0.1:3019/api/host",
         nrgStaffAutoAccess = true,
         requireApproval = false,
         showRevenue = true,
@@ -1281,7 +1274,7 @@ Config.Host = {
         port = 30121,  -- Internal port (not exposed)
         protocol = "http",
         host = "127.0.0.1",  -- Localhost ONLY
-        secret = "nrg_host_yikkl4o4rwWhUwZxf2PsP69PQ8QHmIO519J09XTV8YupvVToo7EIaF5wbNi3yNeB",  -- Auto-loaded from host/.env
+        secret = "pER8jwAvs/K++anilkRWj74/9aZlIP3Sw1gSwx+0430=",  -- Auto-loaded from host/.env
         timeout = 10000
     },
     

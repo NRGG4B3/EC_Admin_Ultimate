@@ -318,12 +318,40 @@ end, false)
 -- ============================================================================
 -- INITIALIZATION
 -- ============================================================================
+
+-- Always check and fix ec_admin_settings table structure on startup
 CreateThread(function()
     Wait(2000)  -- Wait for database to be ready
-    
     if MySQL and MySQL.ready then
         Logger.Info('🔄 Starting automatic database migration...')
+        -- Ensure migration tracking table and run normal migrations
         EnsureMigrationTable()
+
+        -- Only add columns/keys if they do NOT exist
+        local function columnExists(table, column)
+            local result = MySQL.Sync.fetchScalar([[SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @table AND COLUMN_NAME = @column]], {['@table'] = table, ['@column'] = column})
+            return result and tonumber(result) > 0
+        end
+        local function keyExists(table, key)
+            local result = MySQL.Sync.fetchScalar([[SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = @table AND INDEX_NAME = @key]], {['@table'] = table, ['@key'] = key})
+            return result and tonumber(result) > 0
+        end
+        if not columnExists('ec_admin_settings', 'category') then
+            MySQL.Async.execute([[ALTER TABLE ec_admin_settings ADD COLUMN category VARCHAR(50) NOT NULL]], {}, function() end)
+        end
+        if not columnExists('ec_admin_settings', 'settings_data') then
+            MySQL.Async.execute([[ALTER TABLE ec_admin_settings ADD COLUMN settings_data LONGTEXT NOT NULL]], {}, function() end)
+        end
+        if not columnExists('ec_admin_settings', 'updated_by') then
+            MySQL.Async.execute([[ALTER TABLE ec_admin_settings ADD COLUMN updated_by VARCHAR(100) DEFAULT NULL]], {}, function() end)
+        end
+        if not columnExists('ec_admin_settings', 'updated_at') then
+            MySQL.Async.execute([[ALTER TABLE ec_admin_settings ADD COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP]], {}, function() end)
+        end
+        if not keyExists('ec_admin_settings', 'category') then
+            MySQL.Async.execute([[ALTER TABLE ec_admin_settings ADD UNIQUE KEY category (category)]], {}, function() end)
+        end
+        Logger.Success('✅ ec_admin_settings table structure checked and fixed (if needed)')
     else
         Logger.Error('❌ Database (MySQL) not available - migration skipped')
         Logger.Warn('Ensure oxmysql is started BEFORE EC_Admin_Ultimate')

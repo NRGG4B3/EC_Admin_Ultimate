@@ -104,7 +104,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 3000;
-const BIND = process.env.BIND || '127.0.0.1'; // SECURITY: localhost only
+const BIND = process.env.BIND || '0.0.0.0'; // Listen on all interfaces for external access
 
 server.listen(PORT, BIND, () => {
   console.log('╔════════════════════════════════════════════════════════╗');
