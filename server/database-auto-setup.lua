@@ -19,7 +19,7 @@ local DB_AUTO = {}
 -- SQL Files to load (ONLY 2 FILES - Customer and Host)
 DB_AUTO.SQL_FILES = {
     customer = 'ec_admin_customer.sql',  -- All customer-side tables
-    -- host = 'host/ec_admin_host.sql'   -- Uncomment if this is a host installation
+    host = 'ec_admin_host.sql'   -- Host-side tables (auto-install for host)
 }
 
 -- Auto-migrate missing columns for action logs

@@ -699,7 +699,6 @@ AddEventHandler('ec_admin:beBrought', function(coords)
     end
 end)
 
--- Go to Player
 RegisterNetEvent('ec_admin:gotoPlayer')
 AddEventHandler('ec_admin:gotoPlayer', function(targetId)
     TriggerServerEvent('ec_admin:requestGotoPlayer', targetId)
@@ -710,7 +709,6 @@ RegisterNetEvent('ec_admin:receivePlayerCoords')
 AddEventHandler('ec_admin:receivePlayerCoords', function(coords)
     local ped = PlayerPedId()
     if not coords or not coords.x or not coords.y or not coords.z then
-        Logger.Info(" Invalid player coordinates received")
         return
     end
 
@@ -722,6 +720,14 @@ AddEventHandler('ec_admin:receivePlayerCoords', function(coords)
     end
 end)
 
+-- Heal Player
+RegisterNetEvent('ec_admin:healPlayer')
+AddEventHandler('ec_admin:healPlayer', function()
+    local ped = PlayerPedId()
+    SetEntityHealth(ped, GetEntityMaxHealth(ped))
+    ClearPedBloodDamage(ped)
+    Logger.Info(" Healed")
+end)
 -- Teleport to Coordinates
 RegisterNetEvent('ec_admin:teleportToCoords')
 AddEventHandler('ec_admin:teleportToCoords', function(coordsStr)

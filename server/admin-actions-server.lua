@@ -266,7 +266,6 @@ AddEventHandler('ec_admin:announce', function(message)
     LogAction(source, 'announce', nil, 'Sent announcement: ' .. message)
 end)
 
--- Revive All Players
 RegisterNetEvent('ec_admin:reviveAll')
 AddEventHandler('ec_admin:reviveAll', function()
     local source = source
@@ -275,7 +274,6 @@ AddEventHandler('ec_admin:reviveAll', function()
     for _, playerId in ipairs(GetPlayers()) do
         TriggerClientEvent('ec_admin:revivePlayer', playerId)
     end
-    
     LogAction(source, 'revive_all', nil, 'Revived all players')
 end)
 
@@ -284,7 +282,6 @@ RegisterNetEvent('ec_admin:tpAll')
 AddEventHandler('ec_admin:tpAll', function()
     local source = source
     if not HasPermission(source) then return end
-    
     local adminPed = GetPlayerPed(source)
     local coords = GetEntityCoords(adminPed)
     
@@ -292,6 +289,23 @@ AddEventHandler('ec_admin:tpAll', function()
         if tonumber(playerId) ~= source then
             TriggerClientEvent('ec_admin:beBrought', playerId, coords)
         end
+-- Revive Self
+RegisterNetEvent('ec_admin:reviveSelf')
+AddEventHandler('ec_admin:reviveSelf', function()
+     local source = source
+     if not HasPermission(source) then return end
+     TriggerClientEvent('ec_admin:revivePlayer', source)
+     LogAction(source, 'revive_self', GetPlayerIdentifiers(source)[1], 'Revived self')
+end)
+
+-- Heal Self
+RegisterNetEvent('ec_admin:healSelf')
+AddEventHandler('ec_admin:healSelf', function()
+     local source = source
+     if not HasPermission(source) then return end
+     TriggerClientEvent('ec_admin:healPlayer', source)
+     LogAction(source, 'heal_self', GetPlayerIdentifiers(source)[1], 'Healed self')
+end)
     end
     
     LogAction(source, 'tp_all', nil, 'Teleported all players to self')
