@@ -325,7 +325,7 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
           const result = await response.json();
           if (result.success) {
             toastSuccess({ title: 'Warning issued successfully' });
-            await fetchPlayerProfile();
+
           } else {
             toastError({ title: 'Failed to issue warning', description: result.error });
           }
@@ -360,7 +360,7 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
           const result = await response.json();
           if (result.success) {
             toastSuccess({ title: `Player banned` });
-            await fetchPlayerProfile();
+
           } else {
             toastError({ title: 'Failed to ban player', description: result.error });
           }
@@ -384,7 +384,7 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
           const result = await response.json();
           if (result.success) {
             toastSuccess({ title: 'Player kicked from server' });
-            await fetchPlayerProfile();
+
           } else {
             toastError({ title: 'Failed to kick player', description: result.error });
           }
@@ -1629,4 +1629,5 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
         </DialogContent>
       </Dialog>
     </div>
- 
+  );
+}

@@ -1,4 +1,4 @@
-import { AntiCheatLog, AntiCheatDetection, AntiCheatChartData } from '../types/antiCheat';
+import { AntiCheatLog, AntiCheatDetection, AntiCheatChartData } from '../types/antiCheat.ts';
 
 // Fetch all anti-cheat logs (live data)
 export async function fetchAntiCheatLogs(): Promise<AntiCheatLog[]> {
