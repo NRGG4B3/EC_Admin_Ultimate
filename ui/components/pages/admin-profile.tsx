@@ -1,4 +1,18 @@
-import { useState, useEffect, useCallback } from 'react';
+import {
+  fetchAdminProfile,
+  fetchAdminPermissions,
+  fetchAdminRoles,
+  fetchAdminActivity,
+  fetchAdminActions,
+  fetchAdminInfractions,
+  fetchAdminWarnings,
+  fetchAdminBans
+} from '../../../api/adminProfile';
+import { toastSuccess, toastError } from '../../lib/toast';
+import { QuickActionsWidget } from '../quick-actions-widget';
+import { formatRelativeTime, formatDateTime } from '../../lib/time';
+import type { AdminProfile } from '../../../types/adminProfile';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -10,21 +24,21 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Switch } from '../ui/switch';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Progress } from '../ui/progress';
-import { 
+import {
   User, Shield, Settings, Key, Activity, Clock, Mail, Phone,
   MapPin, Calendar, Edit2, Save, X, AlertTriangle, CheckCircle,
   RefreshCw, Download, Trash2, Lock, Unlock, Bell, LogOut,
   BarChart, TrendingUp, Award, Target, Ban
 } from 'lucide-react';
-import { toastSuccess, toastError } from '../../lib/toast';
-import { QuickActionsWidget } from '../quick-actions-widget';
-import { formatRelativeTime, formatDateTime } from '../../lib/time';
 
 interface AdminProfilePageProps {
   liveData: any;
   adminId?: string; // Optional: can view other admin profiles
   onOpenQuickActionsCenter?: () => void;
 }
+
+export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }: AdminProfilePageProps) {
+  // ...existing code...
 
 interface AdminProfile {
   admin_id: string;
@@ -82,37 +96,25 @@ interface AdminSession {
   status: string;
 }
 
-interface AdminData {
-  profile: AdminProfile;
-  stats: AdminStats;
-  activity: AdminActivity[];
-  permissions: AdminPermission[];
-  sessions: AdminSession[];
-  framework: string;
-}
 
-export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }: AdminProfilePageProps) {
+
+
   const [activeTab, setActiveTab] = useState('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
-  // Data states
-  const [data, setData] = useState<AdminData | null>(null);
+  const [profile, setProfile] = useState(null);
+  const [permissions, setPermissions] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [activity, setActivity] = useState([]);
+  const [actions, setActions] = useState([]);
+  const [infractions, setInfractions] = useState([]);
+  const [warnings, setWarnings] = useState([]);
+  const [bans, setBans] = useState([]);
   const [editForm, setEditForm] = useState<Partial<AdminProfile>>({});
-
-  // Modal states
   const [passwordModal, setPasswordModal] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
-
-  // Password form
-  const [passwordForm, setPasswordForm] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-
-  // Notification preferences
+  const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
     discordNotifications: true,
@@ -122,119 +124,50 @@ export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }
     systemAlerts: true
   });
 
-  // Fetch admin profile data from FiveM
-  const fetchAdminProfileData = useCallback(async () => {
-    // Try to fetch real data from FiveM
+  // Fetch all live data
+  const fetchAllData = async () => {
+    if (!adminId) return;
+    setIsLoading(true);
     try {
-      const response = await fetch('https://ec_admin_ultimate/getAdminProfile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ adminId })
+      const [profileData, permissionsData, rolesData, activityData, actionsData, infractionsData, warningsData, bansData] = await Promise.all([
+        fetchAdminProfile(adminId),
+        fetchAdminPermissions(adminId),
+        fetchAdminRoles(adminId),
+        fetchAdminActivity(adminId),
+        fetchAdminActions(adminId),
+        fetchAdminInfractions(adminId),
+        fetchAdminWarnings(adminId),
+        fetchAdminBans(adminId)
+      ]);
+      setProfile(profileData);
+      setPermissions(permissionsData);
+      setRoles(rolesData);
+      setActivity(activityData);
+      setActions(actionsData);
+      setInfractions(infractionsData);
+      setWarnings(warningsData);
+      setBans(bansData);
+      setEditForm({
+        name: profileData.name,
+        email: profileData.email,
+        phone: profileData.phone,
+        location: profileData.location
       });
-
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          console.log('[Admin Profile] Loaded real FiveM data');
-          setData(result.data);
-          setEditForm({
-            name: result.data.profile.name,
-            email: result.data.profile.email,
-            phone: result.data.profile.phone,
-            location: result.data.profile.location
-          });
-          // Load notification preferences if available
-          if (result.data.notificationPrefs) {
-            setNotificationSettings(result.data.notificationPrefs);
-          }
-          return;
-        } else {
-          console.log('[Admin Profile] Server returned success: false, using empty data');
-        }
-      } else {
-        console.log('[Admin Profile] Response not OK, using empty data');
-      }
-    } catch (error) {
-      console.log('[Admin Profile] Not in FiveM environment or error occurred:', error);
+    } catch (e) {
+      toastError({ title: 'Failed to load admin profile data' });
     }
+    setIsLoading(false);
+  };
 
-    // Initialize with empty data structure - will show loading state until real data arrives
-    console.log('[Admin Profile] Using empty data structure');
-    const emptyData: AdminData = {
-      profile: {
-        admin_id: 'unknown',
-        name: 'Loading...',
-        email: '',
-        phone: '',
-        location: '',
-        role: 'Loading...',
-        joined_date: Date.now() / 1000,
-        last_login: Date.now() / 1000,
-        total_actions: 0,
-        players_managed: 0,
-        bans_issued: 0,
-        warnings_issued: 0,
-        resources_managed: 0,
-        uptime: 0,
-        trust_score: 0,
-        status: 'loading'
-      },
-      stats: {
-        totalActions: 0,
-        playersManaged: 0,
-        bansIssued: 0,
-        warningsIssued: 0,
-        resourcesManaged: 0,
-        uptime: 0,
-        trustScore: 0,
-        status: 'loading'
-      },
-      activity: [],
-      permissions: [],
-      sessions: [],
-      framework: 'Unknown'
-    };
-    
-    setData(emptyData);
-    setEditForm({
-      name: emptyData.profile.name,
-      email: emptyData.profile.email,
-      phone: emptyData.profile.phone,
-      location: emptyData.profile.location
-    });
+  useEffect(() => {
+    fetchAllData();
+    const interval = setInterval(fetchAllData, 30000);
+    return () => clearInterval(interval);
   }, [adminId]);
 
-  // Initial load with auto-refresh
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadData = async () => {
-      if (!isMounted) return;
-      await fetchAdminProfileData();
-      if (isMounted) {
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-
-    // Auto-refresh every 30 seconds - UPDATES DATA WITHOUT PAGE REFRESH
-    const interval = setInterval(() => {
-      if (isMounted) {
-        fetchAdminProfileData();
-      }
-    }, 30000);
-
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [fetchAdminProfileData]);
-
-  // Manual refresh
   const handleRefresh = async () => {
     setRefreshing(true);
-    await fetchAdminProfileData();
+    await fetchAllData();
     setRefreshing(false);
     toastSuccess({ title: 'Profile data refreshed' });
   };
@@ -279,13 +212,20 @@ export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }
     // TODO: Wire to NUI callback 'exportAdminProfile' when server callback is ready
   };
 
-  // Get data from state
-  const profile = data?.profile;
-  const stats = data?.stats;
-  const activity = data?.activity || [];
-  const permissions = data?.permissions || [];
-  const sessions = data?.sessions || [];
-  const framework = data?.framework || 'Unknown';
+
+  // Derive stats from profile/activity/actions if needed
+  const stats = profile ? {
+    totalActions: profile.total_actions,
+    playersManaged: profile.players_managed,
+    bansIssued: profile.bans_issued,
+    warningsIssued: profile.warnings_issued,
+    resourcesManaged: profile.resources_managed,
+    uptime: profile.uptime,
+    trustScore: profile.trust_score,
+    status: profile.status
+  } : null;
+  const sessions = []; // TODO: Implement sessions if backend supports
+  const framework = profile?.framework || 'Unknown';
 
   // Get activity icon
   const getActivityIcon = (category: string) => {
@@ -490,11 +430,114 @@ export function AdminProfilePage({ liveData, adminId, onOpenQuickActionsCenter }
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="activity">Activity</TabsTrigger>
           <TabsTrigger value="permissions">Permissions</TabsTrigger>
-          <TabsTrigger value="sessions">Sessions</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="stats">Statistics</TabsTrigger>
-          <TabsTrigger value="logs">Action Logs</TabsTrigger>
+          <TabsTrigger value="roles">Roles</TabsTrigger>
+          <TabsTrigger value="infractions">Infractions</TabsTrigger>
+          <TabsTrigger value="warnings">Warnings</TabsTrigger>
+          <TabsTrigger value="bans">Bans</TabsTrigger>
         </TabsList>
+        {/* Roles Tab */}
+        <TabsContent value="roles" className="space-y-4 mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Admin Roles</CardTitle>
+              <CardDescription>Your assigned roles</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-3">
+                {roles.map((role, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
+                    <span className="text-sm font-medium">{role.name}</span>
+                    <Badge variant="default" className="gap-1">
+                      <CheckCircle className="size-3" />
+                      {role.active ? 'Active' : 'Inactive'}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Infractions Tab */}
+        <TabsContent value="infractions" className="space-y-4 mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Infractions</CardTitle>
+              <CardDescription>All infractions issued to this admin</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {infractions.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <AlertTriangle className="size-8 mx-auto mb-2 opacity-50" />
+                    <p>No infractions found</p>
+                  </div>
+                ) : (
+                  infractions.map((inf, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 rounded-lg border">
+                      <span className="text-sm font-medium">{inf.reason}</span>
+                      <span className="text-xs text-muted-foreground">{formatRelativeTime(inf.timestamp)}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Warnings Tab */}
+        <TabsContent value="warnings" className="space-y-4 mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Warnings</CardTitle>
+              <CardDescription>All warnings issued to this admin</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {warnings.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <AlertTriangle className="size-8 mx-auto mb-2 opacity-50" />
+                    <p>No warnings found</p>
+                  </div>
+                ) : (
+                  warnings.map((warn, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 rounded-lg border">
+                      <span className="text-sm font-medium">{warn.reason}</span>
+                      <span className="text-xs text-muted-foreground">{formatRelativeTime(warn.timestamp)}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Bans Tab */}
+        <TabsContent value="bans" className="space-y-4 mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Bans</CardTitle>
+              <CardDescription>All bans issued to this admin</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {bans.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <AlertTriangle className="size-8 mx-auto mb-2 opacity-50" />
+                    <p>No bans found</p>
+                  </div>
+                ) : (
+                  bans.map((ban, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 rounded-lg border">
+                      <span className="text-sm font-medium">{ban.reason}</span>
+                      <span className="text-xs text-muted-foreground">{formatRelativeTime(ban.timestamp)}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         {/* Profile Tab */}
         <TabsContent value="profile" className="space-y-4 mt-6">

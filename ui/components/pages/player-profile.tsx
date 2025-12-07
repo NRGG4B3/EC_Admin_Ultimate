@@ -1,4 +1,10 @@
+import {
+  fetchPlayerProfile, fetchPlayerInventory, fetchPlayerVehicles, fetchPlayerProperties, fetchPlayerTransactions, fetchPlayerActivity, fetchPlayerWarnings, fetchPlayerBans, fetchPlayerNotes, fetchPlayerPerformance, fetchPlayerMoneyChart
+} from '../../../api/playerProfile';
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import {
+  PlayerInventoryItem, PlayerVehicle, PlayerProperty, PlayerTransaction, PlayerActivity, PlayerWarning, PlayerBan, PlayerNote, PlayerPerformance, PlayerMoneyChart
+} from '../../../types/playerProfile';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -58,18 +64,7 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
   const [player, setPlayer] = useState<any>(null);
 
   // Inventory with detailed info
-  const [inventory, setInventory] = useState([
-    { id: 1, name: 'Phone', quantity: 1, type: 'item', weight: 0.2, useable: true, description: 'Smartphone for communication', slot: 1, metadata: {} },
-    { id: 2, name: 'Lockpick', quantity: 5, type: 'item', weight: 0.1, useable: true, description: 'Used to pick locks', slot: 2, metadata: {} },
-    { id: 3, name: 'Burger', quantity: 3, type: 'food', weight: 0.3, useable: true, description: 'Restores hunger', slot: 3, metadata: { quality: 100 } },
-    { id: 4, name: 'Water Bottle', quantity: 2, type: 'drink', weight: 0.5, useable: true, description: 'Restores thirst', slot: 4, metadata: {} },
-    { id: 5, name: 'Pistol', quantity: 1, type: 'weapon', weight: 1.5, useable: true, description: 'Standard pistol', slot: 5, metadata: { ammo: 12, condition: 95 } },
-    { id: 6, name: 'Pistol Ammo', quantity: 150, type: 'ammo', weight: 0.01, useable: false, description: '9mm ammunition', slot: 6, metadata: {} },
-    { id: 7, name: 'Radio', quantity: 1, type: 'item', weight: 0.4, useable: true, description: 'Police radio', slot: 7, metadata: { channel: 1 } },
-    { id: 8, name: 'Handcuffs', quantity: 1, type: 'item', weight: 0.3, useable: true, description: 'Restrain suspects', slot: 8, metadata: {} },
-    { id: 9, name: 'Bandage', quantity: 10, type: 'medical', weight: 0.1, useable: true, description: 'Heal minor wounds', slot: 9, metadata: {} },
-    { id: 10, name: 'ID Card', quantity: 1, type: 'item', weight: 0.05, useable: true, description: 'Identification', slot: 10, metadata: { citizenid: 'ABC123' } },
-  ]);
+  const [inventory, setInventory] = useState<PlayerInventoryItem[]>([]);
 
   // Stashes
   const stashes = [
@@ -83,272 +78,76 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
   const maxWeight = 50;
 
   // Vehicles with complete info
-  const [vehicles, setVehicles] = useState([
-    { 
-      id: 1, 
-      model: 'Adder', 
-      plate: 'ABC 123', 
-      location: 'Legion Square Garage', 
-      stored: true,
-      mileage: 12450,
-      fuel: 100,
-      engine: 1000,
-      body: 1000,
-      value: 1000000,
-      impounded: false,
-      impoundReason: null,
-      mods: { engine: 3, transmission: 2, brakes: 1, turbo: true },
-      color: { primary: 'Red', secondary: 'Black' },
-      owner: 'John_Doe'
-    },
-    { 
-      id: 2, 
-      model: 'T20', 
-      plate: 'XYZ 789', 
-      location: 'Out (Vinewood Hills)', 
-      stored: false,
-      mileage: 8720,
-      fuel: 45,
-      engine: 850,
-      body: 920,
-      value: 2300000,
-      impounded: false,
-      impoundReason: null,
-      mods: { engine: 4, transmission: 3, brakes: 2, turbo: true },
-      color: { primary: 'Blue', secondary: 'White' },
-      owner: 'John_Doe'
-    },
-    { 
-      id: 3, 
-      model: 'Zentorno', 
-      plate: 'FAST 01', 
-      location: 'Airport Garage', 
-      stored: true,
-      mileage: 15670,
-      fuel: 80,
-      engine: 950,
-      body: 980,
-      value: 725000,
-      impounded: false,
-      impoundReason: null,
-      mods: { engine: 2, transmission: 2, brakes: 1, turbo: false },
-      color: { primary: 'Yellow', secondary: 'Black' },
-      owner: 'John_Doe'
-    },
-    { 
-      id: 4, 
-      model: 'Police Cruiser', 
-      plate: 'LSPD 401', 
-      location: 'Mission Row PD', 
-      stored: true,
-      mileage: 34200,
-      fuel: 60,
-      engine: 800,
-      body: 750,
-      value: 0,
-      impounded: false,
-      impoundReason: null,
-      mods: { engine: 1, transmission: 1, brakes: 1, turbo: false },
-      color: { primary: 'White', secondary: 'Black' },
-      owner: 'LSPD'
-    },
-  ]);
+  const [vehicles, setVehicles] = useState<PlayerVehicle[]>([]);
 
   // Properties with complete info
-  const [properties, setProperties] = useState([
-    { 
-      id: 1, 
-      type: 'House', 
-      address: '123 Grove Street', 
-      owned: true, 
-      garage: 2,
-      price: 250000,
-      keys: ['John_Doe', 'Jane_Smith'],
-      locked: false,
-      hasStash: true,
-      hasWardrobe: true,
-      tier: 'Standard',
-      coords: { x: 123.45, y: -678.90, z: 30.12 }
-    },
-    { 
-      id: 2, 
-      type: 'Apartment', 
-      address: 'Eclipse Towers #5', 
-      owned: true, 
-      garage: 10,
-      price: 500000,
-      keys: ['John_Doe'],
-      locked: true,
-      hasStash: true,
-      hasWardrobe: true,
-      tier: 'Luxury',
-      coords: { x: -773.82, y: 341.76, z: 196.68 }
-    },
-  ]);
+  const [properties, setProperties] = useState<PlayerProperty[]>([]);
 
   // Complete transaction history
-  const transactions = [
-    { id: 1, type: 'deposit', amount: 50000, balance: 125600, from: 'ATM', to: 'Bank Account', timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), details: 'ATM deposit' },
-    { id: 2, type: 'withdrawal', amount: -5000, balance: 75600, from: 'Bank Account', to: 'Cash', timestamp: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString(), details: 'Cash withdrawal' },
-    { id: 3, type: 'purchase', amount: -2300000, balance: 80600, from: 'Bank Account', to: 'PDM Dealership', timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(), details: 'Vehicle purchase: T20' },
-    { id: 4, type: 'salary', amount: 5000, balance: 2380600, from: 'LSPD', to: 'Bank Account', timestamp: new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString(), details: 'Job salary' },
-    { id: 5, type: 'transfer', amount: -10000, balance: 2375600, from: 'Bank Account', to: 'Jane_Smith', timestamp: new Date(Date.now() - 96 * 60 * 60 * 1000).toISOString(), details: 'Transfer to Jane_Smith' },
-    { id: 6, type: 'crypto_buy', amount: -5000, balance: 2370600, from: 'Bank Account', to: 'Crypto Wallet', timestamp: new Date(Date.now() - 120 * 60 * 60 * 1000).toISOString(), details: 'Purchased 2,500 crypto' },
-  ];
+  const [transactions, setTransactions] = useState<PlayerTransaction[]>([]);
 
   // Complete activity history
-  const activityHistory = [
-    { id: 1, action: 'Connected to server', timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), type: 'connection', details: 'Login successful from IP: 192.168.1.100', admin: null },
-    { id: 2, action: 'Purchased vehicle (T20)', timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), type: 'purchase', details: '$2,300,000 from PDM Dealership', admin: null },
-    { id: 3, action: 'Job action: Made arrest', timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), type: 'job', details: 'Arrested suspect for robbery at Fleeca Bank', admin: null },
-    { id: 4, action: 'Received warning', timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), type: 'warning', details: 'Excessive speeding in city limits', admin: 'Admin_Sarah' },
-    { id: 5, action: 'Deposited $50,000', timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), type: 'transaction', details: 'Bank deposit via ATM', admin: null },
-    { id: 6, action: 'Purchased property', timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(), type: 'purchase', details: 'Eclipse Towers #5 for $500,000', admin: null },
-    { id: 7, action: 'Disconnected', timestamp: new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString(), type: 'connection', details: 'Normal logout', admin: null },
-    { id: 8, action: 'Job change', timestamp: new Date(Date.now() - 96 * 60 * 60 * 1000).toISOString(), type: 'job', details: 'Promoted to Sergeant by Captain Williams', admin: null },
-    { id: 9, action: 'Admin action: Given money', timestamp: new Date(Date.now() - 120 * 60 * 60 * 1000).toISOString(), type: 'admin', details: '$10,000 cash given by Admin_Mike (compensation)', admin: 'Admin_Mike' },
-    { id: 10, action: 'Vehicle spawned', timestamp: new Date(Date.now() - 144 * 60 * 60 * 1000).toISOString(), type: 'vehicle', details: 'Spawned Adder (ABC 123) from garage', admin: null },
-  ];
+  const [activityHistory, setActivityHistory] = useState<PlayerActivity[]>([]);
 
   // Complete warnings & moderation
-  const [warnings, setWarnings] = useState([
-    { id: 1, reason: 'Excessive speeding in city', issuedBy: 'Admin_Sarah', date: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), active: true, expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() },
-    { id: 2, reason: 'Failure to comply with police', issuedBy: 'Admin_Mike', date: new Date(Date.now() - 96 * 60 * 60 * 1000).toISOString(), active: true, expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString() },
-  ]);
+  const [warnings, setWarnings] = useState<PlayerWarning[]>([]);
 
-  const [bans, setBans] = useState<any[]>([]);
+  const [bans, setBans] = useState<PlayerBan[]>([]);
   
-  const [moderationNotes, setModerationNotes] = useState([
-    { id: 1, note: 'Player reported for VDM, investigated - no evidence found', createdBy: 'Admin_Dave', date: new Date(Date.now() - 168 * 60 * 60 * 1000).toISOString() },
-    { id: 2, note: 'Good RP, commended for excellent police work', createdBy: 'Admin_Sarah', date: new Date(Date.now() - 240 * 60 * 60 * 1000).toISOString() },
-  ]);
+  const [moderationNotes, setModerationNotes] = useState<PlayerNote[]>([]);
 
   // Performance charts
-  const performanceData = useMemo(() => {
-    const days = [];
-    for (let i = 6; i >= 0; i--) {
-      days.push({
-        day: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { weekday: 'short' }),
-        playtime: Math.floor(Math.random() * 8) + 1,
-        arrests: Math.floor(Math.random() * 5),
-        deaths: Math.floor(Math.random() * 3)
-      });
-    }
-    return days;
-  }, []);
+  const [performanceData, setPerformanceData] = useState<PlayerPerformance[]>([]);
 
-  const moneyData = useMemo(() => {
-    const days = [];
-    for (let i = 6; i >= 0; i--) {
-      days.push({
-        day: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { weekday: 'short' }),
-        cash: Math.floor(Math.random() * 50000) + 20000,
-        bank: Math.floor(Math.random() * 100000) + 80000
-      });
-    }
-    return days;
-  }, []);
+  const [moneyData, setMoneyData] = useState<PlayerMoneyChart[]>([]);
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
-  // Fetch player profile data from FiveM - LIVE DATA ONLY (no mock fallbacks)
-  const fetchPlayerProfile = useCallback(async () => {
+  // Fetch all player profile data from API - LIVE DATA ONLY
+  const fetchAllPlayerData = useCallback(async () => {
+    setIsLoading(true);
     try {
-      const response = await fetch('https://ec_admin_ultimate/getPlayerProfile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playerId })
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success && result.player) {
-          console.log('[Player Profile] Loaded real FiveM data for player:', playerId);
-          
-          // Update player data with live data from server only
-          setPlayer({
-            ...result.player,  // Use server data directly
-            id: result.player.id || result.player.source || playerId,
-            name: result.player.name || 'Unknown',
-            status: result.player.online ? 'online' : 'offline',
-            location: result.player.location || 'Unknown',
-            coords: result.player.coords || { x: 0, y: 0, z: 0 },
-            health: result.player.health ?? 0,
-            armor: result.player.armor ?? 0,
-            job: result.player.job || 'Unemployed',
-            jobGrade: result.player.jobGrade || 'None',
-            gang: result.player.gang || 'None',
-            money: result.player.money || { cash: 0, bank: 0, crypto: 0, blackMoney: 0 },
-            steamId: result.player.identifiers?.steam || result.player.steamId || 'Unknown',
-            license: result.player.identifiers?.license || result.player.license || 'Unknown',
-            discord: result.player.identifiers?.discord || result.player.discord || 'Unknown',
-            discordId: result.player.identifiers?.discord || result.player.discordId || 'Unknown',
-            ip: result.player.identifiers?.ip || result.player.ip || 'Unknown',
-            hwid: result.player.identifiers?.hwid || result.player.hwid || 'Unknown',
-            phoneNumber: result.player.phoneNumber || 'N/A',
-            nationality: result.player.nationality || 'Unknown',
-            birthDate: result.player.birthDate || 'Unknown',
-            gender: result.player.gender || 'Unknown',
-            hunger: result.player.hunger ?? 0,
-            thirst: result.player.thirst ?? 0,
-            stress: result.player.stress ?? 0,
-            isDead: result.player.isDead || false,
-            citizenId: result.player.citizenId,
-            metadata: result.player.metadata || {},
-          });
-          
-          // Update inventory if provided
-          if (result.player.inventory && result.player.inventory.items) {
-            console.log('[Player Profile] Loaded real inventory data:', result.player.inventory.items.length, 'items');
-            setInventory(result.player.inventory.items);
-          }
-          
-          return;
-        } else {
-          console.error('[Player Profile] Server returned no player data');
-          setPlayer(null);
-        }
-      } else {
-        console.error('[Player Profile] Response not OK');
-        setPlayer(null);
-      }
-    } catch (error) {
-      console.error('[Player Profile] Error fetching player profile:', error);
-      setPlayer(null);
+      const [profile, inventory, vehicles, properties, transactions, activity, warnings, bans, notes, performance, money] = await Promise.all([
+        fetchPlayerProfile(playerId),
+        fetchPlayerInventory(playerId),
+        fetchPlayerVehicles(playerId),
+        fetchPlayerProperties(playerId),
+        fetchPlayerTransactions(playerId),
+        fetchPlayerActivity(playerId),
+        fetchPlayerWarnings(playerId),
+        fetchPlayerBans(playerId),
+        fetchPlayerNotes(playerId),
+        fetchPlayerPerformance(playerId),
+        fetchPlayerMoneyChart(playerId)
+      ]);
+      setPlayer(profile);
+      setInventory(inventory);
+      setVehicles(vehicles);
+      setProperties(properties);
+      setTransactions(transactions);
+      setActivityHistory(activity);
+      setWarnings(warnings);
+      setBans(bans);
+      setModerationNotes(notes);
+      setPerformanceData(performance);
+      setMoneyData(money);
+    } catch (err) {
+      // Handle error (show toast, etc.)
+    } finally {
+      setIsLoading(false);
     }
   }, [playerId]);
 
-  // Initial load with auto-refresh - REAL-TIME UPDATES
   useEffect(() => {
-    let isMounted = true;
-
-    const loadData = async () => {
-      if (!isMounted) return;
-      await fetchPlayerProfile();
-      if (isMounted) {
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-
-    // Auto-refresh every 5 seconds - LIVE DATA UPDATES
-    const interval = setInterval(() => {
-      if (isMounted) {
-        fetchPlayerProfile();
-      }
-    }, 5000);
-
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [fetchPlayerProfile]);
+    fetchAllPlayerData();
+    const interval = setInterval(fetchAllPlayerData, 5000);
+    return () => clearInterval(interval);
+  }, [fetchAllPlayerData]);
 
   // Manual refresh handler
   const handleRefresh = async () => {
     setRefreshing(true);
-    await fetchPlayerProfile();
+    await fetchAllPlayerData();
     setRefreshing(false);
     toastSuccess({ title: 'Player data refreshed' });
   };
@@ -1830,5 +1629,4 @@ export function PlayerProfilePage({ playerId = 1, onBack }: PlayerProfilePagePro
         </DialogContent>
       </Dialog>
     </div>
-  );
-}
+ 
