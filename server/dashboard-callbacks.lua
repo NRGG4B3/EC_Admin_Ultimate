@@ -56,6 +56,35 @@ end
 -- ============================================================================
 -- ✅ CANONICAL VERSION - Primary metrics callback
 
+local function GetNetworkStats()
+    -- Use FiveM natives for network stats if available
+    local inBytes = 0
+    local outBytes = 0
+    -- Use FiveM native if available, otherwise return 0
+    if type(_G.GetNetworkStats) == "function" then
+        local stats = _G.GetNetworkStats()
+        inBytes = stats and stats.bytesReceived or 0
+        outBytes = stats and stats.bytesSent or 0
+    end
+    return inBytes, outBytes
+end
+
+local function GetActiveEvents()
+    -- Example: Count active events from a global state or event tracker
+    if GlobalState and GlobalState.activeEvents then
+        return GlobalState.activeEvents
+    end
+    return 0
+end
+
+local function GetDBAvgResponseTime()
+    -- Use query stats if available
+    if GlobalState and GlobalState.dbAvgTime then
+        return GlobalState.dbAvgTime
+    end
+    return 0
+end
+
 lib.callback.register('ec_admin:getServerMetrics', function(source)
     local players = GetPlayers()
     local maxPlayers = GetConvarInt('sv_maxclients', 32)
@@ -186,8 +215,8 @@ lib.callback.register('ec_admin:getServerMetrics', function(source)
         
         -- Network
         avgPing = avgPing,
-    networkIn = 0, -- No mock network stats
-    networkOut = 0,
+    networkIn = select(1, GetNetworkStats()),
+    networkOut = select(2, GetNetworkStats()),
         
         -- Time & uptime
         uptime = serverUptimeSeconds,
@@ -204,11 +233,11 @@ lib.callback.register('ec_admin:getServerMetrics', function(source)
         database = {
             connected = MySQL ~= nil,
             queries = MySQL and (MySQL.ready and 'connected' or 'connecting') or 'disconnected',
-            avgResponseTime = 0 -- Note: oxmysql doesn't expose query timing by default
+            avgResponseTime = GetDBAvgResponseTime()
         },
         
-        -- Additional metrics
-        activeEvents = 0, -- Note: Would require event monitoring system
+    -- Additional metrics
+    activeEvents = GetActiveEvents(),
         serverName = GetConvar('sv_hostname', 'FiveM Server'),
         serverBuild = GetConvar('version', 'Unknown'),
         
@@ -233,7 +262,12 @@ Logger.Info('Dashboard callbacks loaded successfully', '✅')
 -- UI strictly live without mock data.
 
 lib.callback.register('ec_admin:getMetricsHistory', function(source, period)
-    -- period can be '10m','20m','1h','24h' etc. Currently unused.
+    -- Example: Return last 10 minutes of metrics if available
+    local history = GlobalState and GlobalState.metricsHistory or nil
+    if history then
+        return { success = true, data = history }
+    end
+    -- Fallback: return empty but with structure
     return {
         success = true,
         data = {

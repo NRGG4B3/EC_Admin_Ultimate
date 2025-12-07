@@ -1,17 +1,7 @@
-import {
-  fetchAdminProfile,
-  fetchAdminPermissions,
-  fetchAdminRoles,
-  fetchAdminActivity,
-  fetchAdminActions,
-  fetchAdminInfractions,
-  fetchAdminWarnings,
-  fetchAdminBans
-} from '../../../api/adminProfile';
+import { fetchAdminProfileFull } from '../../../api/adminProfile';
 import { toastSuccess, toastError } from '../../lib/toast';
 import { QuickActionsWidget } from '../quick-actions-widget';
 import { formatRelativeTime, formatDateTime } from '../../lib/time';
-import type { AdminProfile } from '../../../types/adminProfile';
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -25,11 +15,82 @@ import { Switch } from '../ui/switch';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Progress } from '../ui/progress';
 import {
-  User, Shield, Settings, Key, Activity, Clock, Mail, Phone,
-  MapPin, Calendar, Edit2, Save, X, AlertTriangle, CheckCircle,
-  RefreshCw, Download, Trash2, Lock, Unlock, Bell, LogOut,
-  BarChart, TrendingUp, Award, Target, Ban
+
+  User, Shield, Settings, Key, Activity, Clock, AlertTriangle, CheckCircle,
+  RefreshCw, Download, Trash2, LogOut, TrendingUp, Award, Target, Ban,
+  Calendar, MapPin, Edit2, Save, X, Bell
 } from 'lucide-react';
+
+// Move all interface/type definitions below imports
+
+declare global {
+  interface Window {
+    fetchNui: (eventName: string, data?: any) => Promise<any>;
+  }
+}
+
+interface AdminProfilePageProps {
+  liveData: any;
+  adminId?: string; // Optional: can view other admin profiles
+  onOpenQuickActionsCenter?: () => void;
+}
+
+interface AdminProfile {
+  admin_id: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  role: string;
+  joined_date: number;
+  last_login: number;
+  total_actions: number;
+  players_managed: number;
+  bans_issued: number;
+  warnings_issued: number;
+  resources_managed: number;
+  uptime: number;
+  trust_score: number;
+  status: string;
+}
+
+interface AdminStats {
+  totalActions: number;
+  playersManaged: number;
+  bansIssued: number;
+  warningsIssued: number;
+  resourcesManaged: number;
+  uptime: number;
+  trustScore: number;
+  status: string;
+}
+
+interface AdminActivity {
+  id: number;
+  admin_id: string;
+  action: string;
+  category: string;
+  target_name?: string;
+  timestamp: number;
+  details: string;
+}
+
+interface AdminPermission {
+  name: string;
+  granted: boolean;
+  category: string;
+}
+
+interface AdminSession {
+  id: number;
+  admin_id: string;
+  admin_name: string;
+  login_time: number;
+  logout_time?: number;
+  ip_address: string;
+  status: string;
+}
+// ...existing code...
 
 interface AdminProfilePageProps {
   liveData: any;
@@ -124,34 +185,25 @@ interface AdminSession {
     systemAlerts: true
   });
 
-  // Fetch all live data
+  // Fetch all live data in one call
   const fetchAllData = async () => {
     if (!adminId) return;
     setIsLoading(true);
     try {
-      const [profileData, permissionsData, rolesData, activityData, actionsData, infractionsData, warningsData, bansData] = await Promise.all([
-        fetchAdminProfile(adminId),
-        fetchAdminPermissions(adminId),
-        fetchAdminRoles(adminId),
-        fetchAdminActivity(adminId),
-        fetchAdminActions(adminId),
-        fetchAdminInfractions(adminId),
-        fetchAdminWarnings(adminId),
-        fetchAdminBans(adminId)
-      ]);
-      setProfile(profileData);
-      setPermissions(permissionsData);
-      setRoles(rolesData);
-      setActivity(activityData);
-      setActions(actionsData);
-      setInfractions(infractionsData);
-      setWarnings(warningsData);
-      setBans(bansData);
+      const data = await fetchAdminProfileFull(adminId);
+      setProfile(data.profile);
+      setPermissions(data.permissions);
+      setRoles(data.roles);
+      setActivity(data.activity);
+      setActions(data.actions);
+      setInfractions(data.infractions);
+      setWarnings(data.warnings);
+      setBans(data.bans);
       setEditForm({
-        name: profileData.name,
-        email: profileData.email,
-        phone: profileData.phone,
-        location: profileData.location
+        name: data.profile?.name,
+        email: data.profile?.email,
+        phone: data.profile?.phone,
+        location: data.profile?.location
       });
     } catch (e) {
       toastError({ title: 'Failed to load admin profile data' });
@@ -174,8 +226,22 @@ interface AdminSession {
 
   // Update profile - NOT IMPLEMENTED
   const handleUpdateProfile = async () => {
-    toastError({ title: 'Profile update not yet implemented' });
-    // TODO: Wire to NUI callback 'updateAdminProfile' when server callback is ready
+    try {
+      // Send update request to backend via NUI
+      const result = await window.fetchNui('updateAdminProfile', {
+        adminId,
+        profile: editForm
+      });
+      if (result?.success) {
+        toastSuccess({ title: 'Profile updated successfully' });
+        await fetchAllData();
+        setIsEditing(false);
+      } else {
+        toastError({ title: result?.error || 'Failed to update profile' });
+      }
+    } catch (e) {
+      toastError({ title: 'Failed to update profile' });
+    }
   };
 
   // Update password - NOT IMPLEMENTED
@@ -184,32 +250,90 @@ interface AdminSession {
       toastError({ title: 'Passwords do not match' });
       return;
     }
-    toastError({ title: 'Password update not yet implemented' });
-    // TODO: Wire to NUI callback 'updateAdminPassword' when server callback is ready
+    try {
+      const result = await window.fetchNui('updateAdminPassword', {
+        adminId,
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword
+      });
+      if (result?.success) {
+        toastSuccess({ title: 'Password updated successfully' });
+        setPasswordModal(false);
+      } else {
+        toastError({ title: result?.error || 'Failed to update password' });
+      }
+    } catch (e) {
+      toastError({ title: 'Failed to update password' });
+    }
   };
 
   // Update preferences - NOT IMPLEMENTED
   const handleUpdatePreferences = async () => {
-    toastError({ title: 'Preferences update not yet implemented' });
-    // TODO: Wire to NUI callback 'updateAdminPreferences' when server callback is ready
+    try {
+      const result = await window.fetchNui('updateAdminPreferences', {
+        adminId,
+        preferences: notificationSettings
+      });
+      if (result?.success) {
+        toastSuccess({ title: 'Preferences updated successfully' });
+        setNotificationModal(false);
+      } else {
+        toastError({ title: result?.error || 'Failed to update preferences' });
+      }
+    } catch (e) {
+      toastError({ title: 'Failed to update preferences' });
+    }
   };
 
   // End session - NOT IMPLEMENTED
   const handleEndSession = async (session_id: string) => {
-    toastError({ title: 'End session not yet implemented' });
-    // TODO: Wire to NUI callback 'endAdminSession' when server callback is ready
+    try {
+      const result = await window.fetchNui('endAdminSession', {
+        adminId,
+        sessionId: session_id
+      });
+      if (result?.success) {
+        toastSuccess({ title: 'Session ended successfully' });
+        await fetchAllData();
+      } else {
+        toastError({ title: result?.error || 'Failed to end session' });
+      }
+    } catch (e) {
+      toastError({ title: 'Failed to end session' });
+    }
   };
 
   // Clear activity - NOT IMPLEMENTED
   const handleClearActivity = async () => {
-    toastError({ title: 'Clear activity not yet implemented' });
-    // TODO: Wire to NUI callback 'clearAdminActivity' when server callback is ready
+    try {
+      const result = await window.fetchNui('clearAdminActivity', {
+        adminId
+      });
+      if (result?.success) {
+        toastSuccess({ title: 'Activity logs cleared' });
+        await fetchAllData();
+      } else {
+        toastError({ title: result?.error || 'Failed to clear activity logs' });
+      }
+    } catch (e) {
+      toastError({ title: 'Failed to clear activity logs' });
+    }
   };
 
   // Export data - NOT IMPLEMENTED
   const handleExportData = async () => {
-    toastError({ title: 'Export profile not yet implemented' });
-    // TODO: Wire to NUI callback 'exportAdminProfile' when server callback is ready
+    try {
+      const result = await window.fetchNui('exportAdminProfile', {
+        adminId
+      });
+      if (result?.success) {
+        toastSuccess({ title: 'Profile data exported' });
+      } else {
+        toastError({ title: result?.error || 'Failed to export profile data' });
+      }
+    } catch (e) {
+      toastError({ title: 'Failed to export profile data' });
+    }
   };
 
 

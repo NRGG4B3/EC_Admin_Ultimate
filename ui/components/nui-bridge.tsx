@@ -87,6 +87,10 @@ export async function fetchNui<T = any>(
   mockData?: T,
   timeoutMs: number = 3000 // Reduced to 3 second timeout for faster fallback
 ): Promise<T> {
+  // Attach to window for global access if not already
+  if (typeof window !== 'undefined' && !(window as any).fetchNui) {
+    (window as any).fetchNui = fetchNui;
+  }
   const options = {
     method: 'post',
     headers: {

@@ -168,22 +168,113 @@ end)
 -- UPDATE ADMIN PROFILE
 -- ============================================================================
 
-lib.callback.register('adminProfile:update', function(source, data)
-    local playerId = source
-    
-    if not data then
-        return { success = false, message = 'No data provided' }
+lib.callback.register('updateAdminProfile', function(source, data)
+    local adminId = data.adminId
+    local profile = data.profile
+    if not adminId or not profile then
+        return { success = false, error = 'Missing adminId or profile data' }
     end
-    
-    -- In a real implementation, you would save to database here
-    -- For now, just return success
-    
-    Logger.Info(string.format('', GetPlayerName(playerId)))
-    
-    return {
-        success = true,
-        message = 'Profile updated successfully'
-    }
+    exports.oxmysql:execute('UPDATE ec_admin_permissions SET name = ?, email = ?, phone = ?, location = ? WHERE identifier = ?', {
+        profile.name, profile.email, profile.phone, profile.location, adminId
+    }, function(result)
+        if result and result.affectedRows > 0 then
+            return { success = true }
+        else
+            return { success = false, error = 'No rows updated' }
+        end
+    end)
+end)
+
+-- Update password
+lib.callback.register('updateAdminPassword', function(source, data)
+    local adminId = data.adminId
+    local currentPassword = data.currentPassword
+    local newPassword = data.newPassword
+    if not adminId or not currentPassword or not newPassword then
+        return { success = false, error = 'Missing required fields' }
+    end
+    -- Example: update password in database (hashing recommended)
+    exports.oxmysql:execute('UPDATE ec_admin_permissions SET password = ? WHERE identifier = ? AND password = ?', {
+        newPassword, adminId, currentPassword
+    }, function(result)
+        if result and result.affectedRows > 0 then
+            return { success = true }
+        else
+            return { success = false, error = 'Password not updated' }
+        end
+    end)
+end)
+
+-- Update preferences
+lib.callback.register('updateAdminPreferences', function(source, data)
+    local adminId = data.adminId
+    local preferences = data.preferences
+    if not adminId or not preferences then
+        return { success = false, error = 'Missing required fields' }
+    end
+    -- Example: update preferences in database (store as JSON)
+    local prefsJson = json.encode(preferences)
+    exports.oxmysql:execute('UPDATE ec_admin_permissions SET preferences = ? WHERE identifier = ?', {
+        prefsJson, adminId
+    }, function(result)
+        if result and result.affectedRows > 0 then
+            return { success = true }
+        else
+            return { success = false, error = 'Preferences not updated' }
+        end
+    end)
+end)
+
+-- End session
+lib.callback.register('endAdminSession', function(source, data)
+    local adminId = data.adminId
+    local sessionId = data.sessionId
+    if not adminId or not sessionId then
+        return { success = false, error = 'Missing required fields' }
+    end
+    exports.oxmysql:execute('UPDATE ec_admin_sessions SET status = "ended", logout_time = NOW() WHERE id = ? AND admin_id = ?', {
+        sessionId, adminId
+    }, function(result)
+        if result and result.affectedRows > 0 then
+            return { success = true }
+        else
+            return { success = false, error = 'Session not ended' }
+        end
+    end)
+end)
+
+-- Clear activity
+lib.callback.register('clearAdminActivity', function(source, data)
+    local adminId = data.adminId
+    if not adminId then
+        return { success = false, error = 'Missing adminId' }
+    end
+    exports.oxmysql:execute('DELETE FROM ec_admin_logs WHERE admin_identifier = ?', {
+        adminId
+    }, function(result)
+        if result then
+            return { success = true }
+        else
+            return { success = false, error = 'Activity not cleared' }
+        end
+    end)
+end)
+
+-- Export profile
+lib.callback.register('exportAdminProfile', function(source, data)
+    local adminId = data.adminId
+    if not adminId then
+        return { success = false, error = 'Missing adminId' }
+    end
+    exports.oxmysql:execute('SELECT * FROM ec_admin_permissions WHERE identifier = ?', {
+        adminId
+    }, function(rows)
+        if rows and rows[1] then
+            return { success = true, profile = rows[1] }
+        else
+            return { success = false, error = 'Profile not found' }
+        end
+    end)
 end)
 
 -- ============================================================================
@@ -225,6 +316,88 @@ lib.callback.register('adminProfile:getStats', function(source, data)
         success = true,
         data = stats
     }
+end)
+
+-- ============================================================================
+-- BATCH: GET FULL ADMIN PROFILE (ALL DATA AT ONCE)
+-- ============================================================================
+lib.callback.register('adminProfile:getFullProfile', function(source, data)
+    local playerId = source
+    local adminId = data and data.adminId or nil
+    if not adminId then
+        return { success = false, message = 'Missing adminId' }
+    end
+
+    local result = {
+        profile = nil,
+        permissions = {},
+        roles = {},
+        activity = {},
+        actions = {},
+        infractions = {},
+        warnings = {},
+        bans = {}
+    }
+
+    local done = 0
+    local needed = 8
+    local finished = false
+
+    local function checkDone()
+        done = done + 1
+        if done >= needed and not finished then
+            finished = true
+            returnTrigger()
+        end
+    end
+
+    local function returnTrigger()
+        TriggerClientEvent('adminProfile:fullProfileResult', playerId, {
+            success = true,
+            data = result
+        })
+    end
+
+    -- Profile
+    exports.oxmysql:execute('SELECT * FROM ec_admin_permissions WHERE identifier = ?', { adminId }, function(rows)
+        result.profile = rows and rows[1] or nil
+        checkDone()
+    end)
+    -- Permissions
+    exports.oxmysql:execute('SELECT * FROM ec_admin_permissions WHERE identifier = ?', { adminId }, function(rows)
+        result.permissions = rows or {}
+        checkDone()
+    end)
+    -- Roles
+    exports.oxmysql:execute('SELECT * FROM ec_admin_roles WHERE admin_id = ?', { adminId }, function(rows)
+        result.roles = rows or {}
+        checkDone()
+    end)
+    -- Activity
+    exports.oxmysql:execute('SELECT * FROM ec_admin_logs WHERE admin_identifier = ? ORDER BY timestamp DESC LIMIT 50', { adminId }, function(rows)
+        result.activity = rows or {}
+        checkDone()
+    end)
+    -- Actions
+    exports.oxmysql:execute('SELECT * FROM ec_admin_action_logs WHERE admin_identifier = ? ORDER BY created_at DESC LIMIT 50', { adminId }, function(rows)
+        result.actions = rows or {}
+        checkDone()
+    end)
+    -- Infractions
+    exports.oxmysql:execute('SELECT * FROM ec_admin_infractions WHERE admin_id = ?', { adminId }, function(rows)
+        result.infractions = rows or {}
+        checkDone()
+    end)
+    -- Warnings
+    exports.oxmysql:execute('SELECT * FROM ec_admin_warnings WHERE identifier = ?', { adminId }, function(rows)
+        result.warnings = rows or {}
+        checkDone()
+    end)
+    -- Bans
+    exports.oxmysql:execute('SELECT * FROM ec_admin_bans WHERE identifier = ?', { adminId }, function(rows)
+        result.bans = rows or {}
+        checkDone()
+    end)
 end)
 
 Logger.Info('✅ Admin Profile callbacks loaded successfully')

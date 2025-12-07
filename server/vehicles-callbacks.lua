@@ -89,14 +89,10 @@ lib.callback.register('ec_admin:getVehicles', function(source, data)
             -- FIX: Use our helper function instead of client-side native
             local modelName = GetVehicleName(model)
             local coords = GetEntityCoords(vehicle)
-            local heading = GetEntityHeading(vehicle)
             
             -- Get vehicle health
             local bodyHealth = GetVehicleBodyHealth(vehicle)
             local engineHealth = GetVehicleEngineHealth(vehicle)
-            local health = math.floor(((bodyHealth + engineHealth) / 2000) * 100)
-            
-            -- Get fuel level (check if function exists, fallback to 100)
             local fuel = 100
             if GetVehicleFuelLevel then
                 fuel = GetVehicleFuelLevel(vehicle)
@@ -107,9 +103,6 @@ lib.callback.register('ec_admin:getVehicles', function(source, data)
             
             -- Check if locked
             local lockStatus = GetVehicleDoorLockStatus(vehicle)
-            local locked = lockStatus >= 2
-            
-            -- Get vehicle class (server-side doesn't have GetVehicleClass, use model hash)
             local vehicleClass = 0  -- Default to compacts
             local className = 'Unknown'
             

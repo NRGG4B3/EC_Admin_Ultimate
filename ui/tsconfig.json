@@ -19,8 +19,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-  // Remove Node types to avoid missing type definition errors in this environment
-  "types": []
+  // Ensure custom type declarations are included
+  "types": [],
+  "typeRoots": [
+    "../types",
+    "./node_modules/@types"
+  ]
   },
   "include": ["src", "components", "styles"],
   "references": [{ "path": "./tsconfig.node.json" }]

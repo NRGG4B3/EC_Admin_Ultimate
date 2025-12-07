@@ -1,3 +1,9 @@
+-- NUI callback: getServerMetrics (dashboard metrics)
+RegisterNUICallback('getServerMetrics', function(data, cb)
+    lib.callback('ec_admin:getServerMetrics', data, function(result)
+        cb(result)
+    end)
+end)
 --[[
     EC Admin Ultimate - NUI Bridge (Client Side)
     Handles NUI lifecycle: mount on OPEN, unmount on CLOSE

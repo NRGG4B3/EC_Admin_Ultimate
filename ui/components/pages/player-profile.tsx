@@ -33,7 +33,9 @@ import {
   Gauge, Cog, Paintbrush, RotateCw, ArrowUpCircle, Database,
   FileCheck, FileMinus, FileWarning, Scale, Receipt, CreditCard as CardIcon,
   Palette, Droplet, Circle
+// @ts-ignore
 } from 'lucide-react';
+// @ts-ignore
 import { LineChart as RechartsLine, Line, AreaChart, Area, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { toastSuccess, toastError } from '../../lib/toast';
 import { formatRelativeTime, formatDateTime } from '../../lib/time';

@@ -54,9 +54,35 @@ interface Command {
   badge?: string;
 }
 
+import { getPlayers } from '../lib/data-manager';
+import { fetchNui } from './nui-bridge';
+import { toastError } from '../lib/toast';
+
 export function CommandPalette({ currentPage, setCurrentPage, onClose, onRefreshData }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [players, setPlayers] = useState<any[]>([]);
+  const [vehicles, setVehicles] = useState<any[]>([]);
+  const [logs, setLogs] = useState<any[]>([]);
+  const [settingsSections] = useState([
+    { id: 'general', label: 'General Settings' },
+    { id: 'permissions', label: 'Permissions' },
+    { id: 'webhooks', label: 'Webhooks' },
+    { id: 'notifications', label: 'Notifications' },
+    { id: 'anticheat', label: 'Anticheat' },
+    { id: 'aiDetection', label: 'AI Detection' },
+    { id: 'economy', label: 'Economy' },
+    { id: 'whitelist', label: 'Whitelist' },
+    { id: 'logging', label: 'Logging' },
+    { id: 'performance', label: 'Performance' },
+    { id: 'ui', label: 'UI' },
+  ]);
+
+  useEffect(() => {
+    getPlayers().then(setPlayers).catch(() => setPlayers([]));
+    fetchNui('getAllVehicles', {}).then((v) => setVehicles(v || [])).catch(() => setVehicles([]));
+    fetchNui('getRecentLogs', { limit: 20 }).then((l) => setLogs(l?.logs || [])).catch(() => setLogs([]));
+  }, []);
 
   const commands: Command[] = useMemo(() => [
     // Navigation Commands
@@ -166,6 +192,62 @@ export function CommandPalette({ currentPage, setCurrentPage, onClose, onRefresh
     },
     
     // Help
+    // --- Dynamic: Players ---
+    ...players.map((player) => ({
+      id: `player-${player.id}`,
+      label: player.name,
+      description: `Player ID: ${player.id}${player.steamid ? ' | Steam: ' + player.steamid : ''}`,
+      icon: Users,
+      action: () => {
+        setCurrentPage('player-profile');
+        window.dispatchEvent(new CustomEvent('ec-admin-jump-player', { detail: { playerId: player.id } }));
+        onClose();
+      },
+      category: 'Players',
+      keywords: [player.name, player.id?.toString(), player.steamid || ''],
+    })),
+    // --- Dynamic: Vehicles ---
+    ...vehicles.map((vehicle) => ({
+      id: `vehicle-${vehicle.id || vehicle.plate}`,
+      label: vehicle.plate || vehicle.model,
+      description: `Model: ${vehicle.model} | Owner: ${vehicle.owner || vehicle.ownerId || ''}`,
+      icon: Car,
+      action: () => {
+        setCurrentPage('vehicles');
+        window.dispatchEvent(new CustomEvent('ec-admin-jump-vehicle', { detail: { vehicleId: vehicle.id, plate: vehicle.plate } }));
+        onClose();
+      },
+      category: 'Vehicles',
+      keywords: [vehicle.plate, vehicle.model, vehicle.owner, vehicle.ownerId].filter(Boolean),
+    })),
+    // --- Dynamic: Logs/Actions ---
+    ...logs.map((log) => ({
+      id: `log-${log.id}`,
+      label: `${log.action || log.type} (${log.adminName || log.admin_id || ''})`,
+      description: log.details || log.message || '',
+      icon: FileText,
+      action: () => {
+        setCurrentPage('moderation');
+        window.dispatchEvent(new CustomEvent('ec-admin-jump-log', { detail: { logId: log.id } }));
+        onClose();
+      },
+      category: 'Logs',
+      keywords: [log.action, log.adminName, log.target, log.details, log.message].filter(Boolean),
+    })),
+    // --- Dynamic: Settings Sections ---
+    ...settingsSections.map((section) => ({
+      id: `settings-${section.id}`,
+      label: section.label,
+      description: `Jump to ${section.label}`,
+      icon: Settings,
+      action: () => {
+        setCurrentPage('settings');
+        window.dispatchEvent(new CustomEvent('ec-admin-jump-settings', { detail: { section: section.id } }));
+        onClose();
+      },
+      category: 'Settings',
+      keywords: [section.label, section.id],
+    })),
     {
       id: 'help-shortcuts',
       label: 'Keyboard Shortcuts',
@@ -245,11 +327,12 @@ export function CommandPalette({ currentPage, setCurrentPage, onClose, onRefresh
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-start justify-center pt-[10vh] z-[9999] pointer-events-auto animate-in fade-in-0 duration-200"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+      className="fixed left-1/2 top-24 -translate-x-1/2 z-[9999] pointer-events-auto animate-in fade-in-0 duration-200"
+      style={{ minWidth: 480, maxWidth: 640 }}
     >
       <div
-        className="w-full max-w-2xl backdrop-blur-xl border border-border dark:border-border rounded-xl shadow-2xl overflow-hidden ec-gradient-bg"
+        className="w-full max-w-2xl border border-border dark:border-border rounded-xl shadow-2xl overflow-hidden ec-gradient-bg bg-white/95 dark:bg-slate-900/95"
+        style={{ boxShadow: '0 8px 32px 0 rgba(0,0,0,0.18)' }}
       >
         {/* Header */}
         <div className="p-4 border-b border-border/20 dark:border-border/10">

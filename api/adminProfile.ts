@@ -1,3 +1,30 @@
+// Fetch all admin profile data in one call (live)
+export async function fetchAdminProfileFull(adminId: string): Promise<any> {
+  // Use NUI callback for FiveM or fallback to REST if in web mode
+  if ((window as any).GetParentResourceName) {
+    return new Promise((resolve, reject) => {
+      (window as any).fetchNui('adminProfile:getFullProfile', { adminId })
+        .then((resp: any) => {
+          if (resp && resp.success) resolve(resp.data);
+          else reject(resp?.message || 'Failed to fetch admin profile');
+        })
+        .catch(reject);
+    });
+  } else {
+    // Fallback: fetch each section in parallel (for web dev/testing)
+    const [profile, permissions, roles, activity, actions, infractions, warnings, bans] = await Promise.all([
+      fetchAdminProfile(adminId),
+      fetchAdminPermissions(adminId),
+      fetchAdminRoles(adminId),
+      fetchAdminActivity(adminId),
+      fetchAdminActions(adminId),
+      fetchAdminInfractions(adminId),
+      fetchAdminWarnings(adminId),
+      fetchAdminBans(adminId)
+    ]);
+    return { profile, permissions, roles, activity, actions, infractions, warnings, bans };
+  }
+}
 import {
   AdminProfile,
   AdminPermission,
