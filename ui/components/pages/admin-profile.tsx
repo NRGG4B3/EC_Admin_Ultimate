@@ -1,4 +1,4 @@
-import { fetchAdminProfileFull } from '../../../api/adminProfile';
+import { fetchAdminProfileFull } from '../../api/adminProfile';
 import { toastSuccess, toastError } from '../../lib/toast';
 import { QuickActionsWidget } from '../quick-actions-widget';
 import { formatRelativeTime, formatDateTime } from '../../lib/time';

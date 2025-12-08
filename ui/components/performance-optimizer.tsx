@@ -1,6 +1,6 @@
 // @ts-nocheck - Complex lazy loading with dynamic imports
 import { memo, useMemo, useCallback, useRef, useEffect, useState } from 'react';
-import { PageType } from '../../../App';
+import { PageType } from '../src/types';
 
 // Performance-optimized lazy loading with error boundaries
 export class ComponentLoader {

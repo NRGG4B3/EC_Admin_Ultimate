@@ -10,7 +10,7 @@ import {
   CheckCircle2, Circle, ClipboardCheck, RefreshCw, 
   FileText, Download, Trash2, TrendingUp
 } from 'lucide-react';
-import { toastSuccess, toastError } from '../../../lib/toast';
+import { toastSuccess, toastError } from '../../lib/toast';
 
 interface TestingChecklistPageProps {
   liveData?: any;

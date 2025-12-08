@@ -11,6 +11,12 @@ REM ============================================================================
 
 setlocal enabledelayedexpansion
 
+REM Error tracking variables
+set "UI_BUILD_SUCCESS=0"
+set "CUSTOMER_RELEASE_SUCCESS=0"
+set "ZIP_CREATE_SUCCESS=0"
+set "HAS_ERRORS=0"
+
 echo ====== EC Admin Ultimate - Unified Build Script ======
 echo.
 
@@ -23,8 +29,8 @@ where node >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Node.js is not installed or not in PATH
     echo Please install Node.js from https://nodejs.org/
-    pause
-    exit /b 1
+    set "HAS_ERRORS=1"
+    goto :summary
 )
 
 echo [1] Building UI...
@@ -42,9 +48,9 @@ if not exist node_modules (
     call npm install
     if %ERRORLEVEL% NEQ 0 (
         echo [ERROR] Failed to install UI dependencies
+        set "HAS_ERRORS=1"
         cd ..
-        pause
-        exit /b 1
+        goto :continue_build
     )
 )
 
@@ -52,13 +58,17 @@ REM Build UI
 echo Building UI...
 call npm run build
 if %ERRORLEVEL% NEQ 0 (
-    echo [ERROR] UI build failed
-    cd ..
-    pause
-    exit /b 1
+    echo [ERROR] UI build failed - continuing with customer release...
+    set "HAS_ERRORS=1"
+    set "UI_BUILD_SUCCESS=0"
+) else (
+    echo   ✓ UI build successful
+    set "UI_BUILD_SUCCESS=1"
 )
 
 cd ..
+
+:continue_build
 
 echo.
 echo [2] Preparing Customer Release...
@@ -67,9 +77,14 @@ REM Create temporary customer release directory
 set "CUSTOMER_RELEASE_DIR=ec_admin_ultimate_customer_release"
 if exist "%CUSTOMER_RELEASE_DIR%" (
     echo Cleaning previous customer release directory...
-    rmdir /s /q "%CUSTOMER_RELEASE_DIR%"
+    rmdir /s /q "%CUSTOMER_RELEASE_DIR%" 2>nul
 )
-mkdir "%CUSTOMER_RELEASE_DIR%"
+mkdir "%CUSTOMER_RELEASE_DIR%" 2>nul
+if not exist "%CUSTOMER_RELEASE_DIR%" (
+    echo [ERROR] Failed to create customer release directory
+    set "HAS_ERRORS=1"
+    goto :summary
+)
 
 echo [3] Copying files for customer release (excluding host folder)...
 
@@ -166,48 +181,106 @@ where powershell >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
     REM Use PowerShell to create ZIP
     set "CUSTOMER_ZIP=EC_Admin_Ultimate_Customer_v1.0.0.zip"
-    if exist "%CUSTOMER_ZIP%" del /F /Q "%CUSTOMER_ZIP%"
+    if exist "%CUSTOMER_ZIP%" del /F /Q "%CUSTOMER_ZIP%" 2>nul
     
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "$ProgressPreference = 'SilentlyContinue'; Compress-Archive -Path '%CUSTOMER_RELEASE_DIR%\*' -DestinationPath '%CUSTOMER_ZIP%' -Force"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "$ProgressPreference = 'SilentlyContinue'; Compress-Archive -Path '%CUSTOMER_RELEASE_DIR%\*' -DestinationPath '%CUSTOMER_ZIP%' -Force" 2>nul
     
     if %ERRORLEVEL% EQU 0 (
-        echo   ✓ Customer ZIP created: %CUSTOMER_ZIP%
+        if exist "%CUSTOMER_ZIP%" (
+            echo   ✓ Customer ZIP created: %CUSTOMER_ZIP%
+            set "ZIP_CREATE_SUCCESS=1"
+        ) else (
+            echo   ⚠ WARNING: ZIP file not found after creation
+            set "HAS_ERRORS=1"
+        )
     ) else (
         echo   ⚠ WARNING: Failed to create customer ZIP file
         echo   Customer release files are in: %CUSTOMER_RELEASE_DIR%
+        set "HAS_ERRORS=1"
     )
 ) else (
     echo   ⚠ WARNING: PowerShell not available - cannot create ZIP
     echo   Customer release files are in: %CUSTOMER_RELEASE_DIR%
+    set "HAS_ERRORS=1"
 )
 
 echo.
 echo [8] Host Release Status...
-echo   ✓ Host files remain unchanged (host.config.lua, host/ folder)
-echo   ✓ UI built and ready
-echo   ✓ All files in workspace are ready for host use
+if %UI_BUILD_SUCCESS% EQU 1 (
+    echo   ✓ Host files remain unchanged (host.config.lua, host/ folder)
+    echo   ✓ UI built and ready
+    echo   ✓ All files in workspace are ready for host use
+) else (
+    echo   ⚠ WARNING: UI build failed - host files may not be ready
+)
 
 echo.
-echo ====== Build Complete ======
+echo ====== Build Summary ======
 echo.
-echo Host Release:
-echo   - All files in workspace (ready to use)
-echo   - host.config.lua (unchanged)
-echo   - host/ folder (unchanged)
-echo   - UI built in ui/dist/
-echo.
-echo Customer Release:
-if exist "%CUSTOMER_ZIP%" (
-    echo   - ZIP: %CUSTOMER_ZIP%
-) else (
-    echo   - Directory: %CUSTOMER_RELEASE_DIR%
+
+REM Check customer release success
+if exist "%CUSTOMER_RELEASE_DIR%\config.lua" (
+    set "CUSTOMER_RELEASE_SUCCESS=1"
 )
-echo   - config.lua (from customer.config.lua)
-echo   - NO host/ folder
-echo   - NO host.config.lua
-echo   - API connection documentation included
+
+echo Host Release:
+if %UI_BUILD_SUCCESS% EQU 1 (
+    echo   ✓ UI built in ui/dist/
+) else (
+    echo   ✗ UI build FAILED
+)
+echo   ✓ host.config.lua (unchanged)
+echo   ✓ host/ folder (unchanged)
+echo   ✓ All files in workspace (ready to use)
 echo.
+
+echo Customer Release:
+if %CUSTOMER_RELEASE_SUCCESS% EQU 1 (
+    echo   ✓ config.lua (from customer.config.lua)
+) else (
+    echo   ✗ config.lua MISSING
+)
+if not exist "%CUSTOMER_RELEASE_DIR%\host" (
+    echo   ✓ host/ folder excluded
+) else (
+    echo   ✗ host/ folder still present
+)
+if not exist "%CUSTOMER_RELEASE_DIR%\host.config.lua" (
+    echo   ✓ host.config.lua excluded
+) else (
+    echo   ✗ host.config.lua still present
+)
+if exist "%CUSTOMER_RELEASE_DIR%\API_CONNECTION.md" (
+    echo   ✓ API connection documentation included
+) else (
+    echo   ✗ API documentation missing
+)
+if %ZIP_CREATE_SUCCESS% EQU 1 (
+    if exist "%CUSTOMER_ZIP%" (
+        echo   ✓ ZIP: %CUSTOMER_ZIP%
+    ) else (
+        echo   ✗ ZIP file not found
+    )
+) else (
+    echo   ⚠ ZIP: Not created (files in %CUSTOMER_RELEASE_DIR%)
+)
+echo.
+
+if %HAS_ERRORS% EQU 1 (
+    echo ====== WARNING: Build completed with errors ======
+    echo.
+    echo Some steps failed, but the build process continued.
+    echo Please review the errors above and fix them before distributing.
+    echo.
+) else (
+    echo ====== Build Complete - All Steps Successful ======
+    echo.
+)
+
 echo Customer servers connect to host APIs at: https://api.ecbetasolutions.com
 echo No Node.js required on customer servers.
 echo.
-pause
+
+:summary
+echo Press any key to exit...
+pause >nul

@@ -1,10 +1,10 @@
 import {
   fetchPlayerProfile, fetchPlayerInventory, fetchPlayerVehicles, fetchPlayerProperties, fetchPlayerTransactions, fetchPlayerActivity, fetchPlayerWarnings, fetchPlayerBans, fetchPlayerNotes, fetchPlayerPerformance, fetchPlayerMoneyChart
-} from '../../../api/playerProfile';
+} from '../../api/playerProfile';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   PlayerInventoryItem, PlayerVehicle, PlayerProperty, PlayerTransaction, PlayerActivity, PlayerWarning, PlayerBan, PlayerNote, PlayerPerformance, PlayerMoneyChart
-} from '../../../types/playerProfile';
+} from '../../types/playerProfile';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
