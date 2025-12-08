@@ -1,63 +1,72 @@
 /**
- * Centralized logging utility using Winston
+ * Centralized logging utility
+ * Simple console logger (can be upgraded to Winston later)
  */
 
-import winston from 'winston';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
-const LOG_FILE = process.env.LOG_FILE || path.join(__dirname, '../../logs/api.log');
 const LOG_TO_CONSOLE = process.env.LOG_TO_CONSOLE !== 'false';
 
-// Define log format
-const logFormat = winston.format.combine(
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-  winston.format.errors({ stack: true }),
-  winston.format.splat(),
-  winston.format.printf(({ timestamp, level, message, service, ...meta }) => {
-    let log = `${timestamp} [${service || 'API'}] ${level.toUpperCase()}: ${message}`;
-    if (Object.keys(meta).length > 0) {
-      log += ` ${JSON.stringify(meta)}`;
-    }
-    return log;
-  })
-);
+const levels = {
+  error: 0,
+  warn: 1,
+  info: 2,
+  debug: 3
+};
 
-// Create transports
-const transports = [];
+const levelColors = {
+  error: '\x1b[31m', // Red
+  warn: '\x1b[33m',  // Yellow
+  info: '\x1b[36m',  // Cyan
+  debug: '\x1b[90m'  // Gray
+};
 
-if (LOG_TO_CONSOLE) {
-  transports.push(
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        logFormat
-      ),
-    })
-  );
+const resetColor = '\x1b[0m';
+
+function formatTimestamp() {
+  const now = new Date();
+  return now.toISOString().replace('T', ' ').substring(0, 19);
 }
 
-// File transport (with rotation)
-transports.push(
-  new winston.transports.File({
-    filename: LOG_FILE,
-    maxsize: parseInt(process.env.LOG_MAX_SIZE) || 10485760, // 10MB
-    maxFiles: parseInt(process.env.LOG_MAX_FILES) || 7,
-    format: logFormat,
-  })
-);
+function shouldLog(level) {
+  const currentLevel = levels[LOG_LEVEL] || levels.info;
+  return levels[level] <= currentLevel;
+}
 
 // Create logger factory
 export function createLogger(serviceName) {
-  return winston.createLogger({
-    level: LOG_LEVEL,
-    defaultMeta: { service: serviceName },
-    transports,
-  });
+  return {
+    error(message, meta = {}) {
+      if (!shouldLog('error')) return;
+      const color = levelColors.error;
+      const timestamp = formatTimestamp();
+      const metaStr = Object.keys(meta).length > 0 ? ` ${JSON.stringify(meta)}` : '';
+      console.error(`${color}[${timestamp}] [${serviceName}] ERROR: ${message}${metaStr}${resetColor}`);
+    },
+    
+    warn(message, meta = {}) {
+      if (!shouldLog('warn')) return;
+      const color = levelColors.warn;
+      const timestamp = formatTimestamp();
+      const metaStr = Object.keys(meta).length > 0 ? ` ${JSON.stringify(meta)}` : '';
+      console.warn(`${color}[${timestamp}] [${serviceName}] WARN: ${message}${metaStr}${resetColor}`);
+    },
+    
+    info(message, meta = {}) {
+      if (!shouldLog('info')) return;
+      const color = levelColors.info;
+      const timestamp = formatTimestamp();
+      const metaStr = Object.keys(meta).length > 0 ? ` ${JSON.stringify(meta)}` : '';
+      console.log(`${color}[${timestamp}] [${serviceName}] INFO: ${message}${metaStr}${resetColor}`);
+    },
+    
+    debug(message, meta = {}) {
+      if (!shouldLog('debug')) return;
+      const color = levelColors.debug;
+      const timestamp = formatTimestamp();
+      const metaStr = Object.keys(meta).length > 0 ? ` ${JSON.stringify(meta)}` : '';
+      console.log(`${color}[${timestamp}] [${serviceName}] DEBUG: ${message}${metaStr}${resetColor}`);
+    }
+  };
 }
 
 export default createLogger('default');

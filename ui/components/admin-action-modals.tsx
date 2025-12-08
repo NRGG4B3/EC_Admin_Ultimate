@@ -72,7 +72,7 @@ export function AdminActionModal({ isOpen, onClose, player, action, onConfirm }:
       toastSuccess(`Action executed: ${action}`);
     } else {
       // Fallback to onConfirm for custom actions
-      onConfirm(data);
+    onConfirm(data);
     }
     
     handleClose();

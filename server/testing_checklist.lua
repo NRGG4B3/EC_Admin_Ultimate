@@ -12,7 +12,7 @@
 
 -- Ensure MySQL is available
 if not MySQL then
-    print("^1[Testing Checklist] ERROR: oxmysql not found!^0")
+    print("^3[Testing Checklist] WARNING: oxmysql not found! Testing checklist will be disabled.^0")
     return
 end
 

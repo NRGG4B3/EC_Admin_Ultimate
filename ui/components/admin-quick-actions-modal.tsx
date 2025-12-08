@@ -248,9 +248,9 @@ export async function executeQuickAction(action: string, data?: any, shouldClose
       
       // Send quick action via NUI callback
       const response = await fetch(`https://${resourceName}/quickAction`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, data })
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, data })
       });
       
       const result = await response.json();
@@ -274,31 +274,31 @@ export async function executeQuickAction(action: string, data?: any, shouldClose
         });
         window.dispatchEvent(event);
       }
-      
-      // If shouldCloseMenu is true, close the entire admin panel
-      if (shouldCloseMenu) {
-        setTimeout(() => {
+    
+    // If shouldCloseMenu is true, close the entire admin panel
+    if (shouldCloseMenu) {
+      setTimeout(() => {
           fetch(`https://${resourceName}/closePanel`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({})
-          }).catch(() => {
-            console.log(`[DEV] Close panel request sent`);
-          });
-        }, 300); // Small delay to let action execute first
-      }
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        }).catch(() => {
+          console.log(`[DEV] Close panel request sent`);
+        });
+      }, 300); // Small delay to let action execute first
+    }
     } catch (error) {
       // Fallback for non-FiveM environment or errors
       console.log(`[DEV] Quick Action: ${action}`, data, error);
-      
-      // Show toast notification
-      const event = new CustomEvent('show-toast', {
-        detail: { 
-          message: `Action executed: ${action}`, 
-          type: 'success' 
-        }
-      });
-      window.dispatchEvent(event);
+
+  // Show toast notification
+  const event = new CustomEvent('show-toast', {
+    detail: { 
+      message: `Action executed: ${action}`, 
+      type: 'success' 
+    }
+  });
+  window.dispatchEvent(event);
     }
   }
 }

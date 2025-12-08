@@ -108,6 +108,7 @@ server_scripts {
     'server/community.lua',                   -- Community UI backend (community management)
     'server/whitelist.lua',                   -- Whitelist UI backend (whitelist management)
     'server/settings.lua',                    -- Settings UI backend (settings management)
+    'server/testing_checklist.lua',          -- Testing checklist UI backend (testing progress tracking - OPTIONAL)
     'server/host-dashboard.lua',              -- Host dashboard UI backend (host mode only, or NRG staff)
     'server/host-api-client.lua',            -- Host API client (host mode only - communicates with Node.js backend)
     'server/dev_tools.lua'                    -- Dev tools UI backend (developer tools)
