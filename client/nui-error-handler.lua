@@ -29,23 +29,30 @@ local function logNUIError(errorType, errorMessage, errorDetails)
         end
     end
     
-    -- Send to server via callback
-    if lib and lib.callback then
-        lib.callback('ec_admin:logNUIError', false, function(success)
+    -- Send to server via callback (async - don't wait)
+    CreateThread(function()
+        if lib and lib.callback then
+            local success = lib.callback.await('ec_admin:logNUIError', false, {
+                type = errorType,
+                message = errorMessage,
+                details = errorDetails,
+                timestamp = os.time()
+            })
+            
             if not success then
                 -- Fallback to client-side logging if server callback fails
                 print("^1[NUI Error Handler]^7 " .. fullMessage .. "^0")
             end
-        end, {
-            type = errorType,
-            message = errorMessage,
-            details = errorDetails,
-            timestamp = os.time()
-        })
-    else
-        -- Fallback if lib.callback not available
-        print("^1[NUI Error Handler]^7 " .. fullMessage .. "^0")
-    end
+        else
+            -- Fallback if lib.callback not available - send via server event
+            TriggerServerEvent('ec_admin:logNUIError', {
+                type = errorType,
+                message = errorMessage,
+                details = errorDetails,
+                timestamp = os.time()
+            })
+        end
+    end)
 end
 
 -- Register NUI callback for error reporting

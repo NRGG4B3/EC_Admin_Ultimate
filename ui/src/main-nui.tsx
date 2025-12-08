@@ -7,6 +7,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'  // Fixed: Should be ./App.tsx not ../App.tsx
 import '../styles/globals.css'
+import './global-error-handler'  // Import global error handler (auto-setup)
 
 // Mark as NUI mode
 window.__NUI_MODE__ = true;

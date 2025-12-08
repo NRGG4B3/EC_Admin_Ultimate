@@ -107,6 +107,7 @@ function Logger.Debug(message)
 end
 
 -- NUI Error Logging (if enabled)
+-- ⚠️ CRITICAL: NUI errors are ALWAYS shown regardless of LogLevel (unless LogNUIErrors is false)
 function Logger.NUIError(errorType, errorMessage, errorDetails)
     if not Config or not Config.LogNUIErrors then
         return  -- NUI error logging disabled
@@ -122,7 +123,10 @@ function Logger.NUIError(errorType, errorMessage, errorDetails)
     end
     
     local fullMessage = string.format("[NUI] [%s] %s%s", errorType, errorMessage, detailsStr)
-    Logger.Error(fullMessage)
+    
+    -- ALWAYS show NUI errors (bypass LogLevel check)
+    -- This ensures all UI issues are visible even if LogLevel is set to WARN or ERROR
+    print(formatMessage('ERROR', fullMessage, LogIcons and '❌' or nil))
 end
 
 -- Export

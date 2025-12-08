@@ -120,6 +120,7 @@ client_scripts {
     -- ==========================================
     'client/startup-clean.lua',
     'client/error-handler.lua',
+    'client/nui-error-handler.lua',           -- ⚠️ CRITICAL: NUI error handler (catches ALL NUI errors)
     'client/ai-behavior-tracker.lua',
     'client/fps-optimizer.lua',
     'client/global-tools-client.lua',

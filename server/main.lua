@@ -71,3 +71,23 @@ lib.callback.register('ec_admin:logNUIError', function(source, errorData)
     return true
 end)
 
+-- Server Event: Log NUI errors (fallback if callback fails)
+RegisterNetEvent('ec_admin:logNUIError', function(errorData)
+    if not errorData then return end
+    
+    local errorType = errorData.type or 'UNKNOWN'
+    local errorMessage = errorData.message or 'No error message'
+    local errorDetails = errorData.details or {}
+    
+    -- Log to server logger
+    if Logger and Logger.NUIError then
+        Logger.NUIError(errorType, errorMessage, errorDetails)
+    else
+        -- Fallback if Logger not available
+        print(string.format("^1[EC Admin] [NUI ERROR] [%s] %s^0", errorType, errorMessage))
+        if errorDetails and next(errorDetails) then
+            print("^1[EC Admin] [NUI ERROR] Details: " .. json.encode(errorDetails) .. "^0")
+        end
+    end
+end)
+

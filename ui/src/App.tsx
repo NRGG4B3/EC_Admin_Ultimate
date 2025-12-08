@@ -1,6 +1,7 @@
 // EC Admin Ultimate - Complete Admin Panel
 // SUPPORTS BOTH LIGHT AND DARK MODES WITH TOGGLE
 // ALL REAL DATA - NO MOCKS
+import '../global-error-handler';  // ⚠️ CRITICAL: Global error handler (catches ALL errors)
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { AppProvider } from '../components/app-context';
 import { ErrorBoundary } from '../components/error-boundary';

@@ -6,6 +6,7 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Ban, UserX, DollarSign, MapPin, Eye, Trash2, Key, Zap, Shield, AlertTriangle, Gift, Wrench, Heart, Snowflake, MessageSquare, UserCheck } from 'lucide-react';
 import { toastSuccess, toastError, toastInfo, toastWarn } from '../lib/toast';
+import { executeQuickAction } from './admin-quick-actions-modal';
 
 interface Player {
   id: number;
@@ -29,27 +30,51 @@ export function AdminActionModal({ isOpen, onClose, player, action, onConfirm }:
 
   if (!player || !action) return null;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const data: any = { playerId: player.id, playerName: player.name };
+    
+    // Map actions to quick action IDs
+    let quickActionId: string | null = null;
     
     switch (action) {
       case 'kick':
         data.reason = reason || 'No reason provided';
+        quickActionId = 'kick';
         break;
       case 'ban':
         data.reason = reason || 'No reason provided';
         data.duration = duration === 'custom' ? customDuration : duration;
+        quickActionId = 'ban';
         break;
       case 'give-money':
         data.amount = parseInt(amount) || 0;
         data.type = reason || 'cash'; // cash or bank
+        quickActionId = 'give_money';
         break;
       case 'teleport':
         data.type = reason || 'to-player'; // to-player, bring, coords
+        // Map teleport types to quick actions
+        if (data.type === 'to-player') quickActionId = 'goto';
+        else if (data.type === 'bring') quickActionId = 'bring';
+        else if (data.type === 'waypoint') quickActionId = 'tpm';
+        break;
+      case 'revive':
+        quickActionId = 'revive';
+        break;
+      case 'spectate':
+        quickActionId = 'spectate';
         break;
     }
     
-    onConfirm(data);
+    // Use quick actions system if action is mapped
+    if (quickActionId) {
+      await executeQuickAction(quickActionId, data);
+      toastSuccess(`Action executed: ${action}`);
+    } else {
+      // Fallback to onConfirm for custom actions
+      onConfirm(data);
+    }
+    
     handleClose();
   };
 
@@ -226,8 +251,9 @@ export function AdminActionModal({ isOpen, onClose, player, action, onConfirm }:
                   <Button
                     variant="outline"
                     className="justify-start"
-                    onClick={() => {
-                      onConfirm({ playerId: player.id, type: 'to-player' });
+                    onClick={async () => {
+                      await executeQuickAction('goto', { playerId: player.id });
+                      toastSuccess('Teleported to player');
                       handleClose();
                     }}
                   >
@@ -236,8 +262,9 @@ export function AdminActionModal({ isOpen, onClose, player, action, onConfirm }:
                   <Button
                     variant="outline"
                     className="justify-start"
-                    onClick={() => {
-                      onConfirm({ playerId: player.id, type: 'bring' });
+                    onClick={async () => {
+                      await executeQuickAction('bring', { playerId: player.id });
+                      toastSuccess('Brought player to you');
                       handleClose();
                     }}
                   >
@@ -246,8 +273,9 @@ export function AdminActionModal({ isOpen, onClose, player, action, onConfirm }:
                   <Button
                     variant="outline"
                     className="justify-start"
-                    onClick={() => {
-                      onConfirm({ playerId: player.id, type: 'waypoint' });
+                    onClick={async () => {
+                      await executeQuickAction('tpm', {});
+                      toastSuccess('Teleported to waypoint');
                       handleClose();
                     }}
                   >

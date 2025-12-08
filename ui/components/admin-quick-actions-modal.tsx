@@ -237,40 +237,68 @@ export function QuickActionModal({ isOpen, onClose, action, onConfirm }: QuickAc
 }
 
 // Helper to execute quick actions
-export function executeQuickAction(action: string, data?: any, shouldCloseMenu?: boolean) {
+export async function executeQuickAction(action: string, data?: any, shouldCloseMenu?: boolean): Promise<void> {
   console.log(`[ADMIN] Executing: ${action}`, data);
   
-  // Send to FiveM NUI
+  // Send to FiveM NUI using proper resource name
   if (typeof window !== 'undefined') {
-    fetch(`https://ec_admin_ultimate/quickAction`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, data })
-    }).catch(() => {
-      // Fallback for non-FiveM environment
-      console.log(`[DEV] Quick Action: ${action}`, data);
-    });
-    
-    // If shouldCloseMenu is true, close the entire admin panel
-    if (shouldCloseMenu) {
-      setTimeout(() => {
-        fetch(`https://ec_admin_ultimate/closePanel`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({})
-        }).catch(() => {
-          console.log(`[DEV] Close panel request sent`);
+    try {
+      // Get resource name dynamically
+      const resourceName = (window as any).GetParentResourceName?.() || 'ec_admin_ultimate';
+      
+      // Send quick action via NUI callback
+      const response = await fetch(`https://${resourceName}/quickAction`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, data })
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        // Show success toast
+        const event = new CustomEvent('show-toast', {
+          detail: { 
+            message: result.message || `Action executed: ${action}`, 
+            type: 'success' 
+          }
         });
-      }, 300); // Small delay to let action execute first
+        window.dispatchEvent(event);
+      } else {
+        // Show error toast
+        const event = new CustomEvent('show-toast', {
+          detail: { 
+            message: result.error || `Failed to execute: ${action}`, 
+            type: 'error' 
+          }
+        });
+        window.dispatchEvent(event);
+      }
+      
+      // If shouldCloseMenu is true, close the entire admin panel
+      if (shouldCloseMenu) {
+        setTimeout(() => {
+          fetch(`https://${resourceName}/closePanel`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+          }).catch(() => {
+            console.log(`[DEV] Close panel request sent`);
+          });
+        }, 300); // Small delay to let action execute first
+      }
+    } catch (error) {
+      // Fallback for non-FiveM environment or errors
+      console.log(`[DEV] Quick Action: ${action}`, data, error);
+      
+      // Show toast notification
+      const event = new CustomEvent('show-toast', {
+        detail: { 
+          message: `Action executed: ${action}`, 
+          type: 'success' 
+        }
+      });
+      window.dispatchEvent(event);
     }
   }
-
-  // Show toast notification
-  const event = new CustomEvent('show-toast', {
-    detail: { 
-      message: `Action executed: ${action}`, 
-      type: 'success' 
-    }
-  });
-  window.dispatchEvent(event);
 }

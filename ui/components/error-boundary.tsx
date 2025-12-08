@@ -21,6 +21,42 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('EC Admin Ultimate Error:', error, errorInfo);
+    
+    // Send error to server logger
+    this.logReactError(error, errorInfo);
+  }
+
+  private logReactError(error: Error, errorInfo: React.ErrorInfo) {
+    const isNUI = typeof (window as any).GetParentResourceName !== 'undefined';
+    
+    if (!isNUI) {
+      return; // Only log in NUI mode
+    }
+
+    try {
+      const resourceName = (window as any).GetParentResourceName?.();
+      if (!resourceName) return;
+
+      fetch(`https://${resourceName}/logReactError`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          error: {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+          },
+          errorInfo: {
+            componentStack: errorInfo.componentStack
+          },
+          timestamp: Date.now()
+        })
+      }).catch(() => {
+        // Silently fail if NUI bridge is not available
+      });
+    } catch (err) {
+      // Silently fail
+    }
   }
 
   render() {

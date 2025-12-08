@@ -65,7 +65,7 @@ Config.Debug = false  -- PRODUCTION: Set to false to disable excessive debug log
 Config.LogIcons = false  -- Emojis make logs easier to scan (recommended for 'detailed' format)
 
 -- NUI Error Logging - Log NUI/UI errors through centralized Logger
-Config.LogNUIErrors = true  -- PRODUCTION: true (catch React errors, fetch failures, etc.)
+Config.LogNUIErrors = true  -- ⚠️ CRITICAL: Set to true to log ALL NUI errors (React errors, fetch failures, console errors, etc.)
 
 -- ============================================================================
 --  🔔 WEBHOOKS & DISCORD LOGGING (Visible in UI > Webhook Settings)

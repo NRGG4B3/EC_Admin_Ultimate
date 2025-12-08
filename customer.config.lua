@@ -39,7 +39,7 @@ Config.LogFormat = 'detailed'  -- PRODUCTION DEFAULT: 'detailed' (timestamps, fu
 Config.LogLevel = 'INFO'  -- PRODUCTION: 'INFO' shows normal operations without excessive debug spam
 Config.Debug = false  -- PRODUCTION: Set to false to disable excessive debug logging
 Config.LogIcons = false  -- Emojis make logs easier to scan (recommended for 'detailed' format)
-Config.LogNUIErrors = true  -- PRODUCTION: true (catch React errors, fetch failures, etc.)
+Config.LogNUIErrors = true  -- ⚠️ CRITICAL: Set to true to log ALL NUI errors (React errors, fetch failures, console errors, etc.)
 
 -- ============================================================================
 --  🔔 WEBHOOKS & DISCORD LOGGING (Visible in UI > Webhook Settings)
