@@ -3,171 +3,135 @@
     Client-side bridge connecting NUI callbacks to server-side handlers
 ]]
 
--- Register NUI callbacks and forward to server
-RegisterNUICallback('getHostSystemStats', function(data, cb)
-    lib.callback('ec_admin:getHostSystemStats', false, function(response)
+-- Helper: Safe callback wrapper
+local function safeCallback(callbackName, serverCallback, data, cb)
+    local success, response = pcall(function()
+        if lib and lib.callback then
+            return lib.callback.await(serverCallback, false, data)
+        else
+            return { success = false, error = 'Callback system not available' }
+        end
+    end)
+    
+    if not success then
+        print(string.format("^1[NUI Host Dashboard]^7 Error in %s: %s^0", callbackName, tostring(response)))
+        cb({ success = false, error = 'Callback failed: ' .. tostring(response) })
+    else
         cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    end
+end
+
+-- Register NUI callbacks and forward to server with error handling
+RegisterNUICallback('getHostSystemStats', function(data, cb)
+    safeCallback('getHostSystemStats', 'ec_admin:getHostSystemStats', data, cb)
 end)
 
 RegisterNUICallback('getHostAPIStatuses', function(data, cb)
-    lib.callback('ec_admin:getHostAPIStatuses', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getHostAPIStatuses', 'ec_admin:getHostAPIStatuses', data, cb)
 end)
 
 RegisterNUICallback('getConnectedCities', function(data, cb)
-    lib.callback('ec_admin:getConnectedCities', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getConnectedCities', 'ec_admin:getConnectedCities', data, cb)
 end)
 
 RegisterNUICallback('getGlobalBans', function(data, cb)
-    lib.callback('ec_admin:getGlobalBans', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getGlobalBans', 'ec_admin:getGlobalBans', data, cb)
 end)
 
 RegisterNUICallback('getBanAppeals', function(data, cb)
-    lib.callback('ec_admin:getBanAppeals', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getBanAppeals', 'ec_admin:getBanAppeals', data, cb)
 end)
 
 RegisterNUICallback('getGlobalWarnings', function(data, cb)
-    lib.callback('ec_admin:getGlobalWarnings', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getGlobalWarnings', 'ec_admin:getGlobalWarnings', data, cb)
 end)
 
 RegisterNUICallback('getHostWebhooks', function(data, cb)
-    lib.callback('ec_admin:getHostWebhooks', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getHostWebhooks', 'ec_admin:getHostWebhooks', data, cb)
 end)
 
 RegisterNUICallback('getSystemLogs', function(data, cb)
-    lib.callback('ec_admin:getSystemLogs', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getSystemLogs', 'ec_admin:getSystemLogs', data, cb)
 end)
 
 RegisterNUICallback('getHostActionLogs', function(data, cb)
-    lib.callback('ec_admin:getHostActionLogs', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getHostActionLogs', 'ec_admin:getHostActionLogs', data, cb)
 end)
 
 RegisterNUICallback('getPerformanceMetrics', function(data, cb)
-    lib.callback('ec_admin:getPerformanceMetrics', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPerformanceMetrics', 'ec_admin:getPerformanceMetrics', data, cb)
 end)
 
 RegisterNUICallback('getSalesProjections', function(data, cb)
-    lib.callback('ec_admin:getSalesProjections', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getSalesProjections', 'ec_admin:getSalesProjections', data, cb)
 end)
 
 -- Host API management
 RegisterNUICallback('startHostAPI', function(data, cb)
-    lib.callback('ec_admin:startHostAPI', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('startHostAPI', 'ec_admin:startHostAPI', data, cb)
 end)
 
 RegisterNUICallback('stopHostAPI', function(data, cb)
-    lib.callback('ec_admin:stopHostAPI', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('stopHostAPI', 'ec_admin:stopHostAPI', data, cb)
 end)
 
 RegisterNUICallback('restartHostAPI', function(data, cb)
-    lib.callback('ec_admin:restartHostAPI', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('restartHostAPI', 'ec_admin:restartHostAPI', data, cb)
 end)
 
 RegisterNUICallback('startAllHostAPIs', function(data, cb)
-    lib.callback('ec_admin:startAllHostAPIs', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('startAllHostAPIs', 'ec_admin:startAllHostAPIs', data, cb)
 end)
 
 RegisterNUICallback('stopAllHostAPIs', function(data, cb)
-    lib.callback('ec_admin:stopAllHostAPIs', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('stopAllHostAPIs', 'ec_admin:stopAllHostAPIs', data, cb)
 end)
 
 -- Global ban management
 RegisterNUICallback('removeGlobalBan', function(data, cb)
-    lib.callback('ec_admin:removeGlobalBan', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('removeGlobalBan', 'ec_admin:removeGlobalBan', data, cb)
 end)
 
 RegisterNUICallback('processBanAppeal', function(data, cb)
-    lib.callback('ec_admin:processBanAppeal', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('processBanAppeal', 'ec_admin:processBanAppeal', data, cb)
 end)
 
 -- Global warnings
 RegisterNUICallback('issueGlobalWarning', function(data, cb)
-    lib.callback('ec_admin:issueGlobalWarning', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('issueGlobalWarning', 'ec_admin:issueGlobalWarning', data, cb)
 end)
 
 RegisterNUICallback('removeGlobalWarning', function(data, cb)
-    lib.callback('ec_admin:removeGlobalWarning', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('removeGlobalWarning', 'ec_admin:removeGlobalWarning', data, cb)
 end)
 
 -- Webhook management
 RegisterNUICallback('testHostWebhook', function(data, cb)
-    lib.callback('ec_admin:testHostWebhook', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('testHostWebhook', 'ec_admin:testHostWebhook', data, cb)
 end)
 
 RegisterNUICallback('toggleHostWebhook', function(data, cb)
-    lib.callback('ec_admin:toggleHostWebhook', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('toggleHostWebhook', 'ec_admin:toggleHostWebhook', data, cb)
 end)
 
 RegisterNUICallback('updateHostWebhook', function(data, cb)
-    lib.callback('ec_admin:updateHostWebhook', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('updateHostWebhook', 'ec_admin:updateHostWebhook', data, cb)
 end)
 
 RegisterNUICallback('createHostWebhook', function(data, cb)
-    lib.callback('ec_admin:createHostWebhook', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('createHostWebhook', 'ec_admin:createHostWebhook', data, cb)
 end)
 
 RegisterNUICallback('deleteHostWebhook', function(data, cb)
-    lib.callback('ec_admin:deleteHostWebhook', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('deleteHostWebhook', 'ec_admin:deleteHostWebhook', data, cb)
 end)
 
 -- System management
 RegisterNUICallback('resolveSystemAlert', function(data, cb)
-    lib.callback('ec_admin:resolveSystemAlert', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('resolveSystemAlert', 'ec_admin:resolveSystemAlert', data, cb)
 end)
 
 RegisterNUICallback('disconnectCity', function(data, cb)
-    lib.callback('ec_admin:disconnectCity', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('disconnectCity', 'ec_admin:disconnectCity', data, cb)
 end)
 

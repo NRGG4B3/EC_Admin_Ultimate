@@ -141,7 +141,8 @@ client_scripts {
     'client/nui-host-control.lua',      -- Host control NUI bridge
     'client/nui-host-management.lua',   -- Host management NUI bridge
     'client/nui-host-access.lua',       -- Host access NUI bridge (checks host mode and NRG staff)
-    'client/nui-dev-tools.lua'          -- Dev tools NUI bridge
+    'client/nui-dev-tools.lua',        -- Dev tools NUI bridge
+    'client/nui-testing-checklist.lua' -- Testing checklist NUI bridge
 }
 
 -- Exports

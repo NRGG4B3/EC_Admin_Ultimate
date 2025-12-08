@@ -36,6 +36,7 @@ import { ModerationPage } from '../components/pages/moderation';
 import { SystemManagementPage } from '../components/pages/system-management';
 import { ServerMonitorPage } from '../components/pages/server-monitor';
 import { CommunityPage } from '../components/pages/community';
+import { TestingChecklistPage } from '../components/pages/testing-checklist';
 
 // REAL DATA ONLY - Empty initial state, will be filled by server
 function getInitialData(): LiveData {
@@ -353,6 +354,8 @@ export default function App() {
           return <ServerMonitorPage liveData={liveData} />;
         case 'community':
           return <CommunityPage liveData={liveData} />;
+        case 'testing-checklist':
+          return <TestingChecklistPage liveData={liveData} />;
         default:
           return (
             <div className="p-8 text-center">

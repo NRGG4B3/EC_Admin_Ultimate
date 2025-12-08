@@ -34,7 +34,8 @@ import {
   FileText,
   BarChart3,
   UserCog,
-  Crown
+  Crown,
+  ClipboardCheck
 } from 'lucide-react';
 import type { PageType } from '../src/types';
 import { useState, useEffect } from 'react';
@@ -195,6 +196,16 @@ const menuItems = [
     color: 'from-gray-600 to-slate-600',
     bgColor: 'bg-gray-500/10',
     iconColor: 'text-slate-400',
+    count: null,
+    hostOnly: false
+  },
+  { 
+    id: 'testing-checklist' as PageType, 
+    icon: ClipboardCheck, 
+    label: 'Testing', 
+    color: 'from-emerald-600 to-green-600',
+    bgColor: 'bg-emerald-500/10',
+    iconColor: 'text-emerald-400',
     count: null,
     hostOnly: false
   }

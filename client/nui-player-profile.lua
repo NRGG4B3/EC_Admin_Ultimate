@@ -3,88 +3,78 @@
     Client-side bridge connecting NUI callbacks to server-side handlers
 ]]
 
--- Register NUI callbacks and forward to server
-RegisterNUICallback('getPlayerProfile', function(data, cb)
-    lib.callback('ec_admin:getPlayerProfile', false, function(response)
+-- Helper: Safe callback wrapper
+local function safeCallback(callbackName, serverCallback, data, cb)
+    local success, response = pcall(function()
+        if lib and lib.callback then
+            return lib.callback.await(serverCallback, false, data)
+        else
+            return { success = false, error = 'Callback system not available' }
+        end
+    end)
+    
+    if not success then
+        print(string.format("^1[NUI Player Profile]^7 Error in %s: %s^0", callbackName, tostring(response)))
+        cb({ success = false, error = 'Callback failed: ' .. tostring(response) })
+    else
         cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    end
+end
+
+-- Register NUI callbacks and forward to server with error handling
+RegisterNUICallback('getPlayerProfile', function(data, cb)
+    safeCallback('getPlayerProfile', 'ec_admin:getPlayerProfile', data, cb)
 end)
 
 RegisterNUICallback('getPlayerInventory', function(data, cb)
-    lib.callback('ec_admin:getPlayerInventory', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerInventory', 'ec_admin:getPlayerInventory', data, cb)
 end)
 
 RegisterNUICallback('getPlayerVehicles', function(data, cb)
-    lib.callback('ec_admin:getPlayerVehicles', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerVehicles', 'ec_admin:getPlayerVehicles', data, cb)
 end)
 
 RegisterNUICallback('getPlayerProperties', function(data, cb)
-    lib.callback('ec_admin:getPlayerProperties', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerProperties', 'ec_admin:getPlayerProperties', data, cb)
 end)
 
 RegisterNUICallback('getPlayerTransactions', function(data, cb)
-    lib.callback('ec_admin:getPlayerTransactions', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerTransactions', 'ec_admin:getPlayerTransactions', data, cb)
 end)
 
 RegisterNUICallback('getPlayerActivity', function(data, cb)
-    lib.callback('ec_admin:getPlayerActivity', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerActivity', 'ec_admin:getPlayerActivity', data, cb)
 end)
 
 RegisterNUICallback('getPlayerWarnings', function(data, cb)
-    lib.callback('ec_admin:getPlayerWarnings', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerWarnings', 'ec_admin:getPlayerWarnings', data, cb)
 end)
 
 RegisterNUICallback('getPlayerBans', function(data, cb)
-    lib.callback('ec_admin:getPlayerBans', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerBans', 'ec_admin:getPlayerBans', data, cb)
 end)
 
 RegisterNUICallback('getPlayerNotes', function(data, cb)
-    lib.callback('ec_admin:getPlayerNotes', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerNotes', 'ec_admin:getPlayerNotes', data, cb)
 end)
 
 RegisterNUICallback('getPlayerPerformance', function(data, cb)
-    lib.callback('ec_admin:getPlayerPerformance', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerPerformance', 'ec_admin:getPlayerPerformance', data, cb)
 end)
 
 RegisterNUICallback('getPlayerMoneyChart', function(data, cb)
-    lib.callback('ec_admin:getPlayerMoneyChart', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('getPlayerMoneyChart', 'ec_admin:getPlayerMoneyChart', data, cb)
 end)
 
 RegisterNUICallback('warnPlayer', function(data, cb)
-    lib.callback('ec_admin:warnPlayer', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('warnPlayer', 'ec_admin:warnPlayer', data, cb)
 end)
 
 RegisterNUICallback('banPlayer', function(data, cb)
-    lib.callback('ec_admin:banPlayer', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('banPlayer', 'ec_admin:banPlayer', data, cb)
 end)
 
 RegisterNUICallback('kickPlayer', function(data, cb)
-    lib.callback('ec_admin:kickPlayer', false, function(response)
-        cb(response or { success = false, error = 'No response from server' })
-    end, data)
+    safeCallback('kickPlayer', 'ec_admin:kickPlayer', data, cb)
 end)
 

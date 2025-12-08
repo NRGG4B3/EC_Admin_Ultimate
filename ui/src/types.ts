@@ -19,4 +19,5 @@ export type PageType =
   | 'moderation'
   | 'system-management'
   | 'server-monitor'
-  | 'community';
+  | 'community'
+  | 'testing-checklist';

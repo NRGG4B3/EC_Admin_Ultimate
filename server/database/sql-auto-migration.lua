@@ -37,7 +37,8 @@ local SQL_EXECUTION_ORDER = {
     'system_management.sql',  -- System management (base tables)
     'community.sql',           -- Community management (base tables)
     'whitelist.sql',          -- Whitelist management (base tables)
-    'settings.sql'            -- Settings management (base tables)
+    'settings.sql',            -- Settings management (base tables)
+    'testing_checklist.sql'   -- Testing checklist tracking (base tables)
 }
 
 -- Helper: Get current timestamp
