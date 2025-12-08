@@ -78,7 +78,9 @@ export function SettingsPage({ liveData }: SettingsPageProps) {
         // Data will be received via NUI message
       }
     } catch (error) {
-      console.log('[Settings] Not in FiveM environment');
+      if (import.meta.env?.DEV) {
+        console.log('[Settings] Not in FiveM environment');
+      }
     }
   }, []);
 

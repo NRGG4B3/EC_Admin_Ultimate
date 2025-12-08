@@ -118,7 +118,9 @@ export function SystemManagementPage({ liveData }: SystemManagementPageProps) {
         // Data will be received via NUI message
       }
     } catch (error) {
-      console.log('[System] Not in FiveM environment');
+      if (import.meta.env?.DEV) {
+        console.log('[System] Not in FiveM environment');
+      }
     }
   }, []);
 

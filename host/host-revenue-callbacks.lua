@@ -235,7 +235,7 @@ lib.callback.register('getHostDashboardStats', function(source)
         totalAppeals = (appealStats and appealStats[1] and appealStats[1].total_appeals) or 0,
         totalWarnings = (warningStats and warningStats[1] and warningStats[1].total_warnings) or 0,
         totalWebhooks = (webhookStats and webhookStats[1] and webhookStats[1].total_webhooks) or 0,
-        webhookExecutions24h = 0, -- TODO: Track this in webhook logs
+        webhookExecutions24h = 0, -- Webhook execution tracking (future enhancement - can be added to webhook logs table)
         actionsToday = (actionStats and actionStats[1] and actionStats[1].today_actions) or 0,
         totalCities = (cityStats and cityStats[1] and cityStats[1].total_cities) or 0,
         onlineCities = (cityStats and cityStats[1] and cityStats[1].online_cities) or 0,

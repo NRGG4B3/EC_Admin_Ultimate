@@ -213,19 +213,30 @@ export function Sidebar({ currentPage, onPageChange, isCompact }: SidebarProps) 
     const checkHostAccess = async () => {
       try {
         // In FiveM, check if host folder exists and user has access
-        const hostStatus = await fetchNui<{ hostMode: boolean; isNRGStaff: boolean }>('checkHostAccess', {});
+        const hostStatus = await fetchNui<{ hostMode: boolean; isNRGStaff: boolean; canAccessHostDashboard: boolean; mode: string }>('checkHostAccess', {});
         
-        console.log('[Sidebar] Host access check result:', hostStatus);
+        if (import.meta.env?.DEV) console.log('[Sidebar] Host access check result:', hostStatus);
+        
+        // Only show host dashboard if:
+        // 1. Host mode is enabled (host/ folder exists) OR
+        // 2. User is NRG staff (can access from customer servers)
         setIsHostMode(hostStatus.hostMode || false);
         setIsNRGStaff(hostStatus.isNRGStaff || false);
       } catch (error) {
-        console.error('[Sidebar] Failed to check host access:', error);
+        if (import.meta.env?.DEV) console.error('[Sidebar] Failed to check host access:', error);
+        // Default to customer mode (no host access)
         setIsHostMode(false);
         setIsNRGStaff(false);
       }
     };
 
-    checkHostAccess();
+    if (isFiveM) {
+      checkHostAccess();
+    } else {
+      // Outside FiveM (browser), default to customer mode
+      setIsHostMode(false);
+      setIsNRGStaff(false);
+    }
   }, [isFiveM]);
 
   // Load system info (framework and database) without any mock fallback
@@ -265,9 +276,11 @@ export function Sidebar({ currentPage, onPageChange, isCompact }: SidebarProps) 
     if (item.id === 'dev-tools') {
       return false; // Dev tools hidden in production
     }
-    // Show host-only items only if host mode is enabled AND user is NRG staff
+    // Show host-only items only if:
+    // 1. Host mode is enabled (host/ folder exists) OR
+    // 2. User is NRG staff (can access from customer servers)
     if (item.hostOnly) {
-      return isHostMode && isNRGStaff;
+      return isHostMode || isNRGStaff; // Changed from && to || (OR logic)
     }
     return true;
   });

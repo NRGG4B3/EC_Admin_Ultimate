@@ -115,7 +115,8 @@ echo Copying files...
 xcopy /E /I /Y /Q "client" "host\release\EC_Admin_Ultimate\client" >nul 2>&1
 xcopy /E /I /Y /Q "server" "host\release\EC_Admin_Ultimate\server" >nul 2>&1
 xcopy /E /I /Y /Q "shared" "host\release\EC_Admin_Ultimate\shared" >nul 2>&1
-xcopy /E /I /Y /Q "sql" "host\release\EC_Admin_Ultimate\sql" >nul 2>&1
+REM NOTE: SQL files are NOT copied - customers get SQL from server/database/sql-auto-migration.lua
+REM Host SQL files stay in host/ folder only
 
 echo Copying UI...
 if exist "ui\dist" (

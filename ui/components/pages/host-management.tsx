@@ -267,7 +267,7 @@ export function HostDashboard() {
   const loadAllData = async () => {
     try {
       const [stats, bans, appeals, warnings, hooks, hookLogs, actLogs, staffAct, apis, logs, metrics] = await Promise.all([
-        fetchNui<DashboardStats>('getHostDashboardStats', {}, {
+        fetchNui<DashboardStats>('getHostSystemStats', {}, {
           totalBans: 0,
           totalBansPermanent: 0,
           pendingAppeals: 0,

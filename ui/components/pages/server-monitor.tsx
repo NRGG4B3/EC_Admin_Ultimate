@@ -13,6 +13,7 @@ import {
   RefreshCw, Download, Search, TrendingUp, TrendingDown, AlertTriangle,
   CheckCircle, XCircle, Zap, BarChart3, Users, MapPin, Eye
 } from 'lucide-react';
+import { PlayerMarker } from '../player-marker';
 import { toastSuccess, toastError } from '../../lib/toast';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 
@@ -54,8 +55,14 @@ interface PlayerPosition {
   id: string;
   name: string;
   coords: { x: number; y: number; z: number };
+  normalizedX?: number;
+  normalizedY?: number;
+  heading?: number;
   vehicle?: string;
   job?: string;
+  health?: number;
+  armor?: number;
+  identifier?: string;
 }
 
 export function ServerMonitorPage({ liveData }: ServerMonitorPageProps) {
@@ -255,23 +262,35 @@ export function ServerMonitorPage({ liveData }: ServerMonitorPageProps) {
             (async () => {
               try {
                 if (!isInGame) {
-                  // Mock data for browser/Figma preview
+                  // Mock data for browser/Figma preview with normalized coordinates
                   return {
                     type: 'playerPositions',
                     success: true,
-                    positions: Array.from({ length: 12 }, (_, i) => ({
-                      id: `player_${i}`,
-                      name: ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Williams', 'Tom Brown',
-                             'Emily Davis', 'Chris Wilson', 'Lisa Anderson', 'David Martinez', 'Anna Garcia',
-                             'James Rodriguez', 'Maria Lopez'][i] || `Player ${i}`,
-                      coords: { 
-                        x: -100 + Math.random() * 200, 
-                        y: -100 + Math.random() * 200, 
-                        z: 0 
-                      },
-                      vehicle: i % 3 === 0 ? ['Police Cruiser', 'Ambulance', 'Fire Truck', 'Taxi', 'Bus'][i % 5] : undefined,
-                      job: ['Police', 'EMS', 'Mechanic', 'Taxi', 'Civilian'][i % 5]
-                    }))
+                    positions: Array.from({ length: 12 }, (_, i) => {
+                      // Generate realistic GTA coordinates
+                      const x = -2000 + Math.random() * 4000;
+                      const y = -2000 + Math.random() * 4000;
+                      const minX = -4000, maxX = 4000;
+                      const minY = -4000, maxY = 4000;
+                      const normalizedX = Math.max(0, Math.min(1, (x - minX) / (maxX - minX)));
+                      const normalizedY = Math.max(0, Math.min(1, (y - minY) / (maxY - minY)));
+                      
+                      return {
+                        id: `player_${i}`,
+                        name: ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Williams', 'Tom Brown',
+                               'Emily Davis', 'Chris Wilson', 'Lisa Anderson', 'David Martinez', 'Anna Garcia',
+                               'James Rodriguez', 'Maria Lopez'][i] || `Player ${i}`,
+                        coords: { x, y, z: 20 + Math.random() * 10 },
+                        normalizedX,
+                        normalizedY,
+                        heading: Math.random() * 360,
+                        vehicle: i % 3 === 0 ? ['Police Cruiser', 'Ambulance', 'Fire Truck', 'Taxi', 'Bus'][i % 5] : undefined,
+                        job: ['Police', 'EMS', 'Mechanic', 'Taxi', 'Civilian'][i % 5],
+                        health: 80 + Math.random() * 20,
+                        armor: i % 2 === 0 ? Math.random() * 100 : 0,
+                        identifier: `license:mock_${i}`
+                      };
+                    })
                   };
                 }
                 
@@ -334,7 +353,8 @@ export function ServerMonitorPage({ liveData }: ServerMonitorPageProps) {
     fetchAllData();
 
     // Auto-refresh only for currently active tab, with sensible cadence
-    const intervalMs = activeTab === 'overview' ? 5000 : activeTab === 'live-map' ? 3000 : 10000;
+    // Live map refreshes every 1.5 seconds for real-time tracking
+    const intervalMs = activeTab === 'overview' ? 5000 : activeTab === 'live-map' ? 1500 : 10000;
     const interval = setInterval(() => {
       if (!isMounted) return;
       fetchAllData();
@@ -911,41 +931,106 @@ export function ServerMonitorPage({ liveData }: ServerMonitorPageProps) {
         <TabsContent value="live-map" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MapPin className="size-5 text-primary animate-pulse" />
-                Live Player Positions
-              </CardTitle>
-              <CardDescription>{playerPositions.length} players tracked</CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="size-5 text-primary animate-pulse" />
+                    Live Player Positions
+                  </CardTitle>
+                  <CardDescription>
+                    {playerPositions.length} {playerPositions.length === 1 ? 'player' : 'players'} tracked in real-time
+                  </CardDescription>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setRefreshTrigger(prev => prev + 1)}
+                >
+                  <RefreshCw className="size-4 mr-2" />
+                  Refresh
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="bg-muted/30 rounded-lg p-8 min-h-[600px] relative border-2 border-dashed border-muted-foreground/20">
-                <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                  <div className="text-center">
-                    <Map className="size-16 mx-auto mb-4 opacity-20" />
-                    <p className="text-lg">Interactive Map</p>
-                    <p className="text-sm">Real-time player positions would render here</p>
-                    <p className="text-xs mt-2">Showing {playerPositions.length} active players</p>
+              <div className="relative rounded-lg overflow-hidden border-2 border-border bg-background" style={{ minHeight: '600px' }}>
+                {/* Map Background Image */}
+                <img
+                  src="/images/map/gta_map.png"
+                  alt="GTA V Map"
+                  className="absolute inset-0 w-full h-full object-cover opacity-90"
+                  style={{ imageRendering: 'high-quality' }}
+                  onError={(e) => {
+                    // Fallback if image doesn't load
+                    (e.target as HTMLImageElement).style.display = 'none';
+                    const parent = (e.target as HTMLImageElement).parentElement;
+                    if (parent) {
+                      parent.style.backgroundColor = 'hsl(var(--muted))';
+                    }
+                  }}
+                />
+                
+                {/* Map Overlay (for better marker visibility) */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/20 pointer-events-none" />
+                
+                {/* Player Markers */}
+                {playerPositions.length > 0 ? (
+                  <div className="absolute inset-0">
+                    {playerPositions.map((player) => {
+                      // Use normalized coordinates if available, otherwise calculate from raw coords
+                      let normalizedX = player.normalizedX;
+                      let normalizedY = player.normalizedY;
+                      
+                      if (normalizedX === undefined || normalizedY === undefined) {
+                        // Fallback: normalize from raw coordinates
+                        const minX = -4000, maxX = 4000;
+                        const minY = -4000, maxY = 4000;
+                        normalizedX = Math.max(0, Math.min(1, (player.coords.x - minX) / (maxX - minX)));
+                        normalizedY = Math.max(0, Math.min(1, (player.coords.y - minY) / (maxY - minY)));
+                      }
+                      
+                      return (
+                        <PlayerMarker
+                          key={player.id}
+                          player={{
+                            ...player,
+                            normalizedX,
+                            normalizedY
+                          }}
+                          onClick={(playerId) => {
+                            // Handle player click - could open player profile
+                            console.log('Clicked player:', playerId);
+                          }}
+                        />
+                      );
+                    })}
                   </div>
-                </div>
-                {/* In production, this would be an actual map visualization */}
-                {playerPositions.map((player, index) => (
-                  <div
-                    key={player.id}
-                    className="absolute"
-                    style={{
-                      left: ((index * 10) % 80 + 10) + '%',
-                      top: ((index * 15) % 70 + 15) + '%'
-                    }}
-                  >
-                    <div className="flex items-center gap-2 bg-card border rounded-lg px-3 py-1.5 shadow-lg">
-                      <div className="size-2 rounded-full bg-green-500 animate-pulse" />
-                      <span className="text-xs font-medium">{player.name}</span>
-                      {player.vehicle && (
-                        <Badge variant="outline" className="text-xs">{player.vehicle}</Badge>
-                      )}
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+                    <div className="text-center bg-background/80 backdrop-blur-sm rounded-lg p-8">
+                      <Map className="size-16 mx-auto mb-4 opacity-50" />
+                      <p className="text-lg font-medium">No Players Online</p>
+                      <p className="text-sm mt-2">Player markers will appear here when players join</p>
                     </div>
                   </div>
-                ))}
+                )}
+                
+                {/* Map Legend */}
+                <div className="absolute bottom-4 left-4 bg-card/95 backdrop-blur-sm border rounded-lg p-3 shadow-lg">
+                  <div className="text-xs font-medium mb-2">Legend</div>
+                  <div className="space-y-1 text-xs">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="size-4 text-blue-500" fill="currentColor" />
+                      <span>Player Marker</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="size-3 rounded-full bg-orange-500" />
+                      <span>In Vehicle</span>
+                    </div>
+                    <div className="text-muted-foreground mt-2">
+                      Colors indicate job/role
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -140,11 +140,17 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
       try {
         const data = await fetchNui<{ success: boolean; vehicles: any[]; customCount: number }>('getAllVehicles', {}, { success: true, vehicles: [], customCount: 0 });
         if (data && data.success && Array.isArray(data.vehicles)) {
-          console.log('[Vehicles] Loaded ' + data.vehicles.length + ' available vehicles (' + (data.customCount || 0) + ' custom)');
+          // Loaded vehicles (logged in development only)
+          if (import.meta.env?.DEV) {
+            console.log('[Vehicles] Loaded ' + data.vehicles.length + ' available vehicles (' + (data.customCount || 0) + ' custom)');
+          }
           setAvailableVehicles(data.vehicles);
         }
       } catch (error) {
-        console.error('[Vehicles] Failed to load available vehicles:', error);
+        // Error logged in development only
+        if (import.meta.env?.DEV) {
+          console.error('[Vehicles] Failed to load available vehicles:', error);
+        }
       } finally {
         setIsLoadingVehicles(false);
       }
@@ -183,18 +189,23 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
       try {
         const data = await fetchNui<{ success: boolean; vehicles: Vehicle[]; stats?: VehicleStats; error?: string }>('getVehicles', {}, { success: true, vehicles: [], stats: { totalVehicles: 0, spawnedVehicles: 0, ownedVehicles: 0, impoundedVehicles: 0, totalValue: 0 } });
         if (data && data.success) {
-          console.log('[Vehicles] Loaded ' + (data.vehicles?.length || 0) + ' vehicles');
+          if (import.meta.env?.DEV) {
+            console.log('[Vehicles] Loaded ' + (data.vehicles?.length || 0) + ' vehicles');
+          }
           setVehicles(data.vehicles || []);
           setStats(data.stats || calculateStats(data.vehicles || []));
         } else {
           const errorMsg = data?.error || 'Failed to load vehicles';
+          // Critical errors always logged
           console.error('[Vehicles] CRITICAL ERROR:', errorMsg);
           toast.error(errorMsg);
           setVehicles([]);
           setStats({ totalVehicles: 0, spawnedVehicles: 0, ownedVehicles: 0, impoundedVehicles: 0, totalValue: 0 });
         }
       } catch (error) {
-        console.error('[Vehicles] Failed to load vehicles:', error);
+        if (import.meta.env?.DEV) {
+          console.error('[Vehicles] Failed to load vehicles:', error);
+        }
         toast.error('Failed to load vehicles. Check server connection.');
         // Show empty state on error
         setVehicles([]);
@@ -221,7 +232,9 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
           setStats(data.stats || calculateStats(data.vehicles || []));
         }
       } catch (error) {
-        console.error('[Vehicles] Auto-refresh failed:', error);
+        if (import.meta.env?.DEV) {
+          console.error('[Vehicles] Auto-refresh failed:', error);
+        }
       }
     }, 30000);
 
@@ -356,7 +369,9 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
         return;
       }
 
-      console.log('[Vehicles] Executing action: ' + actionConfig.callback, actionConfig.data);
+      if (import.meta.env?.DEV) {
+        console.log('[Vehicles] Executing action: ' + actionConfig.callback, actionConfig.data);
+      }
 
       // Check if we're in Figma/browser environment
       const isInGame = !!(window as any).GetParentResourceName;
@@ -366,13 +381,17 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
       if (result.success) {
         toast.success(result.message || 'Action completed successfully');
         
-        console.log('[Vehicles] Action completed, refreshing vehicle list...');
+        if (import.meta.env?.DEV) {
+          console.log('[Vehicles] Action completed, refreshing vehicle list...');
+        }
         
         const refreshData = await fetchNui<{ success: boolean; vehicles: Vehicle[]; stats?: VehicleStats }>('getVehicles', {}, { success: true, vehicles: [], stats: { totalVehicles: 0, spawnedVehicles: 0, ownedVehicles: 0, impoundedVehicles: 0, totalValue: 0 } });
         if (refreshData && refreshData.success) {
           setVehicles(refreshData.vehicles || []);
           setStats(refreshData.stats || calculateStats(refreshData.vehicles || []));
-          console.log('[Vehicles] Refreshed: ' + (refreshData.vehicles?.length || 0) + ' vehicles loaded');
+          if (import.meta.env?.DEV) {
+            console.log('[Vehicles] Refreshed: ' + (refreshData.vehicles?.length || 0) + ' vehicles loaded');
+          }
         }
       } else {
         toast.error(result.error || 'Action failed');
@@ -381,7 +400,9 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
       setActionModal({ isOpen: false, action: null });
       setSelectedVehicle(null);
     } catch (error) {
-      console.error('[Vehicles] Action failed:', error);
+      if (import.meta.env?.DEV) {
+        console.error('[Vehicles] Action failed:', error);
+      }
       toast.error('Failed to execute action');
     }
   };
@@ -399,7 +420,9 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
     
     // Real bulk action only (NO MOCKS)
     try {
-      console.log('[Vehicles] Executing bulk ' + action + ' on ' + vehicleList.length + ' vehicles');
+      if (import.meta.env?.DEV) {
+        console.log('[Vehicles] Executing bulk ' + action + ' on ' + vehicleList.length + ' vehicles');
+      }
       
       const bulkActionMap: Record<string, string> = {
         repair: 'repairVehicle',
@@ -449,7 +472,9 @@ export function VehiclesPage({ liveData }: VehiclesPageProps) {
 
       setSelectedVehicles(new Set());
     } catch (error) {
-      console.error('[Vehicles] Bulk action failed:', error);
+      if (import.meta.env?.DEV) {
+        console.error('[Vehicles] Bulk action failed:', error);
+      }
       toast.error('Bulk action failed');
     }
   };

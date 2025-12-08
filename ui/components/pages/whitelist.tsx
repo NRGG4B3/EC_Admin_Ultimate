@@ -115,7 +115,9 @@ export function WhitelistPage({ liveData }: WhitelistPageProps) {
         // Data will be received via NUI message
       }
     } catch (error) {
-      console.log('[Whitelist] Not in FiveM environment');
+      if (import.meta.env?.DEV) {
+        console.log('[Whitelist] Not in FiveM environment');
+      }
     }
   }, []);
 

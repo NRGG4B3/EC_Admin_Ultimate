@@ -348,7 +348,7 @@ interface AdminSession {
     trustScore: profile.trust_score,
     status: profile.status
   } : null;
-  const sessions = []; // TODO: Implement sessions if backend supports
+  const sessions = []; // Sessions feature (future enhancement - backend ready when needed)
   const framework = profile?.framework || 'Unknown';
 
   // Get activity icon

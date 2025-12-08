@@ -123,7 +123,7 @@ export function HostControlPage() {
   const loadHostData = async () => {
     try {
       // Get APIs status
-      const apisData = await fetchNui<APIStatus[]>('getAPIsStatus');
+      const apisData = await fetchNui<APIStatus[]>('getHostAPIStatuses');
       if (apisData) setApis(apisData);
 
       // Get connected cities
@@ -131,7 +131,7 @@ export function HostControlPage() {
       if (citiesData) setCities(citiesData);
 
       // Get global stats
-      const statsData = await fetchNui<GlobalStats>('getGlobalStats');
+      const statsData = await fetchNui<GlobalStats>('getHostSystemStats');
       if (statsData) setGlobalStats(statsData);
 
       setLoading(false);

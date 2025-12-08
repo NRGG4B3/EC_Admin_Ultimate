@@ -23,12 +23,22 @@ export default defineConfig({
       output: {
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
+        assetFileNames: (assetInfo) => {
+          // Preserve public folder structure for images
+          if (assetInfo.name && assetInfo.name.includes('public/')) {
+            const publicPath = assetInfo.name.replace(/^.*public\//, '');
+            return publicPath;
+          }
+          return 'assets/[name]-[hash].[ext]';
+        },
         manualChunks: undefined,  // Disable manual chunking to prevent circular deps
       },
     },
     chunkSizeWarningLimit: 2000,  // Increase warning limit
+    copyPublicDir: true,  // Copy public directory to dist
   },
+  
+  publicDir: 'public',  // Specify public directory
 
   server: {
     port: 3000,
