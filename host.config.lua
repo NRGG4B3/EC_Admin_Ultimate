@@ -454,7 +454,7 @@ Config.APIs = {
         enabled = true,
         url = "http://127.0.0.1:3019/api/host",
         nrgStaffAutoAccess = true,
-        requireApproval = false,
+        requireApproval = true,
         showRevenue = true,
         showServers = true,
         showAnalytics = true
@@ -482,7 +482,7 @@ Config.NRGStaff = {
     verification = {
         method = "api",
         cacheTimeout = 3600,
-        fallbackToLocal = false
+        fallbackToLocal = true
     },
     hostDashboard = {
         autoShow = true,
@@ -547,7 +547,7 @@ Config.AntiCheat = {
     },
     whitelist = {},
     trustSystem = {
-        enabled = true,
+        enabled = false,
         startingScore = 50,
         increaseRate = 1,
         decreaseOnDetection = { critical = 30, high = 20, medium = 10, low = 5 },
@@ -584,6 +584,19 @@ Config.Performance = {
     fpsOptimizer = { enabled = true, removeUnusedPeds = true, removeUnusedVehicles = true, optimizeDistance = true, distanceChecks = { players = 250.0, vehicles = 200.0, objects = 150.0 } },
     database = { pooling = true, maxConnections = 10, preparedStatements = true, transactionBatching = true },
     network = { compression = true, batchEvents = true, throttleUpdates = true, maxPacketSize = 16384 }
+}
+
+-- ============================================================================
+--  ✅ WHITELIST CONFIGURATION (ON by default for host)
+-- ============================================================================
+
+Config.Whitelist = {
+    enabled = false,  -- Whitelist is OFF by default (can be enabled)
+    requireApproval = false,
+    autoApprove = false,
+    discordRoleId = '1422467513224007760',  -- Discord role ID for whitelist (if using role-based)
+    discordBotToken = '',  -- Discord bot token (optional, for role checking)
+    discordGuildId = ''   -- Discord server/guild ID (optional, for role checking)
 }
 
 -- ============================================================================

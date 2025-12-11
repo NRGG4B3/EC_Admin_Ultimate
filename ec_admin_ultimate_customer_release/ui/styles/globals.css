@@ -1,0 +1,1123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* LIGHT THEME - Blue and Purple accents */
+    --background: 270 60% 96%;
+    --foreground: 270 30% 15%;
+    --card: 270 50% 94%;
+    --card-foreground: 270 30% 15%;
+    --popover: 270 60% 96%;
+    --popover-foreground: 270 30% 15%;
+    
+    /* Primary: Better Purple accent for both modes */
+    --primary: 270 65% 50%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary: Light purple */
+    --secondary: 270 40% 90%;
+    --secondary-foreground: 270 30% 20%;
+    
+    /* Muted: Light purple */
+    --muted: 270 45% 92%;
+    --muted-foreground: 270 15% 35%;
+    
+    /* Accent: Purple hue */
+    --accent: 270 65% 50%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Destructive: Red */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Borders and inputs: LIGHTER BLUE for light mode */
+    --border: 210 100% 70%;
+    --input: 270 35% 86%;
+    --ring: 210 100% 70%;
+    
+    /* Radius */
+    --radius: 0.5rem;
+    
+    /* Sidebar: Light purple */
+    --sidebar: 270 50% 95%;
+    --sidebar-foreground: 270 30% 15%;
+    --sidebar-border: 210 100% 70%;
+    --sidebar-accent: 270 45% 90%;
+    
+    /* Chart colors - Purple hues */
+    --chart-1: 270 65% 50%;
+    --chart-2: 280 60% 52%;
+    --chart-3: 260 65% 55%;
+    --chart-4: 290 60% 50%;
+    --chart-5: 250 65% 52%;
+  }
+
+  .dark {
+    /* DARK THEME - BLUE TINTED BLACK (EVEN MORE VISIBLE) */
+    --background: 215 30% 18%;
+    --foreground: 0 0% 100%;
+    --card: 215 30% 20%;
+    --card-foreground: 0 0% 100%;
+    --popover: 215 30% 18%;
+    --popover-foreground: 0 0% 100%;
+    
+    /* Primary: DARKER BLUE (for sliders and accents) */
+    --primary: 210 100% 42%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary: Dark blue tint */
+    --secondary: 215 30% 22%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Muted: Dark blue tint - NO TRANSPARENCY */
+    --muted: 215 30% 24%;
+    --muted-foreground: 0 0% 100%;
+    
+    /* Accent: Darker blue */
+    --accent: 210 100% 42%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Destructive: Red */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Borders and inputs: Darker blue borders */
+    --border: 210 100% 42%;
+    --input: 215 30% 24%;
+    --ring: 210 100% 42%;
+    
+    /* Sidebar: Blue tinted black */
+    --sidebar: 215 30% 19%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-border: 210 100% 42%;
+    --sidebar-accent: 215 30% 22%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  /* CRITICAL: Transparent backgrounds for FiveM NUI */
+  html {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  
+  body {
+    color: hsl(var(--foreground));
+    background: transparent !important;
+    background-color: transparent !important;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  #root {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  
+  /* Force transparent on all outer wrappers */
+  .ec-outer-wrapper,
+  .ec-panel-wrapper {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  
+  /* CRITICAL: Remove ALL shadows in FiveM to prevent black box */
+  .shadow-sm,
+  .shadow,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-2xl {
+    box-shadow: none !important;
+  }
+}
+
+/* Custom scrollbar - Purple theme */
+@layer components {
+  * {
+    scrollbar-width: thin;
+  }
+  
+  .dark * {
+    scrollbar-color: hsl(270 80% 65%) hsl(215 30% 8%);
+  }
+  
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
+    border-radius: 4px;
+  }
+  
+  *::-webkit-scrollbar-thumb:hover {
+    background: hsl(270 80% 75%);
+  }
+}
+
+/* Typography */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    color: hsl(var(--foreground));
+    font-weight: 600;
+  }
+  
+  p {
+    color: hsl(var(--foreground));
+  }
+  
+  /* Links - Purple */
+  a {
+    color: hsl(var(--primary));
+  }
+  
+  a:hover {
+    color: hsl(270 80% 75%);
+  }
+}
+
+/* Button variants - Purple theme */
+@layer components {
+  .btn-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  
+  .btn-primary:hover {
+    background-color: hsl(270 80% 75%);
+  }
+  
+  .btn-secondary {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+  }
+  
+  .btn-secondary:hover {
+    background-color: hsl(270 20% 80%);
+  }
+}
+
+/* FORCE dark mode backgrounds - BLUE TINTED */
+.dark .bg-background {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark .bg-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark .bg-muted {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+/* FORCE white text in dark mode */
+.dark, .dark * {
+  color: hsl(0 0% 100%);
+}
+
+.dark .text-foreground {
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark .text-card-foreground {
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark .text-muted-foreground {
+  color: hsl(0 0% 90%) !important;
+}
+
+/* FORCE blue borders in dark mode - DARKER BLUE */
+.dark .border {
+  border-color: hsl(210 100% 42%) !important;
+}
+
+.dark .border-border {
+  border-color: hsl(210 100% 42%) !important;
+}
+
+.dark .border-sidebar-border {
+  border-color: hsl(210 100% 42%) !important;
+}
+
+.dark .border-b {
+  border-bottom-color: hsl(210 100% 42%) !important;
+}
+
+.dark .border-t {
+  border-top-color: hsl(210 100% 42%) !important;
+}
+
+.dark .border-l {
+  border-left-color: hsl(210 100% 42%) !important;
+}
+
+.dark .border-r {
+  border-right-color: hsl(210 100% 42%) !important;
+}
+
+/* FORCE light blue borders in light mode */
+:root:not(.dark) .border {
+  border-color: hsl(210 100% 70%) !important;
+}
+
+:root:not(.dark) .border-border {
+  border-color: hsl(210 100% 70%) !important;
+}
+
+:root:not(.dark) .border-sidebar-border {
+  border-color: hsl(210 100% 70%) !important;
+}
+
+:root:not(.dark) .border-b {
+  border-bottom-color: hsl(210 100% 70%) !important;
+}
+
+:root:not(.dark) .border-t {
+  border-top-color: hsl(210 100% 70%) !important;
+}
+
+:root:not(.dark) .border-l {
+  border-left-color: hsl(210 100% 70%) !important;
+}
+
+:root:not(.dark) .border-r {
+  border-right-color: hsl(210 100% 70%) !important;
+}
+
+/* DARK MODE BLUE OVERRIDES - DARKER BLUES */
+.dark .text-blue-400 {
+  color: hsl(210 100% 58%) !important;
+}
+
+.dark .text-blue-500 {
+  color: hsl(210 100% 52%) !important;
+}
+
+.dark .text-blue-600 {
+  color: hsl(210 100% 48%) !important;
+}
+
+.dark .bg-blue-500\/10 {
+  background-color: hsl(210 100% 52% / 0.2) !important;
+}
+
+.dark .bg-blue-500\/20 {
+  background-color: hsl(210 100% 52% / 0.3) !important;
+}
+
+.dark .bg-blue-600\/5 {
+  background-color: hsl(210 100% 48% / 0.15) !important;
+}
+
+.dark .bg-blue-500\/5 {
+  background-color: hsl(210 100% 52% / 0.1) !important;
+}
+
+.dark .border-blue-500\/20 {
+  border-color: hsl(210 100% 52% / 0.3) !important;
+}
+
+.dark .border-blue-500\/30 {
+  border-color: hsl(210 100% 52% / 0.4) !important;
+}
+
+/* Dark mode gradient from blues - DARKER */
+.dark .from-blue-400 {
+  --tw-gradient-from: hsl(210 100% 58%) !important;
+}
+
+.dark .from-blue-500 {
+  --tw-gradient-from: hsl(210 100% 52%) !important;
+}
+
+.dark .from-blue-600 {
+  --tw-gradient-from: hsl(210 100% 48%) !important;
+}
+
+.dark .to-blue-400 {
+  --tw-gradient-to: hsl(210 100% 58%) !important;
+}
+
+.dark .to-blue-500 {
+  --tw-gradient-to: hsl(210 100% 52%) !important;
+}
+
+.dark .to-blue-600 {
+  --tw-gradient-to: hsl(210 100% 48%) !important;
+}
+
+/* Hover states for blue in dark mode */
+.dark .hover\:bg-blue-600:hover {
+  background-color: hsl(210 100% 48%) !important;
+}
+
+.dark .hover\:bg-blue-700:hover {
+  background-color: hsl(210 100% 44%) !important;
+}
+
+.dark .hover\:from-blue-700:hover {
+  --tw-gradient-from: hsl(210 100% 44%) !important;
+}
+
+.dark .hover\:to-blue-700:hover {
+  --tw-gradient-to: hsl(210 100% 44%) !important;
+}
+
+/* Direct blue color overrides */
+.dark .bg-blue-500 {
+  background-color: hsl(210 100% 52%) !important;
+}
+
+.dark .bg-blue-600 {
+  background-color: hsl(210 100% 48%) !important;
+}
+
+.dark .bg-blue-700 {
+  background-color: hsl(210 100% 44%) !important;
+}
+
+/* Remove all shimmer and pulse effects */
+.dark .animate-pulse {
+  animation: none !important;
+}
+
+.dark *[class*="shimmer"] {
+  display: none !important;
+}
+
+/* Remove backdrop blur effects */
+.dark .backdrop-blur-sm,
+.dark .backdrop-blur,
+.dark .backdrop-blur-md,
+.dark .backdrop-blur-lg {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* FORCE CONSISTENT DARK MODE COLORS - OVERRIDE ALL GRAYS */
+.dark .text-gray-100,
+.dark .text-gray-200,
+.dark .text-gray-300,
+.dark .text-gray-400,
+.dark .text-gray-500,
+.dark .text-gray-600,
+.dark .text-gray-700,
+.dark .text-gray-800,
+.dark .text-gray-900,
+.dark .text-slate-100,
+.dark .text-slate-200,
+.dark .text-slate-300,
+.dark .text-slate-400,
+.dark .text-slate-500,
+.dark .text-slate-600,
+.dark .text-slate-700,
+.dark .text-slate-800,
+.dark .text-slate-900,
+.dark .text-zinc-100,
+.dark .text-zinc-200,
+.dark .text-zinc-300,
+.dark .text-zinc-400,
+.dark .text-zinc-500,
+.dark .text-zinc-600,
+.dark .text-zinc-700,
+.dark .text-zinc-800,
+.dark .text-zinc-900 {
+  color: hsl(0 0% 100%) !important;
+}
+
+/* FORCE all gray backgrounds to use dark mode blue tint */
+.dark .bg-gray-50,
+.dark .bg-gray-100,
+.dark .bg-gray-200,
+.dark .bg-gray-300,
+.dark .bg-gray-400,
+.dark .bg-gray-500,
+.dark .bg-gray-600,
+.dark .bg-gray-700,
+.dark .bg-gray-800,
+.dark .bg-gray-900,
+.dark .bg-slate-50,
+.dark .bg-slate-100,
+.dark .bg-slate-200,
+.dark .bg-slate-300,
+.dark .bg-slate-400,
+.dark .bg-slate-500,
+.dark .bg-slate-600,
+.dark .bg-slate-700,
+.dark .bg-slate-800,
+.dark .bg-slate-900,
+.dark .bg-zinc-50,
+.dark .bg-zinc-100,
+.dark .bg-zinc-200,
+.dark .bg-zinc-300,
+.dark .bg-zinc-400,
+.dark .bg-zinc-500,
+.dark .bg-zinc-600,
+.dark .bg-zinc-700,
+.dark .bg-zinc-800,
+.dark .bg-zinc-900 {
+  background-color: hsl(215 30% 10%) !important;
+}
+
+/* FORCE all gray/slate/zinc backgrounds with opacity */
+.dark .bg-gray-500\/10,
+.dark .bg-gray-500\/20,
+.dark .bg-gray-500\/50,
+.dark .bg-gray-800\/50,
+.dark .bg-gray-900\/50,
+.dark .bg-slate-500\/10,
+.dark .bg-slate-500\/20,
+.dark .bg-slate-500\/50,
+.dark .bg-slate-800\/50,
+.dark .bg-slate-900\/50,
+.dark .bg-zinc-500\/10,
+.dark .bg-zinc-500\/20,
+.dark .bg-zinc-500\/50,
+.dark .bg-zinc-800\/50,
+.dark .bg-zinc-900\/50 {
+  background-color: hsl(215 30% 12% / 0.5) !important;
+}
+
+/* FORCE all gray borders to bright blue */
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300,
+.dark .border-gray-400,
+.dark .border-gray-500,
+.dark .border-gray-600,
+.dark .border-gray-700,
+.dark .border-gray-800,
+.dark .border-gray-900,
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-300,
+.dark .border-slate-400,
+.dark .border-slate-500,
+.dark .border-slate-600,
+.dark .border-slate-700,
+.dark .border-slate-800,
+.dark .border-slate-900,
+.dark .border-zinc-100,
+.dark .border-zinc-200,
+.dark .border-zinc-300,
+.dark .border-zinc-400,
+.dark .border-zinc-500,
+.dark .border-zinc-600,
+.dark .border-zinc-700,
+.dark .border-zinc-800,
+.dark .border-zinc-900 {
+  border-color: hsl(210 100% 50%) !important;
+}
+
+/* Override gray status dots to white when offline */
+.dark .bg-gray-400 {
+  background-color: hsl(0 0% 60%) !important;
+}
+
+.dark .text-gray-500 {
+  color: hsl(0 0% 70%) !important;
+}
+
+.dark .text-gray-600 {
+  color: hsl(0 0% 75%) !important;
+}
+
+/* FORCE OVERRIDE - NO MORE GRAY/MUTED BACKGROUNDS IN CARDS */
+.dark .bg-card\/50,
+.dark .bg-card\/30,
+.dark .bg-card\/40,
+.dark .bg-card\/60,
+.dark .bg-card\/70,
+.dark .bg-card\/80,
+.dark .bg-card\/90 {
+  background-color: hsl(215 30% 10%) !important;
+}
+
+/* FORCE INPUT BACKGROUNDS - NO TRANSPARENCY */
+.dark .bg-input\/30,
+.dark .bg-input\/40,
+.dark .bg-input\/50 {
+  background-color: hsl(215 30% 14%) !important;
+}
+
+/* FORCE CONSISTENT CARD SHADOW - NO GRAY */
+.dark .shadow-sm,
+.dark .shadow,
+.dark .shadow-md,
+.dark .shadow-lg {
+  box-shadow: 0 1px 3px 0 hsl(210 100% 50% / 0.1), 0 1px 2px -1px hsl(210 100% 50% / 0.1) !important;
+}
+
+/* REMOVE ALL TRANSITION SHIMMER EFFECTS */
+.dark *[class*="transition-opacity"],
+.dark *[class*="transition-colors"],
+.dark *[class*="transition-all"] {
+  transition-duration: 0ms !important;
+}
+
+/* FORCE PRIMARY COLOR TO BRIGHT BLUE EVERYWHERE */
+.dark .bg-primary,
+.dark .bg-primary\/10,
+.dark .bg-primary\/20,
+.dark .bg-primary\/30,
+.dark .bg-primary\/40,
+.dark .bg-primary\/50 {
+  background-color: hsl(210 100% 50% / var(--tw-bg-opacity, 1)) !important;
+}
+
+.dark .text-primary {
+  color: hsl(210 100% 50%) !important;
+}
+
+.dark .border-primary {
+  border-color: hsl(210 100% 50%) !important;
+}
+
+/* OVERRIDE ALL ACCENT COLORS TO BLUE */
+.dark .bg-accent,
+.dark .bg-accent\/10,
+.dark .bg-accent\/20,
+.dark .bg-accent\/30 {
+  background-color: hsl(210 100% 50% / var(--tw-bg-opacity, 1)) !important;
+}
+
+.dark .text-accent {
+  color: hsl(210 100% 50%) !important;
+}
+
+/* FORCE ALL FOCUS RINGS AND OUTLINES TO BLUE */
+.dark *:focus-visible,
+.dark *:focus {
+  outline-color: hsl(210 100% 50%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  --tw-ring-color: hsl(210 100% 50% / 0.5) !important;
+}
+
+.dark .focus-visible\:border-primary:focus-visible,
+.dark .focus\:border-primary:focus {
+  border-color: hsl(210 100% 50%) !important;
+}
+
+.dark .focus-visible\:ring-primary:focus-visible,
+.dark .focus\:ring-primary:focus {
+  --tw-ring-color: hsl(210 100% 50% / 0.5) !important;
+}
+
+/* SLIDER SPECIFIC - FORCE BLUE */
+.dark [data-slot="slider-range"] {
+  background-color: hsl(210 100% 50%) !important;
+}
+
+.dark [data-slot="slider-thumb"] {
+  border-color: hsl(210 100% 50%) !important;
+  background-color: hsl(215 30% 8%) !important;
+}
+
+.dark [data-slot="slider-thumb"]:hover,
+.dark [data-slot="slider-thumb"]:focus-visible {
+  --tw-ring-color: hsl(210 100% 50% / 0.5) !important;
+  box-shadow: 0 0 0 4px hsl(210 100% 50% / 0.5) !important;
+}
+
+/* INPUT SPECIFIC - REMOVE ALL SHIMMER */
+.dark [data-slot="input"] {
+  background-color: hsl(215 30% 14%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  transition: none !important;
+}
+
+.dark [data-slot="input"]:focus,
+.dark [data-slot="input"]:focus-visible {
+  background-color: hsl(215 30% 14%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  outline: 2px solid hsl(210 100% 50%) !important;
+  outline-offset: 0px !important;
+  box-shadow: 0 0 0 2px hsl(210 100% 50% / 0.5) !important;
+}
+
+/* REMOVE BACKDROP BLUR FROM INPUT */
+.dark [data-slot="input"].backdrop-blur-sm {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.dark .bg-background\/70 {
+  background-color: hsl(215 30% 14%) !important;
+}
+
+/* FORCE WHITE TEXT IN ALL INPUTS */
+.dark [data-slot="input"],
+.dark input {
+  color: hsl(0 0% 100%) !important;
+}
+
+/* QUICK ACTIONS - DARKER BLUE BORDER, WHITE ON HOVER */
+.dark button[variant="outline"]:not(:hover) {
+  border-color: hsl(210 100% 42%) !important;
+}
+
+.dark button[variant="outline"]:hover {
+  border-color: hsl(0 0% 100%) !important;
+}
+
+/* PREVENT WHITE BACKGROUNDS ON HOVER IN DARK MODE */
+.dark button:hover:not([data-active="true"]):not(.bg-purple-600),
+.dark [role="button"]:hover:not([data-active="true"]) {
+  background-color: hsl(215 30% 12%) !important;
+}
+
+.dark .hover\:bg-white:hover,
+.dark .hover\:bg-white\/10:hover,
+.dark .hover\:bg-white\/20:hover {
+  background-color: hsl(215 30% 12%) !important;
+}
+
+/* KEEP COLORED ICON COLORS IN DARK MODE ON HOVER */
+.dark button:hover svg,
+.dark [role="button"]:hover svg {
+  /* Don't force white - preserve icon colors */
+  filter: brightness(1.1);
+}
+
+/* PRESERVE ICON COLORS IN BOTH MODES */
+.dark .text-blue-400,
+.dark .text-emerald-400,
+.dark .text-orange-400,
+.dark .text-cyan-400,
+.dark .text-green-400,
+.dark .text-indigo-400,
+.dark .text-purple-400,
+.dark .text-teal-400,
+.dark .text-red-400,
+.dark .text-rose-400,
+.dark .text-sky-400,
+.dark .text-pink-400,
+.dark .text-yellow-400 {
+  /* Preserve unique icon colors - don't force white */
+  opacity: 1 !important;
+}
+
+/* LIGHT MODE - SHOW ALL ICON COLORS VIVIDLY */
+:root:not(.dark) .text-blue-400 {
+  color: hsl(210 100% 50%) !important;
+}
+
+:root:not(.dark) .text-emerald-400 {
+  color: hsl(160 84% 39%) !important;
+}
+
+:root:not(.dark) .text-orange-400 {
+  color: hsl(25 95% 53%) !important;
+}
+
+:root:not(.dark) .text-cyan-400 {
+  color: hsl(187 92% 45%) !important;
+}
+
+:root:not(.dark) .text-green-400 {
+  color: hsl(142 76% 36%) !important;
+}
+
+:root:not(.dark) .text-indigo-400 {
+  color: hsl(243 75% 59%) !important;
+}
+
+:root:not(.dark) .text-purple-400 {
+  color: hsl(270 70% 50%) !important;
+}
+
+:root:not(.dark) .text-teal-400 {
+  color: hsl(172 66% 50%) !important;
+}
+
+:root:not(.dark) .text-red-400 {
+  color: hsl(0 84% 60%) !important;
+}
+
+:root:not(.dark) .text-rose-400 {
+  color: hsl(351 95% 61%) !important;
+}
+
+:root:not(.dark) .text-sky-400 {
+  color: hsl(199 89% 48%) !important;
+}
+
+:root:not(.dark) .text-pink-400 {
+  color: hsl(330 81% 60%) !important;
+}
+
+:root:not(.dark) .text-yellow-400 {
+  color: hsl(45 93% 47%) !important;
+}
+
+/* ========================================
+   LIGHT MODE - VIBRANT BLUE-PURPLE GRADIENT (MORE BLUE)
+   ======================================== */
+
+/* Light mode vibrant gradient background - ENHANCED Blue, White, Purple */
+.ec-gradient-bg:not(.dark *) {
+  background: linear-gradient(135deg, 
+    hsl(270 65% 82%) 0%,      /* Rich Purple */
+    hsl(240 75% 88%) 15%,     /* Purple-Blue */
+    hsl(210 85% 92%) 30%,     /* Bright Blue */
+    hsl(0 0% 96%) 45%,        /* Near White */
+    hsl(0 0% 98%) 50%,        /* Pure White Center */
+    hsl(0 0% 96%) 55%,        /* Near White */
+    hsl(210 85% 92%) 70%,     /* Bright Blue */
+    hsl(240 75% 88%) 85%,     /* Purple-Blue */
+    hsl(270 65% 84%) 100%     /* Rich Purple */
+  ) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* Dark mode gradient - DARKER with 4 colors: Purple, Black, and Blue */
+.dark .ec-gradient-bg {
+  background: linear-gradient(135deg, hsl(270 40% 12%) 0%, hsl(0 0% 8%) 25%, hsl(220 60% 15%) 66%, hsl(270 35% 11%) 100%) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* Light mode - vibrant blue/purple gradient backgrounds - ONE UNIFIED BACKGROUND - MORE BLUE */
+:root:not(.dark) body,
+:root:not(.dark) #root {
+  background: transparent !important;
+  backdrop-filter: none !important;
+}
+
+/* Light mode - vibrant gradient card backgrounds - blend with main background - MORE BLUE */
+.bg-card:not(.dark *) {
+  background: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+}
+
+.bg-background:not(.dark *) {
+  background: transparent !important;
+  backdrop-filter: none !important;
+}
+
+/* UNIFIED GRADIENT - ONLY ec-main-panel has background, everything else transparent - LIGHT MODE */
+:root:not(.dark) .bg-sidebar,
+:root:not(.dark) [data-sidebar="sidebar"],
+:root:not(.dark) aside,
+:root:not(.dark) header,
+:root:not(.dark) nav {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-color: transparent !important;
+}
+
+/* UNIFIED GRADIENT - ONLY ec-main-panel has background, everything else transparent - DARK MODE */
+.dark .bg-sidebar,
+.dark [data-sidebar="sidebar"],
+.dark aside,
+.dark header,
+.dark nav {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-color: transparent !important;
+}
+
+/* ========================================
+   DROPDOWNS & SELECTS - ENHANCED THEMING
+   ======================================== */
+
+/* Dark mode - SelectContent (dropdown menus) */
+.dark [data-slot="select-content"],
+.dark [data-slot="dropdown-menu-content"] {
+  background-color: hsl(215 30% 15%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+/* Dark mode - SelectItem & DropdownMenuItem (dropdown items) */
+.dark [data-slot="select-item"],
+.dark [data-slot="dropdown-menu-item"],
+.dark [data-slot="dropdown-menu-checkbox-item"],
+.dark [data-slot="dropdown-menu-radio-item"] {
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark [data-slot="select-item"]:hover,
+.dark [data-slot="select-item"][data-highlighted],
+.dark [data-slot="dropdown-menu-item"]:hover,
+.dark [data-slot="dropdown-menu-item"][data-highlighted],
+.dark [data-slot="dropdown-menu-checkbox-item"]:hover,
+.dark [data-slot="dropdown-menu-checkbox-item"][data-highlighted],
+.dark [data-slot="dropdown-menu-radio-item"]:hover,
+.dark [data-slot="dropdown-menu-radio-item"][data-highlighted] {
+  background-color: hsl(210 100% 50% / 0.2) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark [data-slot="select-item"][data-state="checked"],
+.dark [data-slot="dropdown-menu-checkbox-item"][data-state="checked"],
+.dark [data-slot="dropdown-menu-radio-item"][data-state="checked"] {
+  background-color: hsl(210 100% 50% / 0.15) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+/* Dark mode - SelectTrigger */
+.dark [data-slot="select-trigger"] {
+  background-color: hsl(215 30% 14%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark [data-slot="select-trigger"]:hover {
+  background-color: hsl(215 30% 16%) !important;
+  border-color: hsl(210 100% 55%) !important;
+}
+
+.dark [data-slot="select-trigger"]:focus,
+.dark [data-slot="select-trigger"]:focus-visible {
+  border-color: hsl(210 100% 55%) !important;
+  box-shadow: 0 0 0 2px hsl(210 100% 50% / 0.3) !important;
+}
+
+/* Dark mode - SelectValue placeholder text */
+.dark [data-slot="select-trigger"] [data-placeholder] {
+  color: hsl(0 0% 70%) !important;
+}
+
+/* Light mode - SelectContent & DropdownMenuContent */
+:root:not(.dark) [data-slot="select-content"],
+:root:not(.dark) [data-slot="dropdown-menu-content"] {
+  background-color: hsl(0 0% 100%) !important;
+  border-color: hsl(210 100% 70%) !important;
+  color: hsl(270 30% 15%) !important;
+}
+
+/* Light mode - SelectItem & DropdownMenuItem */
+:root:not(.dark) [data-slot="select-item"],
+:root:not(.dark) [data-slot="dropdown-menu-item"],
+:root:not(.dark) [data-slot="dropdown-menu-checkbox-item"],
+:root:not(.dark) [data-slot="dropdown-menu-radio-item"] {
+  color: hsl(270 30% 15%) !important;
+}
+
+:root:not(.dark) [data-slot="select-item"]:hover,
+:root:not(.dark) [data-slot="select-item"][data-highlighted],
+:root:not(.dark) [data-slot="dropdown-menu-item"]:hover,
+:root:not(.dark) [data-slot="dropdown-menu-item"][data-highlighted],
+:root:not(.dark) [data-slot="dropdown-menu-checkbox-item"]:hover,
+:root:not(.dark) [data-slot="dropdown-menu-checkbox-item"][data-highlighted],
+:root:not(.dark) [data-slot="dropdown-menu-radio-item"]:hover,
+:root:not(.dark) [data-slot="dropdown-menu-radio-item"][data-highlighted] {
+  background-color: hsl(270 65% 50% / 0.15) !important;
+  color: hsl(270 30% 15%) !important;
+}
+
+:root:not(.dark) [data-slot="select-item"][data-state="checked"],
+:root:not(.dark) [data-slot="dropdown-menu-checkbox-item"][data-state="checked"],
+:root:not(.dark) [data-slot="dropdown-menu-radio-item"][data-state="checked"] {
+  background-color: hsl(270 65% 50% / 0.1) !important;
+  color: hsl(270 30% 15%) !important;
+}
+
+/* ========================================
+   DIALOGS & MODALS - ENHANCED THEMING
+   ======================================== */
+
+/* Dark mode - Dialog overlay */
+.dark .fixed.inset-0.z-\[100\] {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Dark mode - Dialog content */
+.dark .z-\[101\].bg-card {
+  background-color: hsl(215 30% 15%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+/* Dark mode - Dialog titles */
+.dark [role="dialog"] h1,
+.dark [role="dialog"] h2,
+.dark [role="dialog"] h3,
+.dark [role="dialog"] h4,
+.dark [role="dialog"] h5,
+.dark [role="dialog"] h6 {
+  color: hsl(0 0% 100%) !important;
+}
+
+/* Dark mode - Dialog labels */
+.dark [role="dialog"] label {
+  color: hsl(0 0% 100%) !important;
+}
+
+/* Dark mode - Dialog descriptions */
+.dark [role="dialog"] .text-muted-foreground {
+  color: hsl(0 0% 85%) !important;
+}
+
+/* Light mode - Dialog content */
+:root:not(.dark) .z-\[101\].bg-card {
+  background-color: hsl(0 0% 100%) !important;
+  border-color: hsl(210 100% 70%) !important;
+  color: hsl(270 30% 15%) !important;
+}
+
+/* ========================================
+   POPOVERS - ENHANCED THEMING
+   ======================================== */
+
+/* Dark mode - Popover content */
+.dark .bg-popover {
+  background-color: hsl(215 30% 15%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+/* Light mode - Popover content */
+:root:not(.dark) .bg-popover {
+  background-color: hsl(0 0% 100%) !important;
+  border-color: hsl(210 100% 70%) !important;
+  color: hsl(270 30% 15%) !important;
+}
+
+/* ========================================
+   CONTEXT MENUS - ENHANCED THEMING
+   ======================================== */
+
+/* Dark mode - Context menu */
+.dark [role="menu"] {
+  background-color: hsl(215 30% 15%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark [role="menuitem"] {
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark [role="menuitem"]:hover,
+.dark [role="menuitem"][data-highlighted] {
+  background-color: hsl(210 100% 50% / 0.2) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+/* Light mode - Context menu */
+:root:not(.dark) [role="menu"] {
+  background-color: hsl(0 0% 100%) !important;
+  border-color: hsl(210 100% 70%) !important;
+  color: hsl(270 30% 15%) !important;
+}
+
+:root:not(.dark) [role="menuitem"]:hover,
+:root:not(.dark) [role="menuitem"][data-highlighted] {
+  background-color: hsl(270 65% 50% / 0.15) !important;
+  color: hsl(270 30% 15%) !important;
+}
+
+/* ========================================
+   SCROLLAREA - ENHANCED THEMING
+   ======================================== */
+
+/* Dark mode - ScrollArea */
+.dark [data-radix-scroll-area-viewport] {
+  background-color: transparent !important;
+}
+
+/* Ensure scrollbars are visible in dark mode */
+.dark ::-webkit-scrollbar-track {
+  background-color: hsl(215 30% 12%) !important;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: hsl(210 100% 50%) !important;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(210 100% 55%) !important;
+}
+
+/* ========================================
+   TABLE - ENHANCED THEMING
+   ======================================== */
+
+/* Dark mode - Table headers */
+.dark [role="table"] thead,
+.dark table thead {
+  background-color: hsl(215 30% 12%) !important;
+  border-color: hsl(210 100% 50%) !important;
+}
+
+.dark [role="table"] th,
+.dark table th {
+  color: hsl(0 0% 100%) !important;
+  border-color: hsl(210 100% 50%) !important;
+}
+
+/* Dark mode - Table rows */
+.dark [role="table"] td,
+.dark table td {
+  color: hsl(0 0% 100%) !important;
+  border-color: hsl(210 100% 50% / 0.3) !important;
+}
+
+.dark [role="table"] tr:hover,
+.dark table tr:hover {
+  background-color: hsl(210 100% 50% / 0.1) !important;
+}
+
+/* Light mode - Table */
+:root:not(.dark) [role="table"] thead,
+:root:not(.dark) table thead {
+  background-color: hsl(270 45% 92%) !important;
+  border-color: hsl(210 100% 70%) !important;
+}
+
+:root:not(.dark) [role="table"] tr:hover,
+:root:not(.dark) table tr:hover {
+  background-color: hsl(270 65% 50% / 0.08) !important;
+}
+
+/* ========================================
+   TEXTAREA - ENHANCED THEMING
+   ======================================== */
+
+/* Dark mode - Textarea */
+.dark textarea {
+  background-color: hsl(215 30% 14%) !important;
+  border-color: hsl(210 100% 50%) !important;
+  color: hsl(0 0% 100%) !important;
+}
+
+.dark textarea:focus,
+.dark textarea:focus-visible {
+  background-color: hsl(215 30% 14%) !important;
+  border-color: hsl(210 100% 55%) !important;
+  box-shadow: 0 0 0 2px hsl(210 100% 50% / 0.3) !important;
+}
+
+.dark textarea::placeholder {
+  color: hsl(0 0% 60%) !important;
+}
+
+/* Light mode - Textarea */
+:root:not(.dark) textarea {
+  background-color: hsl(0 0% 100%) !important;
+  border-color: hsl(210 100% 70%) !important;
+  color: hsl(270 30% 15%) !important;
+}
+
+:root:not(.dark) textarea::placeholder {
+  color: hsl(270 15% 50%) !important;
+}

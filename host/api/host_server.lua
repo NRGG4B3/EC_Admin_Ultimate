@@ -1,9 +1,32 @@
 -- EC Admin Ultimate - Host Server API
 -- 🔵 NRG Internal Only - This file only loads if host/ folder exists
 
-if not Config.Host or not Config.Host.enabled then
-    return -- Host mode not enabled
+-- Check if host folder exists (don't rely on Config.Host which might not be set yet)
+local function hostFolderExists()
+    local hostFiles = {
+        'host/api/host_server.lua',
+        'host/api/server.js'
+    }
+    
+    for _, file in ipairs(hostFiles) do
+        local content = LoadResourceFile(GetCurrentResourceName(), file)
+        if content then
+            return true
+        end
+    end
+    
+    return false
 end
+
+-- Only load if host folder exists
+if not hostFolderExists() then
+    return -- Not in host mode
+end
+
+-- Initialize Config.Host if not set
+if not Config then Config = {} end
+if not Config.Host then Config.Host = {} end
+Config.Host.enabled = true
 
 local HOST_API_URL = 'http://localhost:' .. (Config.Host.apiPort or 30121)
 local API_KEY = Config.Host.masterLicense or ''
@@ -106,27 +129,83 @@ end)
 -- ==================== GLOBAL BAN CHECK ====================
 
 -- Check player against global ban system on connect
+-- NOTE: This is NON-BLOCKING - only blocks if player is actually banned
+-- If API is down or slow, players can still connect (fail-open for availability)
 AddEventHandler('playerConnecting', function(playerName, setKickReason, deferrals)
     local src = source
-    local identifiers = Utils.GetAllIdentifiers(src)
+    
+    -- Check if player is NRG staff first (bypass ban check)
+    local success, isNRGStaff = pcall(function()
+        if exports['ec_admin_ultimate'] and exports['ec_admin_ultimate'].IsNRGStaff then
+            return exports['ec_admin_ultimate']:IsNRGStaff(src)
+        end
+        return false
+    end)
+    
+    if success and isNRGStaff then
+        -- NRG staff bypass all checks
+        return
+    end
+    
+    -- Get player identifiers
+    local identifiers = GetPlayerIdentifiers(src)
+    if not identifiers or #identifiers == 0 then
+        return -- Can't check, allow connection
+    end
     
     deferrals.defer()
     Wait(0)
     deferrals.update('Checking global ban status...')
     
+    local banFound = false
+    local banReason = nil
+    local checksCompleted = 0
+    local totalChecks = 0
+    
+    -- Count total identifiers to check
+    for _, identifier in ipairs(identifiers) do
+        if identifier and (string.find(identifier, 'license:') or string.find(identifier, 'steam:') or string.find(identifier, 'discord:')) then
+            totalChecks = totalChecks + 1
+        end
+    end
+    
+    -- If no valid identifiers, allow connection
+    if totalChecks == 0 then
+        deferrals.done()
+        return
+    end
+    
     -- Check each identifier
-    for idType, identifier in pairs(identifiers) do
-        if identifier then
+    for _, identifier in ipairs(identifiers) do
+        if identifier and (string.find(identifier, 'license:') or string.find(identifier, 'steam:') or string.find(identifier, 'discord:')) then
             MakeHostAPIRequest('/api/v1/bans/check/' .. identifier, 'GET', nil, function(success, data)
+                checksCompleted = checksCompleted + 1
+                
                 if success and data and data.banned then
-                    deferrals.done('You are globally banned: ' .. (data.ban.reason or 'No reason provided'))
+                    banFound = true
+                    banReason = data.ban and data.ban.reason or 'No reason provided'
+                    deferrals.done('You are globally banned: ' .. banReason)
+                    return
+                end
+                
+                -- If all checks completed and no ban found, allow connection
+                if checksCompleted >= totalChecks and not banFound then
+                    deferrals.done()
                 end
             end)
         end
     end
     
-    Wait(1000) -- Give time for ban check
-    deferrals.done()
+    -- Timeout: If API doesn't respond within 3 seconds, allow connection (fail-open)
+    CreateThread(function()
+        Wait(3000)
+        if checksCompleted < totalChecks and not banFound then
+            checksCompleted = totalChecks
+            if not banFound then
+                deferrals.done() -- Allow connection if API is slow/down
+            end
+        end
+    end)
 end)
 
 -- ==================== NRG STAFF ACCESS ====================

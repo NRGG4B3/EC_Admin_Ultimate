@@ -13,7 +13,40 @@ local configSource = _EC_CONFIG_SOURCE or 'customer.config.lua'
 local configMode = _EC_CONFIG_MODE or 'CUSTOMER'
 
 -- Load and execute the config file
-local configContent = LoadResourceFile(GetCurrentResourceName(), configSource)
+-- Config files are in root directory
+local resourceName = GetCurrentResourceName()
+local configContent = nil
+
+-- Try multiple ways to load the config file
+-- Method 1: Direct path
+configContent = LoadResourceFile(resourceName, configSource)
+
+-- Method 2: Try with resource name as string
+if not configContent then
+    configContent = LoadResourceFile(GetCurrentResourceName(), configSource)
+end
+
+-- Method 3: Try reading the file directly (if it's a server-side script)
+if not configContent and IsDuplicityVersion() then
+    -- On server, we can try to read the file directly
+    local file = io.open(GetResourcePath(resourceName) .. '/' .. configSource, 'r')
+    if file then
+        configContent = file:read('*all')
+        file:close()
+    end
+end
+
+if not configContent then
+    print("^3[Config]^7 WARNING: Could not load " .. configSource .. " from resource " .. resourceName .. "^0")
+    -- Only try to get resource path on server-side (GetResourcePath is server-only)
+    if IsDuplicityVersion() and GetResourcePath then
+        local success, resourcePath = pcall(function() return GetResourcePath(resourceName) end)
+        if success and resourcePath then
+            print("^3[Config]^7 Resource path: " .. tostring(resourcePath) .. "^0")
+        end
+    end
+    print("^3[Config]^7 This is normal if the config file doesn't exist yet. Using empty config.^0")
+end
 
 if not configContent then
     print("^1[Config] ERROR: Could not load " .. configSource .. "^0")

@@ -56,14 +56,82 @@ if not exist node_modules (
 
 REM Build UI
 echo Building UI...
-call npm run build
-if %ERRORLEVEL% NEQ 0 (
-    echo [ERROR] UI build failed - continuing with customer release...
+echo Running: npx vite build
+call npx vite build
+set "BUILD_EXIT_CODE=%ERRORLEVEL%"
+echo Build command exit code: %BUILD_EXIT_CODE%
+
+REM Wait a moment for file system to catch up
+timeout /t 1 /nobreak >nul
+
+REM Check if dist folder was created
+if not exist dist (
+    echo [ERROR] UI build failed - dist folder not created
+    echo [ERROR] Build exit code: %BUILD_EXIT_CODE%
+    echo [ERROR] Try running: cd ui && npm install && npx vite build
     set "HAS_ERRORS=1"
     set "UI_BUILD_SUCCESS=0"
-) else (
+    cd ..
+    goto :continue_build
+)
+
+echo   ✓ dist folder created
+
+REM Check if index.html exists
+if not exist dist\index.html (
+    echo [ERROR] UI build incomplete - index.html not found in dist
+    echo [ERROR] Build may have failed silently
+    set "HAS_ERRORS=1"
+    set "UI_BUILD_SUCCESS=0"
+    cd ..
+    goto :continue_build
+)
+
+echo   ✓ index.html exists
+
+REM Check if assets folder exists
+if not exist dist\assets (
+    echo [ERROR] UI build incomplete - assets folder not found in dist
+    set "HAS_ERRORS=1"
+    set "UI_BUILD_SUCCESS=0"
+    cd ..
+    goto :continue_build
+)
+
+echo   ✓ assets folder exists
+
+REM Run post-build scripts
+echo Running post-build scripts...
+if %BUILD_EXIT_CODE% EQU 0 (
+    echo   Running fix-html.js...
+    call node scripts/fix-html.js
+    if %ERRORLEVEL% NEQ 0 (
+        echo [WARNING] fix-html.js failed, but continuing...
+    ) else (
+        echo   ✓ fix-html.js completed
+    )
+    
+    echo   Running copy-dark-css.js...
+    call node scripts/copy-dark-css.js
+    if %ERRORLEVEL% NEQ 0 (
+        echo [WARNING] copy-dark-css.js failed, but continuing...
+    ) else (
+        echo   ✓ copy-dark-css.js completed
+    )
+    
     echo   ✓ UI build successful
     set "UI_BUILD_SUCCESS=1"
+) else (
+    echo [ERROR] UI build failed with exit code %BUILD_EXIT_CODE%
+    echo [ERROR] However, dist folder exists - attempting to continue...
+    set "HAS_ERRORS=1"
+    REM Still try to run post-build scripts if dist exists
+    if exist dist\index.html (
+        echo   Attempting to run post-build scripts anyway...
+        call node scripts/fix-html.js
+        call node scripts/copy-dark-css.js
+    )
+    set "UI_BUILD_SUCCESS=0"
 )
 
 cd ..
